@@ -510,7 +510,7 @@ textarea {
 
 /* SETTINGS */
 
-// This animation gives s slight wiggle followed by motionlessness (the timing
+// This animation gives a slight wiggle followed by motionlessness (the timing
 // can be configured with the `animation` style).
 @keyframes buttonWiggle {
   0% { transform: rotate(0deg); }
@@ -552,6 +552,52 @@ textarea {
     body[dir="rtl"] & {
       .pull-left;
     }
+  }
+}
+
+.draw-attention:after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  .translate(-50%,-50%);
+  border-radius: 100%;
+  width: 125%;
+  height: 125%;
+  border: 10000px solid black;
+  z-index: 9999;
+  opacity: 0.65;
+}
+
+.draw-attention {
+  animation: waggle 1s 0s forwards ease-out;
+  z-index: 1;
+}
+
+@keyframes waggle {
+  0% {
+    transform: none;
+  }
+  50% {
+    transform: rotateZ(-20deg) scale(1.2);
+  }
+  60% {
+    transform: rotateZ(25deg) scale(1.2);
+  }
+  67.5% {
+    transform: rotateZ(-15deg) scale(1.2);
+  }
+  75% {
+    transform: rotateZ(15deg) scale(1.2);
+  }
+  82.5% {
+    transform: rotateZ(-12deg) scale(1.2);
+  }
+  85% {
+    transform: rotateZ(0) scale(1.2);
+  }
+  100% {
+    transform: rotateZ(0) scale(1);
   }
 }
 
@@ -990,8 +1036,111 @@ label[for="EgressRegionCombo"], label[for="EgressRegion"] {
       .text-center;
     }
 
+    .boost-container {
+      max-width: 95%;
+      margin: auto;
+
+      .boost-container-label {
+        width: 100%;
+
+        // We want the label to seem like it's part of a single control with
+        // the buttons, so we'll shift its bottom behind the top of the buttons.
+        margin-bottom: -4px;
+
+        border-top: 1px @btnPrimaryBackgroundHighlight solid;
+        border-left: 1px @btnPrimaryBackgroundHighlight solid;
+        border-right: 1px @btnPrimaryBackgroundHighlight solid;
+        .border-top-left-radius(@buttonBorderRadiusBase);
+        .border-top-right-radius(@buttonBorderRadiusBase);
+
+        .boost-container-label-inner {
+          padding-left: 3px;
+          padding-right: 3px;
+          padding-bottom: 4px; // this must be the same as the margin-bottom above
+        }
+      }
+
+      .boost-container-buttons {
+        /*
+        We're going to mimic a table with the btn-group. That gives us nice layout
+        within and between the buttons.
+        One thing we _lose_ from this approach is height-matching between the buttons.
+        */
+
+        width: 100%;
+        display: table;
+        overflow: hidden;
+
+        border-left: 1px @btnPrimaryBackgroundHighlight solid;
+        border-right: 1px @btnPrimaryBackgroundHighlight solid;
+        border-bottom: 1px @btnPrimaryBackgroundHighlight solid;
+        .border-bottom-left-radius(@buttonBorderRadiusBase);
+        .border-bottom-right-radius(@buttonBorderRadiusBase);
+
+        .btn {
+          width: 100%;
+          max-width: 100%;
+          white-space: normal; // override the default for .btn-group
+          overflow-wrap: break-word;
+
+          display: table-row;
+
+          & > span {
+            display: table-cell;
+            width: 1%;
+            vertical-align: middle;
+            padding: 3px;
+          }
+        }
+      }
+    }
+
+    .psicash-price-container {
+      white-space: nowrap;
+    }
+
+    // TODO: Still valid?
     .psicash-buy-psi {
       margin-top: 4px;
+    }
+  }
+
+  .speed-limit {
+    .badge {
+      max-width: calc(100% - 18px); /* badges use 9px padding on left and right */
+      text-transform: uppercase;
+      white-space: normal;
+
+      td:first {
+        width: 100%;
+      }
+
+      img {
+        height: 35px;
+        vertical-align: baseline;
+
+        body[dir="ltr"] & {
+          padding-left: 2px;
+        }
+        body[dir="rtl"] & {
+          padding-right: 2px;
+        }
+      }
+
+      // This color is derived (lightened) from the Psiphon logo
+      @speedLimitColor: #cc664c;
+
+      &.speed-slow {
+        background-color: @speedLimitColor;
+        color: @psiNavBackgroundColor;
+      }
+
+      &.speed-fast {
+        color: @psiBaseText;
+        text-shadow: none;
+        background-color: @psiNavBackgroundColor;
+        border: 1px solid @speedLimitColor;
+      }
     }
   }
 }

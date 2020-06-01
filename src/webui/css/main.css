@@ -2641,21 +2641,21 @@ input[type="submit"].btn.btn-mini {
 }
 .btn-group > .btn:first-child {
   margin-left: 0;
-  -webkit-border-top-left-radius: 1px;
-  -moz-border-radius-topleft: 1px;
-  border-top-left-radius: 1px;
-  -webkit-border-bottom-left-radius: 1px;
-  -moz-border-radius-bottomleft: 1px;
-  border-bottom-left-radius: 1px;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-bottom-left-radius: 3px;
 }
 .btn-group > .btn:last-child,
 .btn-group > .dropdown-toggle {
-  -webkit-border-top-right-radius: 1px;
-  -moz-border-radius-topright: 1px;
-  border-top-right-radius: 1px;
-  -webkit-border-bottom-right-radius: 1px;
-  -moz-border-radius-bottomright: 1px;
-  border-bottom-right-radius: 1px;
+  -webkit-border-top-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-bottom-right-radius: 3px;
 }
 .btn-group > .btn.large:first-child {
   margin-left: 0;
@@ -2784,14 +2784,14 @@ input[type="submit"].btn.btn-mini {
   margin-top: -1px;
 }
 .btn-group-vertical > .btn:first-child {
-  -webkit-border-radius: 1px 1px 0 0;
-  -moz-border-radius: 1px 1px 0 0;
-  border-radius: 1px 1px 0 0;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
 }
 .btn-group-vertical > .btn:last-child {
-  -webkit-border-radius: 0 0 1px 1px;
-  -moz-border-radius: 0 0 1px 1px;
-  border-radius: 0 0 1px 1px;
+  -webkit-border-radius: 0 0 3px 3px;
+  -moz-border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px;
 }
 .btn-group-vertical > .btn-large:first-child {
   -webkit-border-radius: 1px 1px 0 0;
@@ -6544,6 +6544,53 @@ body[dir="ltr"] .settings-buttons .reset-settings {
 body[dir="rtl"] .settings-buttons .reset-settings {
   float: left;
 }
+.draw-attention:after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  border-radius: 100%;
+  width: 125%;
+  height: 125%;
+  border: 10000px solid black;
+  z-index: 9999;
+  opacity: 0.65;
+}
+.draw-attention {
+  animation: waggle 1s 0s forwards ease-out;
+  z-index: 1;
+}
+@keyframes waggle {
+  0% {
+    transform: none;
+  }
+  50% {
+    transform: rotateZ(-20deg) scale(1.2);
+  }
+  60% {
+    transform: rotateZ(25deg) scale(1.2);
+  }
+  67.5% {
+    transform: rotateZ(-15deg) scale(1.2);
+  }
+  75% {
+    transform: rotateZ(15deg) scale(1.2);
+  }
+  82.5% {
+    transform: rotateZ(-12deg) scale(1.2);
+  }
+  85% {
+    transform: rotateZ(0) scale(1.2);
+  }
+  100% {
+    transform: rotateZ(0) scale(1);
+  }
+}
 #settings-accordion {
   position: absolute;
   top: 38px;
@@ -6883,8 +6930,94 @@ body[dir="rtl"] #psicash-block > div .psicash-title-balance > span {
 #psicash-block > div .button-container {
   text-align: center;
 }
+#psicash-block > div .boost-container {
+  max-width: 95%;
+  margin: auto;
+}
+#psicash-block > div .boost-container .boost-container-label {
+  width: 100%;
+  margin-bottom: -4px;
+  border-top: 1px #1e84aa solid;
+  border-left: 1px #1e84aa solid;
+  border-right: 1px #1e84aa solid;
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  border-top-left-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  border-top-right-radius: 3px;
+}
+#psicash-block > div .boost-container .boost-container-label .boost-container-label-inner {
+  padding-left: 3px;
+  padding-right: 3px;
+  padding-bottom: 4px;
+}
+#psicash-block > div .boost-container .boost-container-buttons {
+  /*
+        We're going to mimic a table with the btn-group. That gives us nice layout
+        within and between the buttons.
+        One thing we _lose_ from this approach is height-matching between the buttons.
+        */
+  width: 100%;
+  display: table;
+  overflow: hidden;
+  border-left: 1px #1e84aa solid;
+  border-right: 1px #1e84aa solid;
+  border-bottom: 1px #1e84aa solid;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-bottom-right-radius: 3px;
+}
+#psicash-block > div .boost-container .boost-container-buttons .btn {
+  width: 100%;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: break-word;
+  display: table-row;
+}
+#psicash-block > div .boost-container .boost-container-buttons .btn > span {
+  display: table-cell;
+  width: 1%;
+  vertical-align: middle;
+  padding: 3px;
+}
+#psicash-block > div .psicash-price-container {
+  white-space: nowrap;
+}
 #psicash-block > div .psicash-buy-psi {
   margin-top: 4px;
+}
+#psicash-block .speed-limit .badge {
+  max-width: calc(100% - 18px);
+  /* badges use 9px padding on left and right */
+  text-transform: uppercase;
+  white-space: normal;
+}
+#psicash-block .speed-limit .badge td:first {
+  width: 100%;
+}
+#psicash-block .speed-limit .badge img {
+  height: 35px;
+  vertical-align: baseline;
+}
+body[dir="ltr"] #psicash-block .speed-limit .badge img {
+  padding-left: 2px;
+}
+body[dir="rtl"] #psicash-block .speed-limit .badge img {
+  padding-right: 2px;
+}
+#psicash-block .speed-limit .badge.speed-slow {
+  background-color: #cc664c;
+  color: #FFF;
+}
+#psicash-block .speed-limit .badge.speed-fast {
+  color: #222;
+  text-shadow: none;
+  background-color: #FFF;
+  border: 1px solid #cc664c;
 }
 /* MISCELLANEOUS AND HELPERS */
 .global-alert {
