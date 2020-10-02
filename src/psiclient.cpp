@@ -99,6 +99,7 @@ void OnCreate(HWND hWndParent)
     initJSON["Config"]["NewVersionURL"] = GET_NEW_VERSION_URL;
     initJSON["Config"]["FaqURL"] = FAQ_URL;
     initJSON["Config"]["DataCollectionInfoURL"] = DATA_COLLECTION_INFO_URL;
+    initJSON["Config"]["PsiCashAccountSignupURL"] = psicash::Lib::AccountSignupURL();
     initJSON["Config"]["DpiScaling"] = g_dpiScaling;
 #ifdef _DEBUG
     initJSON["Config"]["Debug"] = true;
@@ -1608,12 +1609,16 @@ enum class PsiCashMessageType {
     REFRESH,
     NEW_PURCHASE,
     INIT_DONE,
+    ACCOUNT_LOGIN,
+    ACCOUNT_LOGOUT
 };
 
 static map<PsiCashMessageType, string> PsiCashMessageTypeNames = {
-    { PsiCashMessageType::REFRESH, "refresh" },
-    { PsiCashMessageType::NEW_PURCHASE, "new-purchase" },
-    { PsiCashMessageType::INIT_DONE, "init-done" },
+    {PsiCashMessageType::REFRESH, "refresh"},
+    {PsiCashMessageType::NEW_PURCHASE, "new-purchase"},
+    {PsiCashMessageType::INIT_DONE, "init-done"},
+    {PsiCashMessageType::ACCOUNT_LOGIN, "account-login"},
+    {PsiCashMessageType::ACCOUNT_LOGOUT, "account-logout"},
 };
 
 struct PsiCashMessage {
@@ -1675,6 +1680,7 @@ void InitPsiCash() {
 
 nlohmann::json MakeRefreshPsiCashPayload() {
     nlohmann::json res = {
+        { "is_account", psicash::Lib::_().IsAccount() },
         { "valid_token_types", psicash::Lib::_().ValidTokenTypes() },
         { "balance",  psicash::Lib::_().Balance() },
         { "purchase_prices", psicash::Lib::_().GetPurchasePrices() },
@@ -1788,7 +1794,80 @@ bool HandlePsiCashCommand(const string& jsonString)
             my_print(NOT_SENSITIVE, true, _T("%s: NewExpiringPurchase result: %hs"), __TFUNCTION__, jsonString.c_str());
         });
     }
-    else {
+    else if (json["command"] == "login")
+    {
+        psicash::Lib::_().AccountLogin(
+            json["username"].asString(), json["password"].asString(),
+            [commandID](psicash::error::Result<psicash::PsiCash::AccountLoginResponse> result) {
+                // NOTE: This callback is (likely) _not_ on the same thread as the original call.
+
+                // Send the result through to the JS to sort out.
+
+                PsiCashMessage evt(PsiCashMessageType::ACCOUNT_LOGIN, commandID);
+
+                nlohmann::json jsonResult;
+                if (!result)
+                {
+                    jsonResult["error"] = result.error().ToString();
+                    jsonResult["status"] = -1;
+                }
+                else
+                {
+                    jsonResult["error"] = nullptr;
+                    jsonResult["status"] = result->status;
+                    jsonResult["last_tracker_merge"] = result->last_tracker_merge ? *result->last_tracker_merge : nullptr;
+                    jsonResult["refresh"] = MakeRefreshPsiCashPayload();
+                }
+
+                evt.payload = jsonResult;
+
+                string jsonString;
+                if (!evt.JSON(jsonString))
+                {
+                    my_print(NOT_SENSITIVE, true, _T("%s: PsiCashMessage.JSON failed"), __TFUNCTION__);
+                    return;
+                }
+
+                HtmlUI_PsiCashMessage(jsonString);
+                my_print(NOT_SENSITIVE, true, _T("%s: AccountLogin result: %hs"), __TFUNCTION__, jsonString.c_str());
+            });
+    }
+    else if (json["command"] == "logout")
+    {
+        psicash::Lib::_().AccountLogout(
+            [commandID](psicash::error::Error err) {
+                // NOTE: This callback is (likely) _not_ on the same thread as the original call.
+
+                // Send the result through to the JS to sort out.
+
+                PsiCashMessage evt(PsiCashMessageType::ACCOUNT_LOGOUT, commandID);
+
+                nlohmann::json jsonResult;
+                if (err)
+                {
+                    jsonResult["error"] = err.ToString();
+                }
+                else
+                {
+                    jsonResult["error"] = nullptr;
+                    jsonResult["refresh"] = MakeRefreshPsiCashPayload();
+                }
+
+                evt.payload = jsonResult;
+
+                string jsonString;
+                if (!evt.JSON(jsonString))
+                {
+                    my_print(NOT_SENSITIVE, true, _T("%s: PsiCashMessage.JSON failed"), __TFUNCTION__);
+                    return;
+                }
+
+                HtmlUI_PsiCashMessage(jsonString);
+                my_print(NOT_SENSITIVE, true, _T("%s: AccountLogout result: %hs"), __TFUNCTION__, jsonString.c_str());
+            });
+    }
+    else
+    {
         my_print(NOT_SENSITIVE, true, _T("%s: no command match: %hs"), __TFUNCTION__, jsonString.c_str());
     }
 

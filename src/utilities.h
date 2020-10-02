@@ -190,6 +190,10 @@ std::vector<basic_string<charT>> split(const basic_string<charT> &s, charT delim
     return split(s, delim, elems);
 }
 
+// Trim whitespace from the left and right of the string.
+std::string trim(const std::string& s);
+
+
 #ifndef STRINGIZE
 // From MSVC++ 2012's _STRINGIZE macro
 #define __STRINGIZEX(x) #x

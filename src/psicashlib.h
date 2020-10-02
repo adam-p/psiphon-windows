@@ -9,7 +9,7 @@
 
 namespace psicash {
 
-/// Wraps the PsiCash library and provides the HTTP requester. 
+/// Wraps the PsiCash library and provides the HTTP requester.
 /// Network calls are made on a separate thread.
 /// Uses and respects the GlobalStopSignal.
 class Lib : public PsiCash {
@@ -38,7 +38,7 @@ public:
     /// Update the client region (in the request metadata) as it's better known.
     error::Error UpdateClientRegion(const string& region);
 
-    /// Makes a RefreshState request. 
+    /// Makes a RefreshState request.
     /// Network and callback will happen on a separate thread.
     void RefreshState(
         std::function<void(error::Result<Status>)> callback);
@@ -50,6 +50,19 @@ public:
         const std::string& distinguisher,
         const int64_t expectedPrice,
         std::function<void(error::Result<NewExpiringPurchaseResponse>)> callback);
+
+    // TODO: comment
+    void Lib::AccountLogin(
+        const std::string &utf8_username,
+        const std::string &utf8_password,
+        std::function<void(error::Result<AccountLoginResponse>)> callback);
+
+    // TODO: comment
+    void Lib::AccountLogout(
+        std::function<void(error::Error)> callback);
+
+    // TODO: comment
+    static std::string AccountSignupURL();
 
 protected:
     /// If this returns true, the request has been made and requestTask has been moved.

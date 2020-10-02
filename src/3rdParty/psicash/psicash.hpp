@@ -63,6 +63,8 @@ struct HTTPParams {
     // name-value pairs: [ ["class", "speed-boost"], ["expectedAmount", "-10000"], ... ]
     std::vector<std::pair<std::string, std::string>> query;
 
+    // body must be omitted if empty
+    std::string body;
 };
 // The result from MakeHTTPRequestFn:
 struct HTTPResult {
@@ -77,8 +79,8 @@ struct HTTPResult {
     // The contents of the response body, if any.
     std::string body;
 
-    // The value of the response Date header.
-    std::string date;
+    // The response headers.
+    std::map<std::string, std::vector<std::string>> headers;
 
     // Any error message relating to an unsuccessful network attempt;
     // must be empty if the request succeeded (regardless of status code).
@@ -153,6 +155,8 @@ enum class Status {
     TransactionAmountMismatch,
     TransactionTypeNotFound,
     InvalidTokens,
+    InvalidCredentials,
+    BadRequest,
     ServerError
 };
 
@@ -164,25 +168,31 @@ public:
     PsiCash(const PsiCash&) = delete;
     PsiCash& operator=(PsiCash const&) = delete;
 
-    /// Must be called once, before any other methods except Reset (or behaviour is undefined).
+    /// Must be called once, before any other methods (or behaviour is undefined).
     /// `user_agent` is required and must be non-empty.
     /// `file_store_root` is required and must be non-empty. `"."` can be used for the cwd.
     /// `make_http_request_fn` may be null and set later with SetHTTPRequestFn.
     /// Returns false if there's an unrecoverable error (such as an inability to use the
     /// filesystem).
+    /// If `force_reset` is true, the datastore will be completely wiped out and reset.
     /// If `test` is true, then the test server will be used, and other testing interfaces
     /// will be available. Should only be used for testing.
     /// When uninitialized, data accessors will return zero values, and operations (e.g.,
     /// RefreshState and NewExpiringPurchase) will return errors.
     error::Error Init(const std::string& user_agent, const std::string& file_store_root,
-                      MakeHTTPRequestFn make_http_request_fn, bool test=false);
-
-    /// Resets the PsiCash datastore. Init() must be called after this method is used.
-    /// Returns an error if the reset failed, likely indicating a filesystem problem.
-    error::Error Reset(const std::string& file_store_root, bool test=false);
+                      MakeHTTPRequestFn make_http_request_fn, bool force_reset, bool test);
 
     /// Returns true if the library has been successfully initialized (i.e., Init called).
     bool Initialized() const;
+
+    /// Resets PsiCash data for the current user (Tracker or Account). This will typically
+    /// be called when wanting to revert to a Tracker from a previously logged in Account.
+    error::Error ResetUser();
+
+    /// Forces the given tokens and account status to be set in the datastore. Must be
+    /// called after Init(). RefreshState() must be called after method (and shouldn't be
+    /// be called before this method, although behaviour will be okay).
+    error::Error MigrateTokens(const std::map<std::string, std::string>& tokens, bool is_account);
 
     /// Can be used for updating the HTTP requester function pointer.
     void SetHTTPRequestFn(MakeHTTPRequestFn make_http_request_fn);
@@ -241,6 +251,8 @@ public:
     /// Returns an error if modification is impossible. (In that case the error
     /// should be logged -- and added to feedback -- and home page opening should
     /// proceed with the original URL.)
+    /// Note that it does NOT return an error when there are no tokens or insufficient
+    /// tokens -- it just modifies the URL as best it can, setting `tokens` to null.
     error::Result<std::string> ModifyLandingPage(const std::string& url) const;
 
     /// Utilizes stored tokens and metadata (and a configured base URL) to craft a URL
@@ -270,18 +282,26 @@ public:
     //
 
     /**
-    Refreshes the client state. Retrieves info about whether the user has an
-    Account (vs Tracker), balance, valid token types, and purchase prices. After a
-    successful request, the retrieved values can be accessed with the accessor
-    methods.
+    Refreshes the client state. Retrieves info about whether the user has an Account (vs
+    Tracker), balance, valid token types, purchases, and purchase prices. After a
+    successful request, the retrieved values can be accessed with the accessor methods.
 
     If there are no tokens stored locally (e.g., if this is the first run), then
     new Tracker tokens will obtained.
 
-    If the user is/has an Account, then it is possible some tokens will be invalid
+    If the user has an Account, then it is possible some or all tokens will be invalid
     (they expire at different rates). Login may be necessary before spending, etc.
     (It's even possible that validTokenTypes is empty -- i.e., there are no valid
     tokens.)
+
+    If the user has an Account, then it is possible some or all tokens will be invalid
+    (they may expire at different rates) and multiple states are possible:
+      • spender, indicator, and earner tokens are all valid.
+      • Some token types are valid, while others are not. The client will probably want to
+        consider itself not-logged-in and force a login.
+      • No tokens are valid.
+
+    See the flow chart in the README for a graphical representation of states.
 
     If there is no valid indicator token, then balance and purchase prices will not
     be retrieved, but there may be stored (possibly stale) values that can be used.
@@ -305,8 +325,8 @@ public:
     • ServerError: The server returned 500 error response. Note that the request has
       already been retried internally and any further retry should not be immediate.
 
-    • InvalidTokens: Should never happen (indicates something like
-      local storage corruption). The local user state will be cleared.
+    • InvalidTokens: Should never happen (indicates something like local storage
+      corruption). The local user state will be cleared.
     */
     error::Result<Status> RefreshState(const std::vector<std::string>& purchase_classes);
 
@@ -349,8 +369,9 @@ public:
       could not be found. The price list should be updated immediately, but it might also
       indicate an out-of-date app.
 
-    • InvalidTokens: The current auth tokens are invalid.
-      TODO: Figure out how to handle this. It shouldn't be a factor for Trackers or MVP.
+    • InvalidTokens: The current auth tokens are invalid. This indicates something is
+      very wrong, such as the tokens belonging to different users. This state requires
+      a full reset.
 
     • ServerError: An error occurred on the server. Probably report to the user and try
       again later. Note that the request has already been retried internally and any
@@ -366,23 +387,79 @@ public:
             const std::string& distinguisher,
             const int64_t expected_price);
 
+    /**
+    Logs out a currently logged-in account.
+    An error will be returned in these cases:
+    • If the user is not an account
+    • If the request to the server fails
+    • If the local datastore cannot be updated
+    These errors should always be logged, but the local state may end up being logged out,
+    even if they do occur -- such as when the server request fails -- so checks for state
+    will need to occur.
+    NOTE: This (usually) does involve a network operation, so wrappers may want to be
+    asynchronous.
+    */
+    error::Error AccountLogout();
+
+    /**
+    Attempts to log the current user into an account. Will attempt to merge any available
+    Tracker balance.
+
+    If success, RefreshState should be called immediately afterward.
+
+    Input parameters:
+    • utf8_username: The username, encoded in UTF-8.
+    • utf8_password: The password, encoded in UTF-8.
+
+    Result fields:
+    • error: If set, the request failed utterly and no other params are valid.
+    • status: Request success indicator. See below for possible values.
+    • last_tracker_merge: If true, a Tracker was merged into the account, and this was
+      the last such merge that is allowed -- the user should be informed of this.
+
+    Possible status codes:
+    • Success: The credentials were correct and the login request was successful. There
+      are tokens available for future requests.
+    • InvalidCredentials: One or both of the username and password did not match a known
+      Account.
+    • BadRequest: The data sent to the server was invalid in some way. This should not
+      happen in normal operation.
+    • ServerError: An error occurred on the server. Probably report to the user and try
+      again later. Note that the request has already been retried internally and any
+      further retry should not be immediate.
+    */
+    struct AccountLoginResponse {
+        Status status;
+        nonstd::optional<bool> last_tracker_merge;
+    };
+
+    error::Result<AccountLoginResponse> AccountLogin(
+            const std::string& utf8_username,
+            const std::string& utf8_password);
+
 protected:
     // See implementation for descriptions of non-public methods.
 
     nlohmann::json GetRequestMetadata(int attempt) const;
     error::Result<HTTPResult> MakeHTTPRequestWithRetry(
             const std::string& method, const std::string& path, bool include_auth_tokens,
-            const std::vector<std::pair<std::string, std::string>>& query_params);
+            const std::vector<std::pair<std::string, std::string>>& query_params,
+            const nonstd::optional<nlohmann::json>& body);
 
     virtual error::Result<HTTPParams> BuildRequestParams(
             const std::string& method, const std::string& path, bool include_auth_tokens,
             const std::vector<std::pair<std::string, std::string>>& query_params, int attempt,
-            const std::map<std::string, std::string>& additional_headers) const;
+            const std::map<std::string, std::string>& additional_headers,
+            const std::string& body) const;
 
     error::Result<Status> NewTracker();
 
-    error::Result<Status>
-    RefreshState(const std::vector<std::string>& purchase_classes, bool allow_recursion);
+    error::Result<Status> RefreshState(
+      const std::vector<std::string>& purchase_classes, bool allow_recursion);
+
+    error::Result<psicash::Purchase> PurchaseFromJSON(const nlohmann::json& j) const;
+
+    std::string CommaDelimitTokens(const std::vector<std::string>& types) const;
 
 protected:
     bool test_;
@@ -391,7 +468,7 @@ protected:
     std::string server_scheme_;
     std::string server_hostname_;
     int server_port_;
-    // This is a pointer rather than an instance to avoid including userdata.h (TODO: worthwhile?)
+    // This is a pointer rather than an instance to avoid including userdata.h
     std::unique_ptr<UserData> user_data_;
     MakeHTTPRequestFn make_http_request_fn_;
 };

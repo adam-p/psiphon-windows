@@ -1,5 +1,7 @@
 "use strict";
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /*
  * Copyright (c) 2015, Psiphon Inc.
  * All rights reserved.
@@ -53,11 +55,12 @@
       g_initObj.Config.ClientVersion = g_initObj.Config.ClientVersion || '99';
       g_initObj.Config.Language = g_initObj.Config.Language || 'en';
       g_initObj.Config.Banner = g_initObj.Config.Banner || 'banner.png';
-      g_initObj.Config.InfoURL = g_initObj.Config.InfoURL || 'http://example.com/browser-InfoURL/index.html';
+      g_initObj.Config.InfoURL = g_initObj.Config.InfoURL || 'https://example.com/browser-InfoURL/index.html';
       g_initObj.Config.NewVersionEmail = g_initObj.Config.NewVersionEmail || 'browser-NewVersionEmail@example.com';
-      g_initObj.Config.NewVersionURL = g_initObj.Config.NewVersionURL || 'http://example.com/browser-NewVersionURL/en/download.html#direct';
-      g_initObj.Config.FaqURL = g_initObj.Config.FaqURL || 'http://example.com/browser-FaqURL/en/faq.html';
-      g_initObj.Config.DataCollectionInfoURL = g_initObj.Config.DataCollectionInfoURL || 'http://example.com/browser-DataCollectionInfoURL/en/privacy.html#information-collected';
+      g_initObj.Config.NewVersionURL = g_initObj.Config.NewVersionURL || 'https://example.com/browser-NewVersionURL/en/download.html#direct';
+      g_initObj.Config.FaqURL = g_initObj.Config.FaqURL || 'https://example.com/browser-FaqURL/en/faq.html';
+      g_initObj.Config.DataCollectionInfoURL = g_initObj.Config.DataCollectionInfoURL || 'https://example.com/browser-DataCollectionInfoURL/en/privacy.html#information-collected';
+      g_initObj.Config.PsiCashAccountSignupURL = g_initObj.Config.PsiCashAccountSignupURL || 'https://example.com/signup?utm_source=browser-PsiCashAccountSignupURL';
       g_initObj.Config.DpiScaling = 1.0;
       g_initObj.Config.Debug = g_initObj.Config.Debug || true;
       g_initObj.Cookies = JSON.stringify({
@@ -121,7 +124,8 @@
       url = g_initObj.Config.FaqURL.replace(regex, replaceFn);
       $('.FaqURL').attr('href', url).attr('title', url);
       url = g_initObj.Config.DataCollectionInfoURL.replace(regex, replaceFn);
-      $('.DataCollectionInfoURL').attr('href', url).attr('title', url); // No replacement on the email address
+      $('.DataCollectionInfoURL').attr('href', url).attr('title', url);
+      $('.PsiCashAccountSignupURL').attr('href', g_initObj.Config.PsiCashAccountSignupURL); // No replacement on the email address
 
       $('.NewVersionEmail').attr('href', 'mailto:' + g_initObj.Config.NewVersionEmail).text(g_initObj.Config.NewVersionEmail).attr('title', g_initObj.Config.NewVersionEmail);
       $('.ClientVersion').text(g_initObj.Config.ClientVersion);
@@ -835,7 +839,7 @@
   }
 
   function showSettingErrorSection() {
-    showSettingsSection($('#settings-accordion .collapse .error').parents('.collapse').eq(0), $('#settings-pane .error input').eq(0).focus());
+    showSettingsSection($('#settings-accordion .collapse .error').parents('.collapse').eq(0), $('#settings-pane .error input').eq(0).trigger('focus'));
   } //
   // Systray Minimize
   //
@@ -1197,7 +1201,7 @@
       }
 
       showNoticeModal('settings#upstream-proxy#error-modal-title', bodyKey, 'general#notice-modal-tech-preamble', errorMessage, function () {
-        $('#UpstreamProxyHostname').focus();
+        $('#UpstreamProxyHostname').trigger('focus');
       }); // Switch to the appropriate settings section
 
       showSettingsSection('#settings-accordion-upstream-proxy'); // We are not going to set the timer to null here. We only want the error
@@ -1279,7 +1283,7 @@
             // leave some space for the alert
             onAfter: function onAfter() {
               if (focusElem) {
-                $(focusElem).eq(0).focus();
+                $(focusElem).eq(0).trigger('focus');
               }
             }
           });
@@ -1578,7 +1582,13 @@
     NEW_PURCHASE: 'psicash::new-purchase',
 
     /** Argument is PsiCashInitDoneData */
-    INIT_DONE: 'psicash::init-done'
+    INIT_DONE: 'psicash::init-done',
+
+    /** Argument is PsiCashLoginData */
+    LOGIN: 'psicash::login',
+
+    /** Argument is PsiCashLogoutData */
+    LOGOUT: 'psicash::logout'
   };
   /**
    * Server response statuses
@@ -1595,7 +1605,9 @@
     TransactionAmountMismatch: 3,
     TransactionTypeNotFound: 4,
     InvalidTokens: 5,
-    ServerError: 6
+    InvalidCredentials: 6,
+    BadRequest: 7,
+    ServerError: 8
   };
   /**
    * @typedef {Object} PsiCashPurchasePrice
@@ -1624,6 +1636,7 @@
   /**
    * The expected payload passed to HtmlCtrlInterface_PsiCashMessage when a refresh should be done.
    * @typedef {Object} PsiCashRefreshData
+   * @property {boolean} is_account
    * @property {string[]} valid_token_types
    * @property {number} balance
    * @property {PsiCashPurchasePrice[]} purchase_prices
@@ -1639,14 +1652,32 @@
    */
 
   /**
-  * Used as the "command" type passed to HtmlCtrlInterface_PsiCashCommand.
-  * @enum {string}
-  * @readonly
-  */
+   * The expected payload passed to HtmlCtrlInterface_PsiCashMessage when account login is complete.
+   * @typedef {Object} PsiCashLoginResponse
+   * @property {?string} error
+   * @property {!PsiCashServerResponseStatus} status
+   * @property {?boolean} last_tracker_merge
+   * @property {?PsiCashRefreshData} refresh
+   */
+
+  /**
+   * The expected payload passed to HtmlCtrlInterface_PsiCashMessage when account logout is complete.
+   * @typedef {Object} PsiCashLogoutResponse
+   * @property {?string} error
+   * @property {?PsiCashRefreshData} refresh
+   */
+
+  /**
+   * Used as the "command" type passed to HtmlCtrlInterface_PsiCashCommand.
+   * @enum {string}
+   * @readonly
+   */
 
   var PsiCashCommandEnum = {
     REFRESH: 'refresh',
-    PURCHASE: 'purchase'
+    PURCHASE: 'purchase',
+    LOGIN: 'login',
+    LOGOUT: 'logout'
     /**
      * PsiCash command base class constrcutor
      * @class PsiCashCommandBase
@@ -1705,6 +1736,36 @@
     constructor: PsiCashCommandPurchase
   });
   /**
+   * Construct a new PsiCash account login command
+   * @class PsiCashCommandLogin
+   * @classdesc Passed to HtmlCtrlInterface_PsiCashCommand to indicate a purchase is desired
+   * @param {string} username
+   * @param {string} password
+   */
+
+  function PsiCashCommandLogin(username, password) {
+    PsiCashCommandBase.call(this, PsiCashCommandEnum.LOGIN);
+    this.username = username;
+    this.password = password;
+  }
+
+  PsiCashCommandLogin.prototype = _.create(PsiCashCommandBase.prototype, {
+    constructor: PsiCashCommandLogin
+  });
+  /**
+   * Construct a new PsiCash account logout command
+   * @class PsiCashCommandLogout
+   * @classdesc Passed to HtmlCtrlInterface_PsiCashCommand to indicate a purchase is desired
+   */
+
+  function PsiCashCommandLogout() {
+    PsiCashCommandBase.call(this, PsiCashCommandEnum.LOGOUT);
+  }
+
+  PsiCashCommandLogout.prototype = _.create(PsiCashCommandBase.prototype, {
+    constructor: PsiCashCommandLogout
+  });
+  /**
    * PsiCash-related messages from the C code.
    * @enum {string}
    * @readonly
@@ -1713,7 +1774,9 @@
   var PsiCashMessageTypeEnum = {
     REFRESH: 'refresh',
     NEW_PURCHASE: 'new-purchase',
-    INIT_DONE: 'init-done'
+    INIT_DONE: 'init-done',
+    LOGIN: 'account-login',
+    LOGOUT: 'account-logout'
   };
   /**
    * @typedef {Object} PsiCashMessageData
@@ -1798,9 +1861,11 @@
   function psiCashStateInitialized(psicashData) {
     if (psicashData) {
       g_PsiCashData = psicashData;
-    }
+    } // If we have tokens then we're initialized, or if we have an account (regardless of
+    // tokens, because we might be logged out).
 
-    return psicashData.valid_token_types && psicashData.valid_token_types.length > 0 && _.isNumber(psicashData.balance) && !_.isNaN(psicashData.balance);
+
+    return psicashData.valid_token_types && psicashData.valid_token_types.length > 0 || psicashData.is_account === true;
   }
 
   var PSICASH_ENABLED_COOKIE = 'psicash::Enabled';
@@ -1842,6 +1907,9 @@
     },
     VPN_MODE_DISABLED: {
       uiSelector: '#psicash-interface-vpndisabled'
+    },
+    ACCOUNT_LOGGED_OUT: {
+      uiSelector: '#psicash-interface-accountloggedout'
     }
   };
   PsiCashStore.set('uiState', PsiCashUIState.ZERO_BALANCE);
@@ -1932,8 +2000,12 @@
           $(".psicash-sb-price[data-distinguisher=\"".concat(pp.distinguisher, "\"]")).data('expectedPrice', pp.price);
         }
       }
-    }
+    } // Some UI elements are shown/hidden depending on the is-account status, independent
+    // of the overall UI state.
 
+
+    $('.show-if-is-account').toggleClass('hidden', !psicashData.is_account);
+    $('.show-if-not-is-account').toggleClass('hidden', psicashData.is_account);
     var state = PsiCashUIState.ZERO_BALANCE; // DO NOT return early from this point. state must be updated in PsiCashStore.uiState.
     // Only the 1-hour Speed Boost is considered for determining if the user has "enough" Psi
 
@@ -1989,6 +2061,12 @@
     if (PsiCashStore.data.purchaseInProgress) {
       // We are waiting for a purchase request to complete
       state = PsiCashUIState.BUYING_BOOST;
+    }
+
+    if (psicashData.is_account && psicashData.valid_token_types.length === 0) {
+      // If we're in an account-logged-out state, PsiCash functionality is disabled until
+      // the user logs back in (or resets data).
+      state = PsiCashUIState.ACCOUNT_LOGGED_OUT;
     } // Speed Boost cannot function in L2TP/IPSec mode. We want to disabled controls and
     // indicate why we're in that state.
 
@@ -2464,12 +2542,151 @@
 
     return psi;
   }
+
+  function psicashLoginAccountClick(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (g_lastState !== 'connected') {
+      showNoticeModal('psicash#mustconnect-modal#title', 'psicash#mustconnect-modal#body', null, null, function () {
+        switchToTab('#connection-tab');
+      });
+      return;
+    }
+
+    $('#PsiCashAccountLogin').modal('show').on('shown', function () {
+      $('#AccountUsername').trigger('focus');
+    }).on('hidden', function () {
+      $('body').css('cursor', 'default');
+      $('#PsiCashAccountLogin input').val('');
+    });
+  }
+
+  $('.psicash-account-action .account-login').on('click', psicashLoginAccountClick);
+
+  function psicashLoginSubmitClick(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (g_lastState !== 'connected') {
+      $('#PsiCashAccountLogin').modal('hide').one('hidden', function () {
+        showNoticeModal('psicash#mustconnect-modal#title', 'psicash#mustconnect-modal#body', null, null, function () {
+          switchToTab('#connection-tab');
+        });
+      });
+      return;
+    }
+
+    var username = $('#AccountUsername').val();
+    var password = $('#AccountPassword').val(); // TODO: TEMP?
+
+    $('body').css('cursor', 'progress');
+    HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogin(username, password)).then(function (result) {
+      $('body').css('cursor', 'default');
+
+      if (result.refresh) {
+        // The reponse supplied refresh data
+        psiCashUIUpdater(result.refresh);
+      } else {
+        // We need to do a full refresh
+        HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('account-login'));
+      }
+
+      if (result.error) {
+        // Catastrophic failure. Show a modal error and hope the user can figure it out.
+        // TODO: text in login modal?
+        alert('Error: ' + result.error);
+      } else {
+        switch (result.status) {
+          case PsiCashServerResponseStatus.InvalidCredentials:
+            // TODO: text in login modal?
+            alert('Invalid credentials');
+            break;
+
+          case PsiCashServerResponseStatus.BadRequest:
+            // TODO: text in login modal?
+            alert('Bad request');
+            break;
+
+          case PsiCashServerResponseStatus.ServerError:
+            // The server gave a 500-ish error
+            // TODO: text in login modal?
+            alert('Server error');
+            break;
+
+          case PsiCashServerResponseStatus.Success:
+            // Account login succeeded.
+            // TODO:
+            //alert('Login successful');
+            $('#PsiCashAccountLogin').modal('hide'); // A hard refresh is required after a login
+            // TODO: show status or progress indicating this is happening? Maybe show it in the dialog before dismissing it?
+
+            HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('new-login'));
+            break;
+
+          default:
+            throw new Error('Login: unknown PsiCashServerResponseStatus received: ' + result.status);
+        }
+      }
+    });
+  }
+
+  $('#PsiCashAccountLogin .submit-button').on('click', psicashLoginSubmitClick);
+  $('#PsiCashAccountLogin input').on('keyup', function (event) {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      psicashLoginSubmitClick();
+    }
+  });
+
+  function psicashManageAccountClick(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (g_lastState !== 'connected') {
+      showNoticeModal('psicash#mustconnect-modal#title', 'psicash#mustconnect-modal#body', null, null, function () {
+        switchToTab('#connection-tab');
+      });
+      return;
+    } // TEMP
+
+
+    if (confirm('Do you want to log out?')) {
+      // TODO: TEMP?
+      $('body').css('cursor', 'progress');
+      HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogout()).then(function (result) {
+        // TODO: TEMP
+        $('body').css('cursor', 'default');
+
+        if (result.refresh) {
+          // The reponse supplied refresh data
+          psiCashUIUpdater(result.refresh);
+        } else {
+          // We're not going to force a full refresh if the refresh data is absent,
+          // because we know we don't need it until another login occurs.
+          // But we do need to refresh the UI.
+          psiCashUIUpdater();
+        }
+
+        if (result.error) {
+          // Catastrophic failure. Show a modal error and hope the user can figure it out.
+          showNoticeModal('TODO: logout error title', 'TODO: logout error body', 'general#notice-modal-tech-preamble', result.error, null); // callback
+        } else {
+          // TODO:
+          alert('Logout successful');
+        }
+      });
+    }
+  }
+
+  $('.psicash-account-action .show-if-is-account').on('click', psicashManageAccountClick);
   /**
    * Called when tunnel core indicates that there was an attempt to access a
    * port disallowed by the current traffic rules. We will show an alert to
    * encourage the user to buy Speed Boost.
    */
-
 
   function handleDisallowedTrafficNotice() {
     if (PsiCashStore.data.uiState === PsiCashUIState.ACTIVE_BOOST) {
@@ -2962,7 +3179,7 @@
 
 
   function addWindowFocusHandler(handler) {
-    $window.focus(handler);
+    $window.on('focus', handler);
   }
   /**
    * Generates a pseudo-random string, suitable for non-crypto uniqueness.
@@ -3173,18 +3390,29 @@
     return msg;
   }
   /**
-   *
+   * Create a PsiCash RefreshState payload suitable for testing
    * @param {?PsiCashPurchase} purchase
+   * @param {?boolean} isAccount
+   * @param {?boolean} hasTokens
    * @returns {PsiCashRefreshData}
    */
 
 
-  function makeTestRefreshPayload(purchase) {
+  function makeTestRefreshPayload() {
+    var purchase = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var isAccount = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var hasTokens = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
     var BILLION = 1e9;
+
+    if (isAccount == null) {
+      isAccount = $('#debug-RefreshPsiCash-isAccount')[0].checked;
+    }
+
     return {
-      valid_token_types: ['spender', 'earner', 'indicator'],
-      balance: parseFloat($('#debug-RefreshPsiCash-balance').val()) * BILLION,
-      purchase_prices: [{
+      is_account: isAccount,
+      valid_token_types: hasTokens ? ['spender', 'earner', 'indicator'] : [],
+      balance: hasTokens ? parseFloat($('#debug-RefreshPsiCash-balance').val()) * BILLION : 0,
+      purchase_prices: hasTokens ? [{
         'class': 'speed-boost',
         distinguisher: '1hr',
         price: parseFloat($('#debug-RefreshPsiCash-price-1hr').val()) * BILLION
@@ -3192,7 +3420,7 @@
         'class': 'speed-boost',
         distinguisher: '24hr',
         price: parseFloat($('#debug-RefreshPsiCash-price-24hr').val()) * BILLION
-      }],
+      }] : [],
       purchases: purchase ? [purchase] : null,
       buy_psi_url: 'https://buy.psi.cash/#psicash=example'
     };
@@ -3282,6 +3510,79 @@
       });
     } else {
       msg.payload.status = PsiCashServerResponseStatus[resp];
+    } // Pretend the request takes a while.
+
+
+    setTimeout(function () {
+      return HtmlCtrlInterface_PsiCashMessage(msg);
+    }, 5000);
+  }
+  /**
+   * Mimic an account login response from the server (via C code).
+   * @param {!PsiCashCommandPurchase} command
+   */
+
+
+  function testAccountLoginResponse(command) {
+    var resp = $('#debug-PsiCashLogin-response').val();
+    /** @type {PsiCashLoginResponse} */
+
+    var msgPayload = {
+      error: null,
+      status: PsiCashServerResponseStatus.Invalid,
+      last_tracker_merge: null,
+      refresh: null
+    };
+    /** @type {PsiCashMessageData} */
+
+    var msg = {
+      type: PsiCashMessageTypeEnum.LOGIN,
+      id: command.id,
+      payload: msgPayload
+    };
+
+    if (resp === 'error') {
+      msg.payload.error = 'debug error';
+    } else if (PsiCashServerResponseStatus[resp] === PsiCashServerResponseStatus.Success) {
+      // Modify this checkbox, or else a refresh will cause us to lose state
+      $('#debug-RefreshPsiCash-isAccount')[0].checked = true;
+      msg.payload.status = PsiCashServerResponseStatus.Success;
+      msg.payload.last_tracker_merge = $('#debug-PsiCashLogin-last_tracker_merge')[0].checked;
+      msg.payload.refresh = makeTestRefreshPayload(null, true, true);
+    } else {
+      msg.payload.status = PsiCashServerResponseStatus[resp];
+    } // Pretend the request takes a while.
+
+
+    setTimeout(function () {
+      return HtmlCtrlInterface_PsiCashMessage(msg);
+    }, 5000);
+  }
+  /**
+   * Mimic an account logout response from the server (via C code).
+   * @param {!PsiCashCommandPurchase} command
+   */
+
+
+  function testAccountLogoutResponse(command) {
+    var resp = $('#debug-PsiCashLogout-response').val();
+    /** @type {PsiCashLogoutResponse} */
+
+    var msgPayload = {
+      error: null
+    };
+    /** @type {PsiCashMessageData} */
+
+    var msg = {
+      type: PsiCashMessageTypeEnum.LOGOUT,
+      id: command.id,
+      payload: msgPayload
+    };
+
+    if (resp === 'error') {
+      msg.payload.error = 'debug error';
+    } else {
+      msg.payload.refresh = makeTestRefreshPayload(null, true, false);
     } // Pretend the request takes a while.
 
 
@@ -3431,6 +3732,16 @@
         case PsiCashMessageTypeEnum.INIT_DONE:
           // Payload is PsiCashInitDoneData
           $window.trigger(PsiCashEventTypeEnum.INIT_DONE, args.payload);
+          break;
+
+        case PsiCashMessageTypeEnum.LOGIN:
+          // Payload is PsiCashLoginResponse
+          // Nothing special to be done; the promise will be resolved below
+          break;
+
+        case PsiCashMessageTypeEnum.LOGOUT:
+          // Payload is PsiCashLogoutResponse
+          // Nothing special to be done; the promise will be resolved below
           break;
       } // Resolve any promies that's awaiting this message/response.
 
@@ -3662,17 +3973,11 @@
         var appURL = PSIPHON_LINK_PREFIX + 'psicash?' + encodeURIComponent(commandJSON);
 
         if (IS_BROWSER) {
+          var _commandToTestRespons;
+
           console.log(decodeURIComponent(appURL));
-
-          switch (command.command) {
-            case PsiCashCommandEnum.REFRESH:
-              testRefreshResponse(command);
-              break;
-
-            case PsiCashCommandEnum.PURCHASE:
-              testPurchaseResponse(command);
-              break;
-          }
+          var commandToTestResponse = (_commandToTestRespons = {}, _defineProperty(_commandToTestRespons, PsiCashCommandEnum.REFRESH, testRefreshResponse), _defineProperty(_commandToTestRespons, PsiCashCommandEnum.PURCHASE, testPurchaseResponse), _defineProperty(_commandToTestRespons, PsiCashCommandEnum.LOGIN, testAccountLoginResponse), _defineProperty(_commandToTestRespons, PsiCashCommandEnum.LOGOUT, testAccountLogoutResponse), _commandToTestRespons);
+          commandToTestResponse[command.command](command);
         } else {
           window.location = appURL;
         }

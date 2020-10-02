@@ -185,7 +185,23 @@
           <div data-match-width=".main-nav a">
 
             <div id="psicash-interface-zerobalance" class="psicash-interface hidden">
-              <div class="psicash-title-balance" data-i18n="[html]psicash#ui-zerobalance-title">Need a Speed&nbsp;Boost?</div>
+              <div class="psicash-title-balance">
+                <span data-i18n="[html]psicash#ui-zerobalance-title">Need a Speed&nbsp;Boost?</span>
+
+                <span class="psicash-account-action">
+                  <span class="show-if-not-is-account account-login btn btn-mini btn-warning hidden">
+                    <!-- TODO: i18n -->
+                    <span>Log In!</span>
+                  </span>
+                  <span class="show-if-is-account account-logout hidden">
+                    <!-- TODO: i18n -->
+                    <a href="#">
+                      <i class="icon-user"></i>
+                    </a>
+                  </span>
+                </span><!-- .psicash-account-action -->
+
+              </div><!-- .psicash-title-balance -->
 
               <div class="speed-limit text-center">
                 <span class="badge speed-slow">
@@ -208,11 +224,25 @@
             <div id="psicash-interface-nsfbalance" class="psicash-interface hidden">
               <div class="psicash-title-balance">
                 PsiCash
-                <span class="psicash-balance-coin">
+
+                <span class="psicash-account-action">
+                  <span class="show-if-not-is-account account-login btn btn-mini btn-warning hidden">
+                    <!-- TODO: i18n -->
+                    <span>Log In!</span>
+                  </span>
+                  <span class="show-if-is-account account-logout hidden">
+                    <!-- TODO: i18n -->
+                    <a href="#">
+                      <i class="icon-user"></i>
+                    </a>
+                  </span>
+                </span><!-- .psicash-account-action -->
+
+                <div class="psicash-balance-coin">
                   <img class="coin" src="psicash_coin.png">
                   <span class="psicash-balance"></span>
-                </span>
-              </div>
+                </div>
+              </div><!-- .psicash-title-balance -->
 
               <div class="speed-limit text-center">
                 <span class="badge speed-slow">
@@ -264,11 +294,25 @@
             <div id="psicash-interface-enoughbalance" class="psicash-interface hidden">
               <div class="psicash-title-balance">
                 PsiCash
-                <span class="psicash-balance-coin">
+
+                <span class="psicash-account-action">
+                  <span class="show-if-not-is-account account-login btn btn-mini btn-warning hidden">
+                    <!-- TODO: i18n -->
+                    <span>Log In!</span>
+                  </span>
+                  <span class="show-if-is-account account-logout hidden">
+                    <!-- TODO: i18n -->
+                    <a href="#">
+                      <i class="icon-user"></i>
+                    </a>
+                  </span>
+                </span><!-- .psicash-account-action -->
+
+                <div class="psicash-balance-coin">
                   <img class="coin" src="psicash_coin.png">
                   <span class="psicash-balance"></span>
-                </span>
-              </div>
+                </div>
+              </div><!-- .psicash-title-balance -->
 
               <div class="speed-limit text-center">
                 <span class="badge speed-slow">
@@ -320,11 +364,25 @@
             <div id="psicash-interface-buyingboost" class="psicash-interface hidden">
               <div class="psicash-title-balance">
                 PsiCash
+
+                <span class="psicash-account-action">
+                  <span class="show-if-not-is-account account-login btn btn-mini btn-warning hidden">
+                    <!-- TODO: i18n -->
+                    <span>Log In!</span>
+                  </span>
+                  <span class="show-if-is-account account-logout hidden">
+                    <!-- TODO: i18n -->
+                    <a href="#">
+                      <i class="icon-user"></i>
+                    </a>
+                  </span>
+                </span><!-- .psicash-account-action -->
+
                 <span class="psicash-balance-coin">
                   <img class="coin" src="psicash_coin.png">
                   <span class="psicash-balance"></span>
                 </span>
-              </div>
+              </div><!-- .psicash-title-balance -->
 
               <div class="speed-limit text-center">
                 <span class="badge speed-slow">
@@ -353,11 +411,25 @@
             <div id="psicash-interface-activeboost" class="psicash-interface hidden">
               <div class="psicash-title-balance">
                 PsiCash
+
+                <span class="psicash-account-action">
+                  <span class="show-if-not-is-account account-login btn btn-mini btn-warning hidden">
+                    <!-- TODO: i18n -->
+                    <span>Log In!</span>
+                  </span>
+                  <span class="show-if-is-account account-logout hidden">
+                    <!-- TODO: i18n -->
+                    <a href="#">
+                      <i class="icon-user"></i>
+                    </a>
+                  </span>
+                </span><!-- .psicash-account-action -->
+
                 <span class="psicash-balance-coin">
                   <img class="coin" src="psicash_coin.png">
                   <span class="psicash-balance"></span>
                 </span>
-              </div>
+              </div><!-- .psicash-title-balance -->
 
               <div class="speed-limit text-center">
                 <span class="badge speed-fast">
@@ -380,7 +452,23 @@
                   Buy more PsiCash
                 </a>
               </div>
-            </div>
+            </div><!-- #psicash-interface-activeboost -->
+
+            <div id="psicash-interface-accountloggedout" class="psicash-interface hidden">
+              <div class="psicash-title-balance">
+                You are logged out of PsiCash
+
+                <span class="psicash-account-action">
+                  <span class="account-login btn btn-mini btn-warning">
+                    <!-- TODO: i18n -->
+                    <span>Log In!</span>
+                  </span>
+                </span><!-- .psicash-account-action -->
+
+              </div><!-- .psicash-title-balance -->
+
+            </div><!-- #psicash-interface-accountloggedout -->
+
             <div id="psicash-interface-vpndisabled" class="psicash-interface hidden">
               <div>
                 <span class="label label-warning">
@@ -391,6 +479,17 @@
 
               <div class="psicash-title-balance">
                 PsiCash
+
+                <!-- Don't show the login button, but if logged in show the profile (logout) button -->
+                <span class="psicash-account-action">
+                  <span class="show-if-is-account account-logout hidden">
+                    <!-- TODO: i18n -->
+                    <a href="#">
+                      <i class="icon-user"></i>
+                    </a>
+                  </span>
+                </span><!-- .psicash-account-action -->
+
                 <span class="psicash-balance-coin">
                   <img class="coin" src="psicash_coin.png">
                   <span class="psicash-balance"></span>
@@ -1791,6 +1890,7 @@
 
           <form class="form-inline" id="debug-RefreshPsiCash">
             <label>RefreshPsiCash</label>
+            <label><input type="checkbox" id="debug-RefreshPsiCash-isAccount">isAccount</label>
             <input id="debug-RefreshPsiCash-balance" type="number" step="0.1" min="0" placeholder="balance in gigapsi" style="width:10em">
             <input id="debug-RefreshPsiCash-price-1hr" type="number" step="0.1" min="0" placeholder="1hr price in gigapsi" style="width:10em">
             <input id="debug-RefreshPsiCash-price-24hr" type="number" step="0.1" min="0" placeholder="24hr price in gigapsi" style="width:10em">
@@ -1803,14 +1903,38 @@
           <form class="form-inline" id="debug-PsiCashSpeedBoost">
             <label>PsiCash SpeedBoost Purchase Response</label>
             <select id="debug-PsiCashSpeedBoost-response">
-              <option value="error">Error</option>
               <option value="Success">Success</option>
+              <option value="error">Error</option>
               <option value="ExistingTransaction">ExistingTransaction</option>
               <option value="InsufficientBalance">InsufficientBalance</option>
               <option value="TransactionAmountMismatch">TransactionAmountMismatch</option>
               <option value="TransactionTypeNotFound">TransactionTypeNotFound</option>
               <option value="InvalidTokens">InvalidTokens</option>
               <option value="ServerError">ServerError</option>
+            </select>
+          </form>
+
+          <hr>
+
+          <form class="form-inline" id="debug-PsiCashLogin">
+            <label>PsiCash Account Login Response</label>
+            <select id="debug-PsiCashLogin-response">
+              <option value="Success">Success</option>
+              <option value="error">Error</option>
+              <option value="InvalidCredentials">InvalidCredentials</option>
+              <option value="BadRequest">BadRequest</option>
+              <option value="ServerError">ServerError</option>
+            </select>
+            <label><input type="checkbox" id="debug-PsiCashLogin-last_tracker_merge">last_tracker_merge</label>
+          </form>
+
+          <hr>
+
+          <form class="form-inline" id="debug-PsiCashLogout">
+            <label>PsiCash Account Logout Response</label>
+            <select id="debug-PsiCashLogout-response">
+              <option value="Success">Success</option>
+              <option value="error">Error</option>
             </select>
           </form>
 
@@ -1942,6 +2066,63 @@
     </div>
   </div><!-- /SettingsUnappliedChangesPrompt -->
 
+  <!-- Modal dialog used for logging into PsiCash account -->
+  <div class="modal fade" id="PsiCashAccountLogin" tabindex="-1" role="dialog"
+    aria-labelledby="PsiCashAccountLoginTitle" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="PsiCashAccountLoginTitle">
+            <span><!-- TODO: i18n -->
+              PsiCash Account
+            </span>
+          </h3>
+        </div>
+        <div class="modal-body">
+          <p><!-- TODO: i18n -->
+            <a class="PsiCashAccountSignupURL" href="#">Create a new account</a> or log in below.
+          </p>
+          <form class="form-horizontal">
+            <fieldset>
+              <div class="control-group">
+                <label for="AccountUsername" class="control-label"><!-- TODO: i18n -->
+                  Username
+                </label>
+                <div class="controls">
+                  <input type="text" id="AccountUsername" autocomplete="off"
+                    autocorrect="off" autocapitalize="off" spellcheck="false" />
+                </div>
+              </div>
+
+              <div class="control-group">
+                <label for="AccountPassword" class="control-label"><!-- TODO: i18n -->
+                  Password
+                </label>
+                <div class="controls">
+                  <input type="password" id="AccountPassword" autocomplete="off"
+                    autocorrect="off" autocapitalize="off" spellcheck="false" />
+                </div>
+              </div>
+            </fieldset>
+          </form>
+
+        </div><!-- .modal-body -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary submit-button">
+            <span><!-- TODO: i18n -->
+              Submit
+            </span>
+          </button>
+          <button type="button" class="btn btn-warning cancel-button" data-dismiss="modal">
+            <span><!-- TODO: i18n -->
+              Cancel
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div><!-- /SettingsUnappliedChangesPrompt -->
+
   <!--[if lt IE 8]>
   <script src="vendor/json2.js?__inline=true"></script>
   <![endif]-->
@@ -1952,10 +2133,6 @@
   <script src="vendor/i18next.min.js?__inline=true"></script>
   <script src="vendor/moment-with-locales-2.24.0.min.js?__inline=true"></script>
   <script src="node_modules/object-path-immutable/dist/object-path-immutable.js?__inline=true"></script>
-
-  <!--[if lt IE 8]>
-    <script src="vendor/icomoon/ie7.js?__inline=true"></script>
-  <![endif]-->
 
   <script src="dist/plugins.js?__inline=true"></script>
   <script src="js/locales.js?__inline=true"></script>

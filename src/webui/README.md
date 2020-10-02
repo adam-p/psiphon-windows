@@ -1,3 +1,4 @@
+
 ## PsiCash
 
 ## Design
@@ -16,7 +17,7 @@ Install [Node](https://nodejs.org/). v6.x works, and v4.x will probably also wor
 ```
 $ npm install -g grunt-cli
 # In the webui directory...
-$ npm install .
+$ npm ci
 ```
 
 ## Developing

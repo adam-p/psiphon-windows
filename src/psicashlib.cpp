@@ -11,7 +11,7 @@ using namespace std;
 
 namespace psicash {
 
-static constexpr bool TESTING = false;
+static constexpr bool TESTING = true;
 static constexpr auto USER_AGENT = "Psiphon-PsiCash-Windows";
 
 psicash::MakeHTTPRequestFn GetHTTPReqFn(const StopInfo& stopInfo);
@@ -42,16 +42,8 @@ error::Error Lib::Init(bool forceReset) {
         return psicash::error::MakeCriticalError("GetShortPathName failed");
     }
 
-    if (forceReset) {
-        auto err = PsiCash::Reset(
-            WStringToNarrow(dataDirShort).c_str(), TESTING);
-        if (err) {
-            return WrapError(err, "PsiCash::Reset failed");
-        }
-    }
-
     auto err = PsiCash::Init(
-        USER_AGENT, WStringToNarrow(dataDirShort).c_str(), GetHTTPReqFn(m_requestStopInfo), TESTING);
+        USER_AGENT, WStringToNarrow(dataDirShort).c_str(), GetHTTPReqFn(m_requestStopInfo), forceReset, TESTING);
     if (err) {
         return WrapError(err, "PsiCash::Init failed");
     }
@@ -87,7 +79,9 @@ error::Error Lib::UpdateClientRegion(const string& region) {
 
 enum class RequestType : int {
     RefreshState,
-    NewExpiringPurchase
+    NewExpiringPurchase,
+    AccountLogin,
+    AccountLogout
 };
 
 void Lib::RefreshState(
@@ -114,6 +108,31 @@ void Lib::NewExpiringPurchase(
     });
 }
 
+void Lib::AccountLogin(
+    const std::string &utf8_username,
+    const std::string &utf8_password,
+    std::function<void(error::Result<AccountLoginResponse>)> callback)
+{
+    // Don't queue this if there is already an outstanding AccountLogin
+    (void)m_requestQueue.dispatch(
+        (int)RequestType::AccountLogin,
+        {(int)RequestType::AccountLogin},
+        [=] {
+            callback(PsiCash::AccountLogin(utf8_username, utf8_password));
+        });
+}
+
+void Lib::AccountLogout(
+    std::function<void(error::Error)> callback)
+{
+    // Don't queue this if there is already an outstanding AccountLogout
+    (void)m_requestQueue.dispatch(
+        (int)RequestType::AccountLogout,
+        {(int)RequestType::AccountLogout},
+        [=] {
+            callback(PsiCash::AccountLogout());
+        });
+}
 
 // Note that this _requires_ a Psiphon tunnel to be in place.
 psicash::MakeHTTPRequestFn GetHTTPReqFn(const StopInfo& stopInfo) {
@@ -157,8 +176,8 @@ psicash::MakeHTTPRequestFn GetHTTPReqFn(const StopInfo& stopInfo) {
                     httpsResponse,
                     true,       // failoverToURLProxy -- required for old WinXP
                     headers.str().empty() ? NULL : headers.str().c_str(),
-                    NULL,       // additionalData
-                    0,          // additionalDataLength
+                    params.body.empty() ? NULL : (LPVOID)params.body.c_str(),
+                    params.body.length(),
                     UTF8ToWString(params.method).c_str()))
             {
                 result.error = "httpsRequest.MakeRequest failed";
@@ -178,12 +197,18 @@ psicash::MakeHTTPRequestFn GetHTTPReqFn(const StopInfo& stopInfo) {
 
         result.code = httpsResponse.code;
         result.body = httpsResponse.body;
-        result.date = httpsResponse.dateHeader;
+        result.headers = httpsResponse.headers;
         return std::move(result);
     };
 
     return httpReqFn;
 }
 
+//static
+std::string Lib::AccountSignupURL() {
+    auto url = TESTING ? "https://dev-my.psi.cash"s : "https://my.psi.cash"s;
+    url += "/signup?utm_source=windows_app";
+    return url;
+}
 
 } // namespace psicash
