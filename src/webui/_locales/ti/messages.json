@@ -555,6 +555,10 @@
         "message": "<strong>እቲ መርበብ ዘይብጻሕ እንተኾይኑ</strong> ሓዲሽ ቨርጂን ሳይፎን (Psiphon)   ምርካብ ይክኣል ናብ`ዚ ኢመይል ብምግባር፡",
         "description": "Paragraph on the 'About' page telling users that they can also get a new version of Psiphon via email. The text in this resource is then followed by an email address. The word 'Psiphon' must not be translated or transliterated."
     },
+    "about#license-agree": {
+        "message": "By using Psiphon you signal that you agree to the terms of the <a href=\"http://127.0.0.1:9778/license.html\">End-User License</a> and <a href=\"http://127.0.0.1:9778/privacy.html\">Privacy Policy</a>.",
+        "description": "Paragraph on the 'About' page telling users that they agreeing to Psiphon's End-User License Agreement and Privacy Policy. The link URLs must not be modified. The word 'Psiphon' must not be translated or transliterated."
+    },
     "about#client-version": {
         "message": "ሳይፎን (Psiphon) ንዊንዶውስ ክሌንት ቨርጂን",
         "description": "Footer on the 'About' page indicating the client version number. This text is the prefix to the actual number. Like: 'Psiphon for Windows client version: 88'. The word 'Psiphon' must not be translated or transliterated."
