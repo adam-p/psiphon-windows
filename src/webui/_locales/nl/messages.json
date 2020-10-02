@@ -360,15 +360,15 @@
         "description": "Main text in the 'Local Proxy Port Conflict' dialog box. This is shown when the conflict is with the SOCKS proxy port, rather than the HTTP proxy port. The word 'Psiphon' must not be translated or transliterated."
     },
     "settings#expose-local-proxies-to-lan#help-text": {
-        "message": "If you have other devices on your network, such as a smart TV or gaming console, you can allow them to use these HTTP and SOCKS proxies while Psiphon is connected.",
+        "message": "Als je andere apparaten in je netwerk hebt, zoals een smart-tv of gameconsole, kun je deze toestaan deze HTTP- en SOCKS-proxy's te gebruiken terwijl Psiphon is aangesloten. ",
         "description": "Help text explaining the setting to allow other devices on the network to use the local Psiphon proxies. Smart TV refers to televisions that have Internet connectivity and apps that access Internet services."
     },
     "settings#expose-local-proxies-to-lan#hint": {
-        "message": "<strong>HINT:</strong> You should specify at least one of the port numbers above in order to use this feature. The addresses of the local proxies will be displayed in the logs.",
+        "message": "<strong>HINT:</strong>U moet ten minste één van de bovenstaande poortnummers opgeven om deze functie te kunnen gebruiken. De adressen van de lokale proxy's worden weergegeven in de logboeken.",
         "description": "Helpful hint suggesting to set port numbers for the local Psiphon proxies when using the setting to allow other devices on the network to use the local Psiphon proxies."
     },
     "settings#expose-local-proxies-to-lan#enable-label": {
-        "message": "Allow other devices on your network to use the local Psiphon proxies",
+        "message": "Toestaan dat andere apparaten in uw netwerk de lokale Psiphon-proxy's gebruiken",
         "description": "Label for the setting to allow other devices on the network to use the local Psiphon proxies."
     },
     "settings#upstream-proxy#heading": {
@@ -664,7 +664,7 @@
         "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
     },
     "psicash#transaction-InvalidTokens-body-account": {
-        "message": "Your PsiCash tokens have expired. Log into your account and try again.",
+        "message": "Uw PsiCash-tokens zijn verlopen. Log in op uw account en probeer het opnieuw. ",
         "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
     },
     "psicash#transaction-ServerError-title": {
@@ -716,11 +716,11 @@
         "description": "Label for a disabled button. The user has clicked the button in order to buy an hour of Speed Boost, and now the purchase is completing and Speed Boost is activating. You may use `&nbsp;`, `<br>`, `<wbr>`, `&shy;`, etc. to control word wrap. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
     },
     "psicash#pane-create-account": {
-        "message": "Create an account to protect your PsiCash!",
+        "message": "Maak een account aan om uw PsiCash te beschermen! ",
         "description": "Text for a link displayed when the user does not have a PsiCash account. This is an strong suggestion, hence the exclamation point -- use whatever makes sense in your language. It encourages them to make one. The word 'PsiCash' must not be translated or transliterated."
     },
     "psicash#pane-balance-header": {
-        "message": "Balance:",
+        "message": "Balans:",
         "description": "Text before showing the user's PsiCash balance. So it will appear like: 'Balance: Ⓟ100'."
     },
     "psicash#pane-log-in": {
@@ -732,59 +732,59 @@
         "description": "Text on a button that will log the user out of their PsiCash account."
     },
     "psicash#pane-manage-web": {
-        "message": "Manage on the web",
+        "message": "Beheer op het web",
         "description": "Text for a link to a web site where users can manage their PsiCash account."
     },
     "psicash#pane-create-account-plea": {
-        "message": "Creating a PsiCash account will help preserve your PsiCash if you clear the app's storage or use Psiphon on another device. <a href=\"https://psiphon.ca/faq.html#psicash-account\">Learn more.</a>",
+        "message": "Door een PsiCash-account aan te maken, kunt u uw PsiCash behouden als u de opslagruimte van de app wist of Psiphon op een ander apparaat gebruikt.<a href=\"https://psiphon.ca/faq.html#psicash-account\">Kom meer te weten.</a> ",
         "description": "Text shown below the PsiCash balance when the user does not have a PsiCash account. 'Learn more' is a link to an FAQ entry explaining the benefits of creating an account. The word 'PsiCash' must not be translated or transliterated."
     },
     "psicash#pane-l2tp-incompatible": {
-        "message": "Speed Boost cannot be used while Psiphon is connected in <a href=\"#\">L2TP/IPSec transport mode</a>.",
+        "message": "Speed Boost kan niet worden gebruikt terwijl de Psiphon is aangesloten in de <a href=\"#\">L2TP/IPSec-transportmodus</a>. ",
         "description": "A message shown when L2TP/IPSec mode is enabled in Psiphon. Speed Boost cannot be used in this mode."
     },
     "psicash#pane-must-log-in": {
-        "message": "You must log in to use PsiCash.",
+        "message": "U moet inloggen om PsiCash te gebruiken. ",
         "description": "Message shown when the user was logged in with an account and then logged out. It's telling the user that they have to log in again. The word 'PsiCash' must not be translated or transliterated."
     },
     "psicash#pane-create-new-account": {
-        "message": "Create a New Account",
+        "message": "Maak een nieuw Account",
         "description": "Text on button that user can click to create a new account (opens an external web page)."
     },
     "psicash#pane-speed-port-limits-head": {
-        "message": "Speed and Port Limits",
+        "message": "Snelheids- en poortlimieten",
         "description": "Heading for an information section explaining that there are port and speed restrictions when the user doesn't have Speed Boost active."
     },
     "psicash#pane-speed-port-limits-body": {
-        "message": "Without active Speed Boost, your speed is limited and some internet traffic is not supported. Activate Speed Boost with PsiCash to unlock the full potential of your Psiphon experience.",
+        "message": "Zonder actieve Speed Boost is je snelheid beperkt en wordt een deel van het internetverkeer niet ondersteund. Activeer Speed Boost met PsiCash om het volledige potentieel van je Psiphon-ervaring te ontgrendelen. ",
         "description": "Body of an information section explaining that there are port and speed restrictions when the user doesn't have Speed Boost active. The word 'PsiCash' must not be translated or transliterated. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
     },
     "psicash#pane-speed-boost-cta": {
-        "message": "Unleash the full potential of Psiphon with Speed&nbsp;Boost!",
+        "message": "Ontketen het volledige potentieel van Psiphon met Speed&nbsp;Boost! ",
         "description": "Text encouraging the user to purchase Speed Boost. 'Unleash' can translated to something like 'unlock', 'release', 'enable', 'amplify', or generally 'make a lot better'. 'Psiphon' must not be translated/transliterated. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
     },
     "psicash#pane-need-more-psicash-header": {
-        "message": "You need more PsiCash!",
+        "message": "Je hebt meer PsiCash nodig!",
         "description": "Header for a section telling the user that they don't have enough PsiCash to buy any Speed Boost and need to buy more. The word 'PsiCash' must not be translated or transliterated."
     },
     "psicash#pane-need-more-psicash-body": {
-        "message": "In order activate Speed Boost, you need to buy more PsiCash.",
+        "message": "Om Speed Boost te activeren, moet je meer PsiCash kopen. ",
         "description": "Body of a section telling the user that they don't have enough PsiCash to buy any Speed Boost and need to buy more. The word 'PsiCash' must not be translated or transliterated. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
     },
     "psicash#pane-need-psicash-visit-store": {
-        "message": "Need PsiCash? Visit our store to buy more!",
+        "message": "PsiCash nodig? Bezoek onze winkel om meer te kopen! ",
         "description": "Text encouraging the user to buy PsiCash (with real money). The word 'PsiCash' must not be translated or transliterated."
     },
     "psicash#overlay-logging-in": {
-        "message": "Logging in…",
+        "message": "Inloggen…",
         "description": "Text on a screen shown while the user's log-in request is in progress."
     },
     "psicash#overlay-logging-out": {
-        "message": "Logging out…",
+        "message": "Uitloggen…",
         "description": "Text on a screen shown while the user's log-out request is in progress."
     },
     "psicash#modal-create-psicash-account-header": {
-        "message": "Create a PsiCash Account",
+        "message": "Maak een PsiCash-account",
         "description": "Header of a modal dialog that appears when the user tries to buy PsiCash with real money but doens't have an account. The word 'PsiCash' must not be translated or transliterated."
     },
     "psicash#modal-create-psicash-account-body": {
