@@ -252,11 +252,11 @@
         "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Australia will be used."
     },
     "settings#egress-region#select-ar": {
-        "message": "Argentina",
+        "message": "Ajentina",
         "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Argentina will be used."
     },
     "settings#egress-region#select-br": {
-        "message": "Brazil",
+        "message": "Brazili",
         "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Brazil will be used."
     },
     "settings#egress-region#select-cl": {
@@ -264,7 +264,7 @@
         "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Chile will be used."
     },
     "settings#egress-region#select-fi": {
-        "message": "Finland",
+        "message": "Finlandi",
         "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Finland will be used."
     },
     "settings#egress-region#select-is": {
@@ -292,11 +292,11 @@
         "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Korea will be used."
     },
     "settings#egress-region#select-tw": {
-        "message": "Taiwan",
+        "message": "Taiwani",
         "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Taiwan will be used."
     },
     "settings#egress-region#select-ae": {
-        "message": "United Arab Emirates",
+        "message": "Falme za Kiarabu",
         "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in United Arab Emirates will be used."
     },
     "settings#egress-region#description": {

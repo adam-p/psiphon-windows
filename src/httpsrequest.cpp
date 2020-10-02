@@ -17,6 +17,7 @@
  *
  */
 
+#include <string>
 #include "stdafx.h"
 #include "httpsrequest.h"
 #include "logging.h"
@@ -70,6 +71,7 @@ HTTPSRequest::~HTTPSRequest()
 
     CloseHandle(m_mutex);
 }
+
 
 void CALLBACK WinHttpStatusCallback(
                 HINTERNET hRequest,
@@ -153,13 +155,14 @@ void CALLBACK WinHttpStatusCallback(
         break;
     case WINHTTP_CALLBACK_STATUS_HEADERS_AVAILABLE:
 
-        // Get Date header. We're not going to error if we can't get it.
-        // This comes before the status code check, because the Date header
-        // should be valid for all responses.
-        dwLen = sizeof(dwStatusCode);
+        // Get the response headers. This comes before the status code check, 
+        // because we want the headers regardless of the status.
+        // (We're not going to error if we can't get them, but it shouldn't happen. 
+        // If it does happen, the consumer of the headers will have to deal with it.)
+        dwLen = 0;
         if (!WinHttpQueryHeaders(
             hRequest,
-            WINHTTP_QUERY_DATE,
+            WINHTTP_QUERY_RAW_HEADERS_CRLF,
             WINHTTP_HEADER_NAME_BY_INDEX,
             NULL,
             &dwLen,
@@ -172,13 +175,30 @@ void CALLBACK WinHttpStatusCallback(
 
                 if (WinHttpQueryHeaders(
                     hRequest,
-                    WINHTTP_QUERY_DATE,
+                    WINHTTP_QUERY_RAW_HEADERS_CRLF,
                     WINHTTP_HEADER_NAME_BY_INDEX,
                     (LPVOID)buf.data(),
                     &dwLen,
                     WINHTTP_NO_HEADER_INDEX))
                 {
-                    httpRequest->ResponseSetDateHeader(WStringToUTF8(buf));
+                    istringstream rawHeaders(WStringToUTF8(buf));
+
+                    map<string, vector<string>> headersMap;
+                    std::string header;
+                    while (std::getline(rawHeaders, header)) {
+                        auto index = header.find(':', 0);
+                        if (index != std::string::npos) {
+                            auto key = trim(header.substr(0, index));
+                            if (!key.empty()) {
+                                if (headersMap.count(key) == 0) {
+                                    headersMap[key] = {};
+                                }
+                                headersMap[key].push_back(trim(header.substr(index + 1)));
+                            }
+                        }
+                    }
+
+                    httpRequest->ResponseSetHeaders(headersMap);
                 }
             }
         }
@@ -669,10 +689,10 @@ void HTTPSRequest::ResponseSetCode(int code)
     m_response.code = code;
 }
 
-void HTTPSRequest::ResponseSetDateHeader(const string& dateHeader)
+void HTTPSRequest::ResponseSetHeaders(const std::map<std::string, std::vector<std::string>>& headers)
 {
     AutoMUTEX lock(m_mutex);
-    m_response.dateHeader = dateHeader;
+    m_response.headers = headers;
 }
 
 bool HTTPSRequest::ValidateServerCert(PCCERT_CONTEXT pCert)
