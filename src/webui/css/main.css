@@ -2491,10 +2491,10 @@ input[type="button"].btn-block {
 .btn-info {
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #5bc0de;
-  border-color: #31b0d5 #31b0d5 #1f7e9a;
+  background-color: #3694b4;
+  border-color: #2a748d #2a748d #194352;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #31b0d5;
+  *background-color: #2a748d;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
@@ -2505,12 +2505,12 @@ input[type="button"].btn-block {
 .btn-info.disabled,
 .btn-info[disabled] {
   color: #fff;
-  background-color: #31b0d5;
-  *background-color: #28a1c5;
+  background-color: #2a748d;
+  *background-color: #246479;
 }
 .btn-info:active,
 .btn-info.active {
-  background-color: #2390b0 \9;
+  background-color: #1e5366 \9;
 }
 .btn-inverse {
   color: #fff;
@@ -2732,7 +2732,7 @@ input[type="submit"].btn.btn-mini {
   background-color: #408042;
 }
 .btn-group.open .btn-info.dropdown-toggle {
-  background-color: #31b0d5;
+  background-color: #2a748d;
 }
 .btn-group.open .btn-inverse.dropdown-toggle {
   background-color: #2b2b2b;
@@ -5919,8 +5919,8 @@ body[dir="rtl"] .checkbox label::after {
   color: #fff;
 }
 .checkbox-info input[type="checkbox"]:checked + label::before {
-  background-color: #5bc0de;
-  border-color: #5bc0de;
+  background-color: #3694b4;
+  border-color: #3694b4;
 }
 .checkbox-info input[type="checkbox"]:checked + label::after {
   color: #fff;
@@ -6027,13 +6027,13 @@ body[dir="rtl"] .checkbox label::after {
   background-color: #C25350;
 }
 .radio-info input[type="radio"] + label::after {
-  background-color: #5bc0de;
+  background-color: #3694b4;
 }
 .radio-info input[type="radio"]:checked + label::before {
-  border-color: #5bc0de;
+  border-color: #3694b4;
 }
 .radio-info input[type="radio"]:checked + label::after {
-  background-color: #5bc0de;
+  background-color: #3694b4;
 }
 .radio-warning input[type="radio"] + label::after {
   background-color: #f0ad4e;
@@ -6083,6 +6083,9 @@ body {
 * {
   outline: 0 !important;
 }
+.hidden {
+  display: none !important;
+}
 a[href^=http],
 a[href^=mailto] {
   text-decoration: underline;
@@ -6103,6 +6106,13 @@ textarea {
 }
 .checkbox-container label {
   margin: 0;
+}
+.icon-spin-8dot {
+  display: inline-block;
+  -moz-animation: spin 1s infinite steps(8);
+  -o-animation: spin 1s infinite steps(8);
+  -webkit-animation: spin 1s infinite steps(8);
+  animation: spin 1s infinite steps(8);
 }
 /* HEADER AND NAV */
 .psiphon-header {
@@ -6128,14 +6138,14 @@ textarea {
 .psiphon-header .banner > a img {
   height: 48px;
 }
-.psiphon-header .banner.long-connecting-show {
+.psiphon-header .banner.long-connecting {
   font-size: 0.9em;
 }
-.psiphon-header .banner.long-connecting-show div {
+.psiphon-header .banner.long-connecting div {
   max-width: 400px;
   margin: auto;
 }
-.psiphon-header .banner.long-connecting-show div a {
+.psiphon-header .banner.long-connecting div a {
   color: #eb9a85;
   font-weight: bold;
 }
@@ -6323,6 +6333,8 @@ body[dir="rtl"] .main-nav .multiline-tab-icon {
 #connect-toggle > .connect-toggle-content[data-connect-state="starting"] .circle {
   height: 2.5em;
   width: 2.5em;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
   border-radius: 50%;
   background-color: #f0ad4e;
   margin: auto;
@@ -6373,6 +6385,8 @@ body[dir="rtl"] .main-nav .multiline-tab-icon {
 #connect-toggle > .connect-toggle-content[data-connect-state="connected"] .circle {
   height: 2.5em;
   width: 2.5em;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
   border-radius: 50%;
   background-color: #51A253;
   margin: auto;
@@ -6419,6 +6433,8 @@ body[dir="rtl"] .main-nav .multiline-tab-icon {
 #connect-toggle > .connect-toggle-content[data-connect-state="stopping"] .circle {
   height: 2.5em;
   width: 2.5em;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
   border-radius: 50%;
   background-color: #f0ad4e;
   margin: auto;
@@ -6469,6 +6485,8 @@ body[dir="rtl"] .main-nav .multiline-tab-icon {
 #connect-toggle > .connect-toggle-content[data-connect-state="stopped"] .circle {
   height: 2.5em;
   width: 2.5em;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
   border-radius: 50%;
   background-color: #C25350;
   margin: auto;
@@ -6499,6 +6517,9 @@ body[dir="rtl"] .main-nav .multiline-tab-icon {
 #connect-toggle .wait-spinner {
   position: relative;
   display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
   width: 1em;
   height: 1em;
 }
@@ -6555,6 +6576,8 @@ body[dir="rtl"] .settings-buttons .reset-settings {
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
   border-radius: 100%;
   width: 125%;
   height: 125%;
@@ -6815,6 +6838,10 @@ body[dir="ltr"] #language-pane .language-item {
 body[dir="rtl"] #language-pane .language-item {
   float: right;
 }
+/* DEBUG */
+#debug-pane #debug-modal-notices li {
+  list-style: none;
+}
 /* ABOUT */
 #about-pane {
   font-size: 1.5em;
@@ -6854,6 +6881,16 @@ body[dir="rtl"] #language-pane .language-item {
   padding-top: 0.1em;
 }
 /* PSICASH */
+.psicash-balance-coin {
+  white-space: nowrap;
+  max-height: 1.6em;
+  margin-top: 5px;
+  font-weight: bold;
+}
+img.coin {
+  height: 1.4em;
+  vertical-align: text-top;
+}
 #psicash-block {
   position: absolute;
   bottom: 0;
@@ -6883,29 +6920,38 @@ body[dir="rtl"] #psicash-block {
 #psicash-block > div .psicash-title-balance:after {
   clear: both;
 }
-#psicash-block > div .psicash-title-balance .psicash-balance-coin {
-  white-space: nowrap;
-  max-height: 1.6em;
-  margin-top: 5px;
+#psicash-block > div .psicash-title-balance a {
+  color: #000;
 }
-body[dir="ltr"] #psicash-block > div .psicash-title-balance > span {
+#psicash-block > div .psicash-title-balance a:hover {
+  color: #73b2c7;
+}
+body[dir="ltr"] #psicash-block > div .psicash-title-balance .psicash-account-action {
   float: right;
 }
-body[dir="rtl"] #psicash-block > div .psicash-title-balance > span {
+body[dir="rtl"] #psicash-block > div .psicash-title-balance .psicash-account-action {
   float: left;
+}
+#psicash-block > div .psicash-title-balance .psicash-account-action i {
+  font-weight: bold;
 }
 #psicash-block > div .psicash-title-balance .psicash-balance-delta {
   pointer-events: none;
-  position: relative;
+  position: absolute;
   height: 0;
   width: 0;
   overflow: visible;
   display: list-item;
   z-index: -999;
   visibility: hidden;
-  top: -23px;
-  left: 3px;
+  top: 7px;
   opacity: 1;
+}
+body[dir="ltr"] #psicash-block > div .psicash-title-balance .psicash-balance-delta {
+  left: 3px;
+}
+body[dir="rtl"] #psicash-block > div .psicash-title-balance .psicash-balance-delta {
+  right: 3px;
 }
 #psicash-block > div .psicash-title-balance .psicash-balance-delta.credit {
   color: gold;
@@ -6920,100 +6966,295 @@ body[dir="rtl"] #psicash-block > div .psicash-title-balance > span {
   visibility: visible;
   z-index: 99999;
 }
-#psicash-block > div img.coin {
-  height: 1.5em;
-  vertical-align: text-top;
+#psicash-block > div .psicash-corner-cluster .psicash-corner-cluster-item {
+  display: block;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
-#psicash-block > div .btn {
-  max-width: 95%;
+#psicash-block > div .psicash-corner-cluster .psicash-corner-cluster-item:not(.hidden) ~ .psicash-corner-cluster-item:not(.hidden) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
-#psicash-block > div .button-container {
-  text-align: center;
+#psicash-block > div .psicash-corner-cluster .psicash-corner-cluster-item:not(.hidden):last-child {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
-#psicash-block > div .boost-container {
-  max-width: 95%;
+#psicash-block > div .psicash-corner-cluster .psicash-corner-cluster-item.label {
+  padding: 1em;
+  white-space: initial;
+  font-size: 1.2em;
+  line-height: 1.1em;
+}
+#psicash-block > div .psicash-buy-speedboost,
+#psicash-block > div .psicash-buy-speedboost-fake {
+  display: block;
+  border-radius: 0;
+}
+#psicash-block > div .psicash-buy-speedboost .psicash-buy-speedboost-label,
+#psicash-block > div .psicash-buy-speedboost-fake .psicash-buy-speedboost-label {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+#psicash-block > div .psicash-buy-speedboost table,
+#psicash-block > div .psicash-buy-speedboost-fake table {
   margin: auto;
 }
-#psicash-block > div .boost-container .boost-container-label {
-  width: 100%;
-  margin-bottom: -4px;
-  border-top: 1px #1e84aa solid;
-  border-left: 1px #1e84aa solid;
-  border-right: 1px #1e84aa solid;
-  -webkit-border-top-left-radius: 3px;
-  -moz-border-radius-topleft: 3px;
-  border-top-left-radius: 3px;
-  -webkit-border-top-right-radius: 3px;
-  -moz-border-radius-topright: 3px;
-  border-top-right-radius: 3px;
-}
-#psicash-block > div .boost-container .boost-container-label .boost-container-label-inner {
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-bottom: 4px;
-}
-#psicash-block > div .boost-container .boost-container-buttons {
-  /*
-        We're going to mimic a table with the btn-group. That gives us nice layout
-        within and between the buttons.
-        One thing we _lose_ from this approach is height-matching between the buttons.
-        */
-  width: 100%;
-  display: table;
-  overflow: hidden;
-  border-left: 1px #1e84aa solid;
-  border-right: 1px #1e84aa solid;
-  border-bottom: 1px #1e84aa solid;
-  -webkit-border-bottom-left-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  border-bottom-left-radius: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  border-bottom-right-radius: 3px;
-}
-#psicash-block > div .boost-container .boost-container-buttons .btn {
-  width: 100%;
-  max-width: 100%;
-  white-space: normal;
-  overflow-wrap: break-word;
-  display: table-row;
-}
-#psicash-block > div .boost-container .boost-container-buttons .btn > span {
-  display: table-cell;
-  width: 1%;
-  vertical-align: middle;
-  padding: 3px;
+#psicash-block > div .psicash-buy-speedboost-more-options {
+  display: block;
+  padding: 5px;
+  border-radius: 0 0 10px 10px;
+  border-color: #16627F;
+  border-top-width: 0;
 }
 #psicash-block > div .psicash-price-container {
   white-space: nowrap;
 }
-#psicash-block > div .psicash-buy-psi {
-  margin-top: 4px;
+#psicash-block > div .psicash-block-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: #FFF;
+  filter: alpha(opacity=90);
+  opacity: 0.9;
+  z-index: 1039;
+  overflow: hidden;
 }
-#psicash-block .speed-limit .badge {
-  max-width: calc(100% - 18px);
-  /* badges use 9px padding on left and right */
+#psicash-block > div .psicash-block-overlay i {
+  top: 25%;
+  position: relative;
+  font-size: 40px;
+}
+#psicash-pane .width-limiter {
+  max-width: 600px;
+  margin: auto;
+}
+body[dir="rtl"] #psicash-pane .psicash-pane__user-and-balance > div {
+  float: right;
+}
+#psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__log-in-out-buttons {
+  text-align: right;
+}
+body[dir="rtl"] #psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__log-in-out-buttons {
+  text-align: left;
+}
+#psicash-pane .psicash-username-container {
+  font-weight: bold;
+}
+#psicash-pane .psicash-username-container .psicash-username {
+  font-size: 1.5em;
+}
+#psicash-pane .psicash-balance-row {
+  font-size: 1.5em;
+}
+#psicash-pane .speed-boost-buttons .speed-boost-button {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  height: 155px;
+  width: 150px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+#psicash-pane .speed-boost-buttons .speed-boost-button.enough-balance:hover {
+  -webkit-box-shadow: 0px 0px 10px 0px #6c6c6c;
+  -moz-box-shadow: 0px 0px 10px 0px #6c6c6c;
+  box-shadow: 0px 0px 10px 0px #6c6c6c;
+  cursor: pointer;
+}
+#psicash-pane .speed-boost-buttons .speed-boost-button.not-enough-balance {
+  opacity: 0.5;
+}
+#psicash-pane .speed-boost-buttons .speed-boost-button.one-hour {
+  background-image: url("../speed-boost-button-1-hour.png");
+}
+html.no-backgroundsize #psicash-pane .speed-boost-buttons .speed-boost-button.one-hour {
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../speed-boost-button-1-hour.png', sizingMethod='scale');
+}
+html.no-opacity #psicash-pane .speed-boost-buttons .speed-boost-button.one-hour.not-enough-balance {
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../speed-boost-button-1-hour.png', sizingMethod='scale') alpha(opacity=50);
+}
+#psicash-pane .speed-boost-buttons .speed-boost-button.one-day {
+  background-image: url("../speed-boost-button-1-day.png");
+}
+html.no-backgroundsize #psicash-pane .speed-boost-buttons .speed-boost-button.one-day {
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../speed-boost-button-1-day.png', sizingMethod='scale');
+}
+html.no-opacity #psicash-pane .speed-boost-buttons .speed-boost-button.one-day.not-enough-balance {
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../speed-boost-button-1-day.png', sizingMethod='scale') alpha(opacity=50);
+}
+#psicash-pane .speed-boost-buttons .speed-boost-button.one-week {
+  background-image: url("../speed-boost-button-1-week.png");
+}
+html.no-backgroundsize #psicash-pane .speed-boost-buttons .speed-boost-button.one-week {
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../speed-boost-button-1-week.png', sizingMethod='scale');
+}
+html.no-opacity #psicash-pane .speed-boost-buttons .speed-boost-button.one-week.not-enough-balance {
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../speed-boost-button-1-week.png', sizingMethod='scale') alpha(opacity=50);
+}
+#psicash-pane .speed-boost-buttons .speed-boost-button.one-month {
+  background-image: url("../speed-boost-button-1-month.png");
+}
+html.no-backgroundsize #psicash-pane .speed-boost-buttons .speed-boost-button.one-month {
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../speed-boost-button-1-month.png', sizingMethod='scale');
+}
+html.no-opacity #psicash-pane .speed-boost-buttons .speed-boost-button.one-month.not-enough-balance {
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../speed-boost-button-1-month.png', sizingMethod='scale') alpha(opacity=50);
+}
+#psicash-pane .speed-boost-buttons .speed-boost-button .speed-boost-duration {
+  position: absolute;
+  top: 8px;
+  width: 100%;
+  color: white;
+  font-weight: bold;
   text-transform: uppercase;
-  white-space: normal;
 }
-#psicash-block .speed-limit .badge td:first {
+#psicash-pane .speed-boost-buttons .speed-boost-button .speed-boost-price {
+  position: absolute;
+  bottom: 0px;
+  width: 80%;
+  left: 50%;
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0px 0px 2px 0px #6c6c6c;
+  -moz-box-shadow: 0px 0px 2px 0px #6c6c6c;
+  box-shadow: 0px 0px 2px 0px #6c6c6c;
+  font-weight: bold;
+}
+html.no-csstransforms #psicash-pane .speed-boost-buttons .speed-boost-button .speed-boost-price {
+  left: 10px \0;
+  background: #FFFFFF \0;
+  filter: alpha(opacity=90) \0;
+}
+#psicash-pane .boost-remaining {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #cc664c;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+  color: #222;
+  background: #fff;
+  font-size: 1.5em;
+  white-space: normal;
+  padding: 19px;
+  line-height: 1.5em;
+}
+#psicash-pane .boost-remaining .speed-boost-rocket {
+  display: table-cell;
+  vertical-align: middle;
+}
+#psicash-pane .boost-remaining .speed-boost-rocket img {
+  width: 2em;
+}
+#psicash-pane .boost-remaining .speed-boost-time-remaining {
+  display: table-cell;
+  padding: 5px;
+  vertical-align: middle;
+  font-weight: bold;
+}
+#psicash-pane .psicash-buy-psi {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+#psicash-pane .logged-out-ui .logged-out-ui-button-container {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+  box-sizing: border-box;
+}
+#psicash-pane .logged-out-ui .logged-out-ui-button-container > div {
   width: 100%;
 }
-#psicash-block .speed-limit .badge img {
-  height: 35px;
+#psicash-pane .logged-out-ui .logged-out-ui-button-container > div .btn {
+  display: block;
+  margin-bottom: 5px;
+}
+#psicash-pane .vpn-mode-ui .alert {
+  display: inline-block;
+  font-size: 1.5em;
+}
+#psicash-pane .psicash-ui-overlay-container {
+  position: relative;
+  min-height: 200px;
+}
+#psicash-pane .psicash-ui-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1039;
+  height: 100%;
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+  background: #FBFCF9;
+  width: 100%;
+  overflow: hidden;
+}
+#psicash-pane .psicash-ui-overlay > div {
+  position: relative;
+  top: 20%;
+}
+#psicash-pane .psicash-ui-overlay > div i {
+  font-size: 60px;
+}
+#psicash-pane .speed-limit .badge {
+  font-size: 20px;
+}
+.speed-limit .badge,
+.speed-limit.badge {
+  display: block;
+  text-transform: uppercase;
+  white-space: normal;
+  line-height: 1.2em;
+}
+.speed-limit .badge table,
+.speed-limit.badge table {
+  margin: auto;
+}
+.speed-limit .badge td:first,
+.speed-limit.badge td:first {
+  width: 100%;
+}
+.speed-limit .badge img,
+.speed-limit.badge img {
+  height: 3em;
   vertical-align: baseline;
 }
-body[dir="ltr"] #psicash-block .speed-limit .badge img {
-  padding-left: 2px;
+body[dir="ltr"] .speed-limit .badge img,
+body[dir="ltr"] .speed-limit.badge img {
+  padding-left: 0.2em;
 }
-body[dir="rtl"] #psicash-block .speed-limit .badge img {
-  padding-right: 2px;
+body[dir="rtl"] .speed-limit .badge img,
+body[dir="rtl"] .speed-limit.badge img {
+  padding-right: 0.2em;
 }
-#psicash-block .speed-limit .badge.speed-slow {
+.speed-limit .badge.speed-slow,
+.speed-limit.badge.speed-slow {
   background-color: #cc664c;
   color: #FFF;
 }
-#psicash-block .speed-limit .badge.speed-fast {
+.speed-limit .badge.speed-fast,
+.speed-limit.badge.speed-fast {
   color: #222;
   text-shadow: none;
   background-color: #FFF;
@@ -7032,9 +7273,11 @@ body[dir="rtl"] #psicash-block .speed-limit .badge img {
 }
 body[dir="ltr"] .global-alert {
   right: 0;
+  left: initial;
 }
 body[dir="rtl"] .global-alert {
   left: 0;
+  right: initial;
 }
 .z-behind {
   z-index: -2;
@@ -7066,4 +7309,27 @@ hr.dotted {
   border-top-width: 2px;
   border-bottom-style: none;
   border-bottom-width: 0px;
+}
+.paragraph-icon {
+  font-size: 2.2em;
+  margin: 5px 10px 5px 0;
+  font-weight: bold;
+}
+.paragraph-icon.paragraph-icon__warning {
+  color: #c09853;
+}
+.paragraph-icon.paragraph-icon__error {
+  color: #b94a48;
+}
+.paragraph-icon.paragraph-icon__info {
+  color: #3a87ad;
+}
+.paragraph-icon.paragraph-icon__success {
+  color: #468847;
+}
+body[dir="ltr"] .paragraph-icon {
+  float: left;
+}
+body[dir="rtl"] .paragraph-icon {
+  float: right;
 }

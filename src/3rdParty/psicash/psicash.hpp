@@ -91,14 +91,6 @@ struct HTTPResult {
 // This is the signature for the HTTP Requester callback provided by the native consumer.
 using MakeHTTPRequestFn = std::function<HTTPResult(const HTTPParams&)>;
 
-// These are the possible token types.
-extern const char* const kEarnerTokenType;
-extern const char* const kSpenderTokenType;
-extern const char* const kIndicatorTokenType;
-extern const char* const kAccountTokenType;
-
-using TokenTypes = std::vector<std::string>;
-
 struct PurchasePrice {
     std::string transaction_class;
     std::string distinguisher;
@@ -132,6 +124,7 @@ extern const char* const kTransactionIDZero; // The "zero value" for a Transacti
 
 struct Purchase {
     TransactionID id;
+    datetime::DateTime server_time_created;
     std::string transaction_class;
     std::string distinguisher;
     nonstd::optional<datetime::DateTime> server_time_expiry;
@@ -189,10 +182,10 @@ public:
     /// be called when wanting to revert to a Tracker from a previously logged in Account.
     error::Error ResetUser();
 
-    /// Forces the given tokens and account status to be set in the datastore. Must be
-    /// called after Init(). RefreshState() must be called after method (and shouldn't be
-    /// be called before this method, although behaviour will be okay).
-    error::Error MigrateTokens(const std::map<std::string, std::string>& tokens, bool is_account);
+    /// Forces the given Tracker tokens to be set in the datastore. Must be called after
+    /// Init(). RefreshState() must be called after method (and shouldn't be be called
+    /// before this method, although behaviour will be okay).
+    error::Error MigrateTrackerTokens(const std::map<std::string, std::string>& tokens);
 
     /// Can be used for updating the HTTP requester function pointer.
     void SetHTTPRequestFn(MakeHTTPRequestFn make_http_request_fn);
@@ -205,12 +198,18 @@ public:
     // Stored info accessors
     //
 
-    /// Returns the stored valid token types. Like ["spender", "indicator"].
-    /// Will be empty if no tokens are available.
-    TokenTypes ValidTokenTypes() const;
+    /// Returns true if there are sufficient tokens for this library to function on behalf
+    /// of a user. False otherwise.
+    /// If this is false and `IsAccount()` is true, then the user is a logged-out account
+    /// and needs to log in to continue. If this is false and `IsAccount()` is false,
+    /// `RefreshState()` needs to be called to get new Tracker tokens.
+    bool HasTokens() const;
 
     /// Returns the stored info about whether the user is a Tracker or an Account.
     bool IsAccount() const;
+
+    /// Returns the username of the logged-in account, if in a logged-in-account state.
+    nonstd::optional<std::string> AccountUsername() const;
 
     /// Returns the stored user balance.
     int64_t Balance() const;
@@ -219,10 +218,11 @@ public:
     /// Will be empty if no purchase prices are available.
     PurchasePrices GetPurchasePrices() const;
 
-    /// Returns the set of active purchases, if any.
+    /// Returns all purchases in the local datastore, if any. This may include expired
+    /// purchases.
     Purchases GetPurchases() const;
 
-    /// Returns the set of active purchases that are not expired, if any.
+    /// Returns the set of purchases that are not expired, if any.
     Purchases ActivePurchases() const;
 
     /// Returns all purchase authorizations. If activeOnly is true, only authorizations
@@ -259,6 +259,12 @@ public:
     /// where the user can buy PsiCash for real money.
     error::Result<std::string> GetBuyPsiURL() const;
 
+    /// Returns the URL that should be used for signing up a new account.
+    std::string GetAccountSignupURL() const;
+
+    /// Returns the URL that should be used for managing and existing account.
+    std::string GetAccountManagementURL() const;
+
     /// Creates a data package that should be included with a webhook for a user
     /// action that should be rewarded (such as watching a rewarded video).
     /// NOTE: The resulting string will still need to be encoded for use in a URL.
@@ -291,8 +297,7 @@ public:
 
     If the user has an Account, then it is possible some or all tokens will be invalid
     (they expire at different rates). Login may be necessary before spending, etc.
-    (It's even possible that validTokenTypes is empty -- i.e., there are no valid
-    tokens.)
+    (It's even possible that hasTokens is false.)
 
     If the user has an Account, then it is possible some or all tokens will be invalid
     (they may expire at different rates) and multiple states are possible:
@@ -320,7 +325,7 @@ public:
     Possible status codes:
 
     • Success: Call was successful. Tokens may now be available (depending on if
-      IsAccount is true, ValidTokenTypes should be checked, as a login may be required).
+      IsAccount is true, HasTokens should be checked, as a login may be required).
 
     • ServerError: The server returned 500 error response. Note that the request has
       already been retried internally and any further retry should not be immediate.
@@ -369,9 +374,9 @@ public:
       could not be found. The price list should be updated immediately, but it might also
       indicate an out-of-date app.
 
-    • InvalidTokens: The current auth tokens are invalid. This indicates something is
-      very wrong, such as the tokens belonging to different users. This state requires
-      a full reset.
+    • InvalidTokens: The current auth tokens are invalid. This shouldn't happen with
+      Trackers, but may happen for Accounts when their tokens expire. Calling RefreshState
+      should return the library to a sane state (logged out or reset).
 
     • ServerError: An error occurred on the server. Probably report to the user and try
       again later. Note that the request has already been retried internally and any
@@ -457,7 +462,8 @@ protected:
     error::Result<Status> RefreshState(
       const std::vector<std::string>& purchase_classes, bool allow_recursion);
 
-    error::Result<psicash::Purchase> PurchaseFromJSON(const nlohmann::json& j) const;
+    // If expected_type is empty, no check will be done.
+    error::Result<psicash::Purchase> PurchaseFromJSON(const nlohmann::json& j, const std::string& expected_type="") const;
 
     std::string CommaDelimitTokens(const std::vector<std::string>& types) const;
 

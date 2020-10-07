@@ -26,6 +26,7 @@
   },
   "rules": {
       "no-console": "off",
-      "lodash/prefer-lodash-method": "off"
+      "lodash/prefer-lodash-method": "off",
+      "semi": ["error", "always"]
   }
 }

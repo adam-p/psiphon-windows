@@ -25,6 +25,7 @@
 #include "utilities.h"
 #include "diagnostic_info.h"
 #include "server_list_reordering.h"
+#include <random>
 
 
 const int MAX_WORKER_THREADS = 30;
@@ -225,7 +226,9 @@ void ReorderServerList(ServerList& serverList, const StopInfo& stopInfo)
 
     if (serverEntries.size() > MAX_WORKER_THREADS)
     {
-        random_shuffle(serverEntries.begin() + MAX_WORKER_THREADS/2, serverEntries.end());
+        std::random_device rng;
+        std::default_random_engine urng(rng());
+        std::shuffle(serverEntries.begin() + MAX_WORKER_THREADS/2, serverEntries.end(), urng);
     }
 
     for (ServerEntryIterator entry = serverEntries.begin(); entry != serverEntries.end(); ++entry)
@@ -316,7 +319,9 @@ void ReorderServerList(ServerList& serverList, const StopInfo& stopInfo)
         }
     }
 
-    random_shuffle(respondingServers.begin(), respondingServers.end());
+    std::random_device rng;
+    std::default_random_engine urng(rng());
+    std::shuffle(respondingServers.begin(), respondingServers.end(), urng);
 
     // Merge back into server entry list. MoveEntriesToFront will move
     // these servers to the top of the list in the order submitted. Any

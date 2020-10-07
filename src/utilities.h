@@ -36,10 +36,13 @@ bool GetShortPathName(const tstring& path, tstring& o_shortPath);
 
 bool WriteFile(const tstring& filename, const string& data);
 
-// Makes a directory that has a path with the given suffix that is suitable for
-// storing data (such as the DataStoreDirectory).
-// pathSuffixes may be empty. Directory will be created if ensureExists is true.
-bool GetDataPath(const vector<tstring>& pathSuffixes, bool ensureExists, tstring& o_path);
+bool DirectoryExists(LPCTSTR szPath);
+
+// Gets a directory that is suitable for storing app data.
+// If `pathSuffixes` is non-empty, they will be appended to the base data dir.
+// If `ensureExists` is true, the directory hierarchy will be created. (The base data
+// dir with no suffixes is always created.)
+bool GetPsiphonDataPath(const vector<tstring>& pathSuffixes, bool ensureExists, tstring& o_path);
 
 bool GetTempPath(tstring& o_path);
 
@@ -157,6 +160,10 @@ bool IsOSSupported();
 /// Check is the current Windows version is support. If it's not, show a message
 /// and terminate the app.
 void EnforceOSSupport(HWND parentWnd, const wstring& message);
+
+/// Copy the given string to the clipboard. Returns true on success.
+bool CopyToClipboard(HWND mainWnd, const tstring& s);
+
 
 /*
  * Miscellaneous Utilities

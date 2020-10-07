@@ -31,8 +31,8 @@ error::Error Lib::Init(bool forceReset) {
     AutoMUTEX lock(m_mutex);
 
     tstring dataDir;
-    if (!GetDataPath({ LOCAL_SETTINGS_APPDATA_SUBDIRECTORY, _T("psicash") }, true, dataDir)) {
-        return psicash::error::MakeCriticalError("GetDataPath failed");
+    if (!GetPsiphonDataPath({ _T("psicash") }, true, dataDir)) {
+        return psicash::error::MakeCriticalError("GetPsiphonDataPath failed");
     }
 
     // C++'s standard library doesn't deal with wide strings, so make the path
@@ -202,13 +202,6 @@ psicash::MakeHTTPRequestFn GetHTTPReqFn(const StopInfo& stopInfo) {
     };
 
     return httpReqFn;
-}
-
-//static
-std::string Lib::AccountSignupURL() {
-    auto url = TESTING ? "https://dev-my.psi.cash"s : "https://my.psi.cash"s;
-    url += "/signup?utm_source=windows_app";
-    return url;
 }
 
 } // namespace psicash

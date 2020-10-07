@@ -51,18 +51,17 @@ public:
         const int64_t expectedPrice,
         std::function<void(error::Result<NewExpiringPurchaseResponse>)> callback);
 
-    // TODO: comment
-    void Lib::AccountLogin(
+    /// Makes an AccountLogin request.
+    /// Network and callback will happen on a separate thread.
+    void AccountLogin(
         const std::string &utf8_username,
         const std::string &utf8_password,
         std::function<void(error::Result<AccountLoginResponse>)> callback);
 
-    // TODO: comment
-    void Lib::AccountLogout(
+    /// Makes an AccountLogout request.
+    /// Network and callback will happen on a separate thread.
+    void AccountLogout(
         std::function<void(error::Error)> callback);
-
-    // TODO: comment
-    static std::string AccountSignupURL();
 
 protected:
     /// If this returns true, the request has been made and requestTask has been moved.

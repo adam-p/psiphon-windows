@@ -62,13 +62,13 @@
 <body dir="ltr">
 
   <div class="psiphon-header">
-    <div class="header-nav-join logo" data-match-width=".main-nav">
+    <div class="header-nav-join js-logo" data-match-width=".main-nav">
       <a href="#">
         <img src="logo-bw.png" data-stopped-src="logo-bw.png" data-connected-src="logo.png">
       </a>
     </div>
 
-    <div class="text-center banner long-connecting-hide">
+    <div class="text-center banner js-hide-if-long-connecting">
       <div data-i18n="banner#sponsored-by">
         Sponsored by
       </div>
@@ -77,7 +77,7 @@
       </a>
     </div>
 
-    <div class="text-center banner hidden long-connecting-show">
+    <div class="text-center banner hidden long-connecting js-show-if-long-connecting">
       <div data-i18n="[html]banner#long-connecting">
         <strong>Oh no!</strong> You seem to be having trouble connecting!<br>
         Download the latest version of Psiphon from the
@@ -87,7 +87,7 @@
     </div>
   </div>
 
-  <div class="main-container">
+  <div><!-- main container -->
     <div class="tabbable tabs-left"
          data-i18n-ltr-classes="tabs-left" data-i18n-rtl-classes="tabs-right">
       <ul class="main-nav nav nav-tabs">
@@ -95,21 +95,21 @@
         <li id="connection-tab" class="active">
           <!-- data-match-width is necessary for IE7 -->
           <a href="#connection-pane" data-toggle="tab"
-             data-match-width=".main-nav a" data-match-width-dependent="true"
+             data-match-width=".main-nav > li > a" data-match-width-dependent="true"
              data-match-height="#settings-tab > a" data-match-height-align="top">
 
             <div data-match-width="#connection-tab [data-connect-state]">
 
               <span class="z-behind" data-connect-state="starting">
                 <span class="label label-warning">
-                  <i class="icon-spinner6 icon-spin"></i>
+                  <i class="icon-spinner6 icon-spin-8dot"></i>
                 </span>
                 <span data-i18n="nav#connection#starting">Connecting</span>
               </span>
 
               <span class="z-behind" data-connect-state="stopping">
                 <span class="label label-warning">
-                  <i class="icon-spinner6 icon-spin"></i>
+                  <i class="icon-spinner6 icon-spin-8dot"></i>
                 </span>
                 <span data-i18n="nav#connection#stopping">Disconnecting</span>
               </span>
@@ -133,36 +133,43 @@
           </a>
         </li>
 
+        <li id="psicash-tab" class="hidden">
+          <a href="#psicash-pane" data-toggle="tab" data-match-width=".main-nav > li > a">
+            <img class="coin" src="psicash_coin.png">
+            <span data-i18n="nav#psicash">PsiCash</span>
+          </a>
+        </li>
+
         <li id="settings-tab">
-          <a href="#settings-pane" data-toggle="tab" data-match-width=".main-nav a">
+          <a href="#settings-pane" data-toggle="tab" data-match-width=".main-nav > li > a">
             <i class="icon-fixed-width icon-cog"></i>
             <span data-i18n="nav#settings">Settings</span>
           </a>
         </li>
 
         <li id="feedback-tab">
-          <a href="#feedback-pane" data-toggle="tab" data-match-width=".main-nav a">
+          <a href="#feedback-pane" data-toggle="tab" data-match-width=".main-nav > li > a">
             <i class="icon-fixed-width icon-bubble-heart"></i>
             <span data-i18n="nav#feedback">Feedback</span>
           </a>
         </li>
 
         <li id="about-tab">
-          <a href="#about-pane" data-toggle="tab" data-match-width=".main-nav a">
+          <a href="#about-pane" data-toggle="tab" data-match-width=".main-nav > li > a">
             <i class="icon-fixed-width icon-rocket"></i>
             <span data-i18n="nav#about">About</span>
           </a>
         </li>
 
         <li id="logs-tab">
-          <a href="#logs-pane" data-toggle="tab" data-match-width=".main-nav a">
+          <a href="#logs-pane" data-toggle="tab" data-match-width=".main-nav > li > a">
             <i class="icon-fixed-width icon-list"></i>
             <span data-i18n="nav#logs">Logs</span>
           </a>
         </li>
 
         <li id="language-tab">
-          <a href="#language-pane" data-toggle="tab" data-match-width=".main-nav a">
+          <a href="#language-pane" data-toggle="tab" data-match-width=".main-nav > li > a">
             <div class="multiline-tab-icon">
               <i class="icon-fixed-width icon-earth"></i>
             </div>
@@ -175,301 +182,274 @@
         </li>
 
         <li id="debug-tab">
-          <a href="#debug-pane" data-toggle="tab" data-match-width=".main-nav a">
+          <a href="#debug-pane" data-toggle="tab" data-match-width=".main-nav > li > a">
             <i class="icon-fixed-width icon-bug"></i>
             <span>Debug</span>
           </a>
         </li>
 
         <li id="psicash-block" class="hidden">
-          <div data-match-width=".main-nav a">
+          <div data-match-width=".main-nav > li > a">
 
-            <div id="psicash-interface-zerobalance" class="psicash-interface hidden">
+            <div class="psicash-block-overlay text-center hidden">
+              <i class="icon-spinner2 icon-spin"></i>
+            </div>
+
+            <div id="psicash-corner-nsfbalance" class="js-psicash-corner hidden">
               <div class="psicash-title-balance">
-                <span data-i18n="[html]psicash#ui-zerobalance-title">Need a Speed&nbsp;Boost?</span>
-
-                <span class="psicash-account-action">
-                  <span class="show-if-not-is-account account-login btn btn-mini btn-warning hidden">
-                    <!-- TODO: i18n -->
-                    <span>Log In!</span>
+                <a href="#" data-tab-switch="#psicash-tab">
+                  <span class="psicash-balance-coin">
+                    <img class="coin" src="psicash_coin.png">
+                    <span class="js-psicash-balance-anim">123</span>
                   </span>
-                  <span class="show-if-is-account account-logout hidden">
-                    <!-- TODO: i18n -->
-                    <a href="#">
-                      <i class="icon-user"></i>
-                    </a>
+                </a>
+                <span class="psicash-account-action">
+                  <span class="js-show-if-not-is-account js-account-login btn btn-mini btn-warning hidden"
+                        data-tab-switch="#psicash-tab">
+                    <i class="icon-user"></i>
                   </span>
                 </span><!-- .psicash-account-action -->
-
               </div><!-- .psicash-title-balance -->
 
-              <div class="speed-limit text-center">
-                <span class="badge speed-slow">
+              <div class="psicash-corner-cluster">
+
+                <div class="psicash-corner-cluster-item js-hide-if-fast speed-limit text-center badge speed-slow">
                   <table>
                     <tr>
                       <td><span data-i18n="[html]psicash#psiphon-speed">Psiphon<br>Speed</span></td>
                       <td><span><img src="turtle.png"></span></td>
                     </tr>
                   </table>
-                </span>
-              </div>
+                </div>
 
-              <div class="button-container">
-                <a class="psicash-buy-psi btn btn-primary" href="#">
+                <a class="psicash-buy-speedboost-fake psicash-corner-cluster-item btn btn-primary"
+                   data-tab-switch="#psicash-tab">
+                  <div class="psicash-buy-speedboost-label" data-i18n="psicash#ui-speedboost-button">Speed Boost</div>
+                  <div class="js-psicash-buy-speedboost-price" data-distinguisher="1hr">
+                    <table>
+                      <tr>
+                        <td>
+                          <span data-i18n="psicash#1-hour">1 hour</span>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                          <span class="psicash-price-container">
+                            <img class="coin" src="psicash_coin_grey.png">&nbsp;<span class="js-psicash-sb-price" data-distinguisher="1hr"></span>
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </a>
+
+                <a class="psicash-corner-cluster-item psicash-buy-psi btn btn-info" href="#">
                   <span data-i18n="psicash#ui-buypsi">Buy PsiCash</span> <img class="coin" src="psicash_coin.png">
                 </a>
-              </div>
-            </div><!-- #psicash-interface-zerobalance -->
 
-            <div id="psicash-interface-nsfbalance" class="psicash-interface hidden">
+              </div><!-- .psicash-corner-cluster-->
+
+            </div><!-- #psicash-corner-nsfbalance -->
+
+            <div id="psicash-corner-enoughbalance" class="js-psicash-corner hidden">
+
               <div class="psicash-title-balance">
-                PsiCash
-
-                <span class="psicash-account-action">
-                  <span class="show-if-not-is-account account-login btn btn-mini btn-warning hidden">
-                    <!-- TODO: i18n -->
-                    <span>Log In!</span>
+                <a href="#" data-tab-switch="#psicash-tab">
+                  <span class="psicash-balance-coin">
+                    <img class="coin" src="psicash_coin.png">
+                    <span class="js-psicash-balance-anim">123</span>
                   </span>
-                  <span class="show-if-is-account account-logout hidden">
-                    <!-- TODO: i18n -->
-                    <a href="#">
-                      <i class="icon-user"></i>
-                    </a>
+                </a>
+                <span class="psicash-account-action">
+                  <span class="js-show-if-not-is-account js-account-login btn btn-mini btn-warning hidden"
+                        data-tab-switch="#psicash-tab">
+                    <i class="icon-user"></i>
                   </span>
                 </span><!-- .psicash-account-action -->
-
-                <div class="psicash-balance-coin">
-                  <img class="coin" src="psicash_coin.png">
-                  <span class="psicash-balance"></span>
-                </div>
               </div><!-- .psicash-title-balance -->
 
-              <div class="speed-limit text-center">
-                <span class="badge speed-slow">
+              <div class="psicash-corner-cluster">
+
+                <div class="psicash-corner-cluster-item js-hide-if-fast speed-limit text-center badge speed-slow">
                   <table>
                     <tr>
                       <td><span data-i18n="[html]psicash#psiphon-speed">Psiphon<br>Speed</span></td>
                       <td><span><img src="turtle.png"></span></td>
                     </tr>
                   </table>
-                </span>
-              </div>
+                </div>
 
-              <div class="boost-container">
-                <div class="boost-container-label">
-                  <div class="boost-container-label-inner text-center">
-                    <strong><small>
-                      <span data-i18n="[html]psicash#ui-nsfbalance-buttontext">Needed for Speed&nbsp;Boost</span>
-                    </small></strong>
+                <div class="psicash-buy-speedboost js-max-boost-container psicash-corner-cluster-item text-center btn btn-primary btn-small">
+                  <div class="psicash-buy-speedboost-label" data-i18n="psicash#ui-speedboost-button">Speed Boost</div>
+                  <div class="js-psicash-buy-speedboost-price" data-distinguisher="1hr">
+                    <table>
+                      <tr>
+                        <td>
+                          <span data-i18n="psicash#1-hour">1 hour</span>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                          <span class="psicash-price-container">
+                            <img class="coin" src="psicash_coin_grey.png">&nbsp;<span class="js-psicash-sb-price" data-distinguisher="1hr"></span>
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="js-psicash-buy-speedboost-price" data-distinguisher="24hr">
+                    <table>
+                      <tr>
+                        <td>
+                          <span data-i18n="psicash#1-day">1 day</span>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                          <span class="psicash-price-container">
+                            <img class="coin" src="psicash_coin_grey.png">&nbsp;<span class="js-psicash-sb-price" data-distinguisher="24hr"></span>
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="js-psicash-buy-speedboost-price" data-distinguisher="7day">
+                    <table>
+                      <tr>
+                        <td>
+                          <span data-i18n="psicash#1-week">1 week</span>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                          <span class="psicash-price-container">
+                            <img class="coin" src="psicash_coin_grey.png">&nbsp;<span class="js-psicash-sb-price" data-distinguisher="7day"></span>
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="js-psicash-buy-speedboost-price" data-distinguisher="31day">
+                    <table>
+                      <tr>
+                        <td>
+                          <span data-i18n="psicash#1-month">1 month</span>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>
+                          <span class="psicash-price-container">
+                            <img class="coin" src="psicash_coin_grey.png">&nbsp;<span class="js-psicash-sb-price" data-distinguisher="31day"></span>
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
                   </div>
                 </div>
 
-                <div class="boost-container-buttons btn-group btn-group-vertical">
-                  <span class="btn btn-small btn-primary psicash-buy disabled"
-                          data-distinguisher="1hr"
-                          disabled>
-                    <span data-i18n="[html]psicash#1-hour">1 hour</span>
-                    <span class="psicash-price-container text-left">
-                      <img class="coin" src="psicash_coin_grey.png">&nbsp;<span class="psicash-sb-price" data-distinguisher="1hr"></span>
-                    </span>
-                  </span>
-                  <span class="btn btn-small btn-primary psicash-buy disabled"
-                        data-distinguisher="24hr"
-                        disabled>
-                    <span data-i18n="[html]psicash#1-day">1 day</span>
-                    <span class="psicash-price-container text-left">
-                      <img class="coin" src="psicash_coin_grey.png">&nbsp;<span class="psicash-sb-price" data-distinguisher="24hr"></span>
-                    </span>
-                  </span>
-                </div>
-              </div><!-- .boost-container -->
-
-              <div class="button-container">
-                <a class="psicash-buy-psi btn btn-primary" href="#">
-                  <span data-i18n="psicash#ui-buypsi">Buy PsiCash</span> <img class="coin" src="psicash_coin.png">
+                <a class="psicash-buy-speedboost-more-options psicash-corner-cluster-item btn btn-small text-center"
+                   data-tab-switch="#psicash-tab" data-i18n="psicash#more-ellipsis">
+                  More…
                 </a>
-              </div>
-            </div><!-- #psicash-interface-nsfbalance -->
 
-            <div id="psicash-interface-enoughbalance" class="psicash-interface hidden">
+              </div><!-- .psicash-corner-cluster -->
+
+            </div><!-- #psicash-corner-enoughbalance -->
+
+            <div id="psicash-corner-buyingboost" class="js-psicash-corner hidden">
               <div class="psicash-title-balance">
-                PsiCash
-
-                <span class="psicash-account-action">
-                  <span class="show-if-not-is-account account-login btn btn-mini btn-warning hidden">
-                    <!-- TODO: i18n -->
-                    <span>Log In!</span>
+                <a href="#" data-tab-switch="#psicash-tab">
+                  <span class="psicash-balance-coin">
+                    <img class="coin" src="psicash_coin.png">
+                    <span class="js-psicash-balance-anim">123</span>
                   </span>
-                  <span class="show-if-is-account account-logout hidden">
-                    <!-- TODO: i18n -->
-                    <a href="#">
-                      <i class="icon-user"></i>
-                    </a>
+                </a>
+                <span class="psicash-account-action">
+                  <span class="js-show-if-not-is-account js-account-login btn btn-mini btn-warning hidden"
+                        data-tab-switch="#psicash-tab">
+                    <i class="icon-user"></i>
                   </span>
                 </span><!-- .psicash-account-action -->
+            </div><!-- .psicash-title-balance -->
 
-                <div class="psicash-balance-coin">
-                  <img class="coin" src="psicash_coin.png">
-                  <span class="psicash-balance"></span>
-                </div>
-              </div><!-- .psicash-title-balance -->
-
-              <div class="speed-limit text-center">
-                <span class="badge speed-slow">
-                  <table>
-                    <tr>
-                      <td><span data-i18n="[html]psicash#psiphon-speed">Psiphon<br>Speed</span></td>
-                      <td><span><img src="turtle.png"></span></td>
-                    </tr>
-                  </table>
-                </span>
-              </div>
-
-              <div class="boost-container">
-                <div class="boost-container-label">
-                  <div class="boost-container-label-inner text-center">
-                    <strong><small>
-                      <span data-i18n="[html]psicash#ui-enoughbalance-buttontext">Start Speed&nbsp;Boost</span>
-                    </small></strong>
-                  </div>
-                </div>
-
-                <div class="boost-container-buttons btn-group btn-group-vertical">
-                  <!-- This should be a `button` element, but it was messing up the table layout for some reason we couldn't figure out -->
-                  <span class="btn btn-small btn-primary psicash-buy"
-                          data-distinguisher="1hr">
-                    <span data-i18n="[html]psicash#1-hour">1 hour</span>
-                    <span class="psicash-price-container text-left">
-                      <img class="coin" src="psicash_coin_grey.png">&nbsp;<span class="psicash-sb-price" data-distinguisher="1hr"></span>
-                    </span>
-                  </span>
-                  <span class="btn btn-small btn-primary psicash-buy"
-                          data-distinguisher="24hr">
-                    <span data-i18n="[html]psicash#1-day">1 day</span>
-                    <span class="psicash-price-container text-left">
-                      <img class="coin" src="psicash_coin_grey.png">&nbsp;<span class="psicash-sb-price" data-distinguisher="24hr"></span>
-                    </span>
-                  </span>
-                </div>
-
-              </div>
-
-              <div class="button-container">
-                <a class="psicash-buy-psi btn btn-primary" href="#">
-                  <span data-i18n="psicash#ui-buypsi">Buy PsiCash</span> <img class="coin" src="psicash_coin.png">
-                </a>
-              </div>
-            </div><!-- #psicash-interface-enoughbalance -->
-
-            <div id="psicash-interface-buyingboost" class="psicash-interface hidden">
-              <div class="psicash-title-balance">
-                PsiCash
-
-                <span class="psicash-account-action">
-                  <span class="show-if-not-is-account account-login btn btn-mini btn-warning hidden">
-                    <!-- TODO: i18n -->
-                    <span>Log In!</span>
-                  </span>
-                  <span class="show-if-is-account account-logout hidden">
-                    <!-- TODO: i18n -->
-                    <a href="#">
-                      <i class="icon-user"></i>
-                    </a>
-                  </span>
-                </span><!-- .psicash-account-action -->
-
-                <span class="psicash-balance-coin">
-                  <img class="coin" src="psicash_coin.png">
-                  <span class="psicash-balance"></span>
-                </span>
-              </div><!-- .psicash-title-balance -->
-
-              <div class="speed-limit text-center">
-                <span class="badge speed-slow">
-                  <table>
-                    <tr>
-                      <td><span data-i18n="[html]psicash#psiphon-speed">Psiphon<br>Speed</span></td>
-                      <td><span><img src="turtle.png"></span></td>
-                    </tr>
-                  </table>
-                </span>
-              </div>
-
-              <div class="button-container">
-                <button type="button" class="btn btn-primary disabled" disabled>
+              <div class="psicash-corner-cluster">
+                <div class="psicash-corner-cluster-item label label-info text-center">
                   <i class="icon-spinner2 icon-spin"></i>
                   <span data-i18n="[html]psicash#ui-buyingboost-buttontext">Starting Speed&nbsp;Boost!</span>
-                </button>
+                </div>
               </div>
-              <div class="button-container">
-                <a class="psicash-buy-psi btn btn-small" data-i18n="psicash#ui-buymorepsi" href="#">
-                  Buy more PsiCash
-                </a>
-              </div>
-            </div><!-- #psicash-interface-buyingboost -->
+            </div><!-- #psicash-corner-buyingboost -->
 
-            <div id="psicash-interface-activeboost" class="psicash-interface hidden">
+            <div id="psicash-corner-activeboost" class="js-psicash-corner hidden">
               <div class="psicash-title-balance">
-                PsiCash
-
-                <span class="psicash-account-action">
-                  <span class="show-if-not-is-account account-login btn btn-mini btn-warning hidden">
-                    <!-- TODO: i18n -->
-                    <span>Log In!</span>
+                <a href="#" data-tab-switch="#psicash-tab">
+                  <span class="psicash-balance-coin">
+                    <img class="coin" src="psicash_coin.png">
+                    <span class="js-psicash-balance-anim">123</span>
                   </span>
-                  <span class="show-if-is-account account-logout hidden">
-                    <!-- TODO: i18n -->
-                    <a href="#">
-                      <i class="icon-user"></i>
-                    </a>
+                </a>
+                <span class="psicash-account-action">
+                  <span class="js-show-if-not-is-account js-account-login btn btn-mini btn-warning hidden"
+                        data-tab-switch="#psicash-tab">
+                    <i class="icon-user"></i>
                   </span>
                 </span><!-- .psicash-account-action -->
+            </div><!-- .psicash-title-balance -->
 
-                <span class="psicash-balance-coin">
-                  <img class="coin" src="psicash_coin.png">
-                  <span class="psicash-balance"></span>
-                </span>
-              </div><!-- .psicash-title-balance -->
-
-              <div class="speed-limit text-center">
-                <span class="badge speed-fast">
+              <div class="psicash-corner-cluster">
+                <div class="psicash-corner-cluster-item speed-limit text-center badge speed-fast">
                   <table>
                     <tr>
                       <td><span data-i18n="[html]psicash#psiphon-speed">Psiphon<br>Speed</span></td>
                       <td><span><img src="rocket.png"></span></td>
                     </tr>
                   </table>
-                </span>
-              </div>
+                </div>
 
-              <div class="button-container">
-                <button type="button" class="btn btn-success disabled" disabled>
-                  <span class="speed-boost-time-remaining"></span>
-                </button>
-              </div>
-              <div class="button-container">
-                <a class="psicash-buy-psi btn btn-small" data-i18n="psicash#ui-buymorepsi" href="#">
-                  Buy more PsiCash
+                <div class="psicash-corner-cluster-item btn btn-success"
+                     data-tab-switch="#psicash-tab">
+                    <span class="speed-boost-time-remaining"></span>
+                </div>
+
+                <a class="psicash-corner-cluster-item psicash-buy-psi btn btn-info" href="#">
+                  <span data-i18n="psicash#ui-buypsi">Buy PsiCash</span> <img class="coin" src="psicash_coin.png">
                 </a>
+
               </div>
-            </div><!-- #psicash-interface-activeboost -->
+            </div><!-- #psicash-corner-activeboost -->
 
-            <div id="psicash-interface-accountloggedout" class="psicash-interface hidden">
+            <div id="psicash-corner-accountloggedout" class="js-psicash-corner hidden">
+
               <div class="psicash-title-balance">
-                You are logged out of PsiCash
-
+                <a href="#" data-tab-switch="#psicash-tab">
+                  <span class="psicash-balance-coin">
+                    <img class="coin" src="psicash_coin.png">
+                  </span>
+                </a>
                 <span class="psicash-account-action">
-                  <span class="account-login btn btn-mini btn-warning">
-                    <!-- TODO: i18n -->
-                    <span>Log In!</span>
+                  <!-- Note that, unlike most instance of this button, there's no js-show-if-not-is-account class.
+                      If this corner is visible, then we want to show the button unconditionally. -->
+                  <span class="js-account-login btn btn-mini btn-warning"
+                        data-tab-switch="#psicash-tab">
+                    <i class="icon-user"></i>
                   </span>
                 </span><!-- .psicash-account-action -->
-
               </div><!-- .psicash-title-balance -->
 
-            </div><!-- #psicash-interface-accountloggedout -->
+              <div class="psicash-corner-cluster">
+                <div class="psicash-corner-cluster-item js-hide-if-fast speed-limit text-center badge speed-slow">
+                  <table>
+                    <tr>
+                      <td><span data-i18n="[html]psicash#psiphon-speed">Psiphon<br>Speed</span></td>
+                      <td><span><img src="turtle.png"></span></td>
+                    </tr>
+                  </table>
+                </div>
 
-            <div id="psicash-interface-vpndisabled" class="psicash-interface hidden">
+                <a class="psicash-corner-cluster-item text-center btn btn-warning btn-large"
+                   data-tab-switch="#psicash-tab" data-i18n="psicash#corner-logged-out">
+                  You are logged out of PsiCash
+                </a>
+              </div>
+
+            </div><!-- #psicash-corner-accountloggedout -->
+
+            <div id="psicash-corner-vpndisabled" class="js-psicash-corner hidden">
               <div>
                 <span class="label label-warning">
                   <i class="icon-prohibited"></i>
@@ -478,31 +458,22 @@
               </div>
 
               <div class="psicash-title-balance">
-                PsiCash
-
-                <!-- Don't show the login button, but if logged in show the profile (logout) button -->
-                <span class="psicash-account-action">
-                  <span class="show-if-is-account account-logout hidden">
-                    <!-- TODO: i18n -->
-                    <a href="#">
-                      <i class="icon-user"></i>
-                    </a>
+                <a href="#" data-tab-switch="#psicash-tab">
+                  <!-- Not going to show the login button, since there's nothing the user can do -->
+                  <span class="psicash-balance-coin">
+                    <img class="coin" src="psicash_coin.png">
+                    <span class="js-psicash-balance-anim js-hide-if-logged-out-account"></span>
                   </span>
-                </span><!-- .psicash-account-action -->
-
-                <span class="psicash-balance-coin">
-                  <img class="coin" src="psicash_coin.png">
-                  <span class="psicash-balance"></span>
-                </span>
+                </a>
               </div>
-            </div><!-- #psicash-interface-activeboost -->
+            </div><!-- #psicash-corner-vpndisabled -->
 
           </div>
         </li><!-- /#psicash-block -->
 
         <li id="fill-tab"></li>
       </ul>
-      <div class="tab-content main-height">
+      <div class="tab-content js-main-height">
 
         <!-- CONNECTION ================================================-->
         <div class="tab-pane active fade in" id="connection-pane">
@@ -512,7 +483,7 @@
                  data-connect-state="starting"
                  data-match-height=".connect-toggle-content" data-match-height-align="bottom">
               <div class="state-symbol">
-                <i class="icon-spinner6 icon-spin icon-state-symbol"></i>
+                <i class="icon-spinner6 icon-spin-8dot icon-state-symbol"></i>
               </div>
               <div>
                 <h2 class="textfill-container">
@@ -556,7 +527,7 @@
                  data-connect-state="stopping"
                  data-match-height=".connect-toggle-content" data-match-height-align="bottom">
               <div class="state-symbol">
-                <i class="icon-spinner6 icon-spin icon-state-symbol"></i>
+                <i class="icon-spinner6 icon-spin-8dot icon-state-symbol"></i>
               </div>
               <div>
                 <h2 class="textfill-container">
@@ -600,7 +571,7 @@
 
           </div><!-- /connect-toggle -->
 
-          <div class="egress-region-combo-container vpn-incompatible-hide">
+          <div class="egress-region-combo-container js-vpn-incompatible-hide">
 
             <label for="EgressRegionCombo">
               <a href="#" data-i18n="connection#egress-region-combo-label">
@@ -608,7 +579,7 @@
               </a>
             </label>
             <div class="btn-group dropup" id="EgressRegionCombo">
-              <a class="btn btn-large dropdown-toggle f32 ie7Border" data-toggle="dropdown" href="#">
+              <a class="btn btn-large dropdown-toggle f32" data-toggle="dropdown" href="#">
                 <span data-i18n-ltr-classes="pull-left" data-i18n-rtl-classes="pull-right">
                   <span class="flag">
                     placeholder
@@ -623,6 +594,239 @@
             </div>
           </div>
         </div><!-- /connection-pane -->
+
+
+        <!-- PSICASH ======================================================-->
+        <div class="tab-pane fade" id="psicash-pane">
+
+          <div class="psicash-ui-overlay-container"><!-- This allows us to have an in-progress overlay over the whole UI. See the ..psicash-ui-overlay below. -->
+
+            <div class="container-fluid">
+
+              <!-- Account info -->
+              <div class="row-fluid psicash-pane__user-and-balance js-hide-if-logged-out-account">
+                <div class="span8">
+                  <div class="row-fluid">
+                    <div class="span12 psicash-username-container">
+                      <a class="js-psicash-account-signup" href="#" data-i18n="psicash#pane-create-account">
+                        Create an account to protect your PsiCash!
+                      </a>
+                      <span class="psicash-username hidden">username</span>
+                    </div>
+                  </div>
+                  <div class="row-fluid">
+                    <div class="span12 psicash-balance-row">
+                      <span data-i18n="psicash#pane-balance-header">
+                        Balance:
+                      </span>
+                      <span class="psicash-balance-coin">
+                        <img class="coin" src="psicash_coin.png">
+                        <span class="js-psicash-balance-noanim">123</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="span4 psicash-pane__user-and-balance__log-in-out-buttons">
+                  <div class="row-fluid">
+                    <div class="span12">
+                      <a href="#" class="js-show-if-not-is-account js-account-login btn btn-warning" data-i18n="psicash#pane-log-in">
+                        Log In!
+                      </a>
+                      <a href="#" class="js-show-if-is-account js-account-logout hidden btn btn-mini" data-i18n="psicash#pane-log-out">
+                        Log Out
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row-fluid">
+                    <div class="span12">
+                      <a class="js-psicash-account-management js-show-if-is-account hidden" href="#" data-i18n="psicash#pane-manage-web">
+                        Manage on the web
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="js-hide-if-logged-out-account">
+
+              <!-- VPN mode message -->
+              <div class="row-fluid logged-out-ui js-show-if-vpn-mode vpn-mode-ui">
+                <div class="span12 text-center">
+                  <div class="alert">
+                    <p>
+                      <span class="label label-warning">
+                        <i class="icon-prohibited"></i>
+                        <span data-i18n="settings#vpn-incompatible-label">L2TP/IPSec</span>
+                      </span>
+                    </p>
+                    <p data-i18n="[html]psicash#pane-l2tp-incompatible">
+                      Speed Boost cannot be used while Psiphon is connected in <a href="#">L2TP/IPSec transport mode</a>.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Logged-out UI -->
+              <div class="js-show-if-logged-out-account">
+                <div class="row-fluid logged-out-ui">
+                  <div class="span12 text-center">
+                    <h3 data-i18n="psicash#pane-must-log-in">You must log in to use PsiCash.</h3>
+                    <div class="logged-out-ui-button-container">
+                      <div>
+                        <div class="btn btn-large js-account-login" data-i18n="psicash#pane-log-in">
+                          Log In!
+                        </div>
+                      </div>
+                      <div>
+                        <a class="js-psicash-account-signup btn btn-large" href="#" data-i18n="psicash#pane-create-new-account">
+                          Create a New Account
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <hr class="js-hide-if-vpn-mode">
+              </div>
+
+              <div class="js-hide-if-vpn-mode"><!-- All Speed Boost stuff is disabled in VPN mode -->
+                <!-- Speed Limit -->
+                <div class="row-fluid js-hide-if-boosting">
+                  <div class="span12 speed-limit text-center">
+                    <div class="width-limiter">
+                      <h3 data-i18n="psicash#pane-speed-port-limits-head">Speed and Port Limits</h3>
+                      <p data-i18n="psicash#pane-speed-port-limits-body">Without active Speed Boost, your speed is limited and some internet traffic is not supported. Activate Speed Boost with PsiCash to unlock the full potential of your Psiphon experience.</p>
+                      <span class="badge speed-slow js-hide-if-fast">
+                        <table>
+                          <tr>
+                            <td><span data-i18n="[html]psicash#psiphon-speed">Psiphon<br>Speed</span></td>
+                            <td><span><img src="turtle.png"></span></td>
+                          </tr>
+                        </table>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Speed Boost -->
+                <!-- SB buttons shown when not boosting -->
+                <div class="js-hide-if-logged-out-account">
+                  <div class="js-hide-if-boosting">
+                    <div class="row-fluid">
+                      <div class="span12 text-center" style="font-weight: bold;">
+                        <h3 data-i18n="psicash#pane-speed-boost-cta">Increase your Psiphon speed with Speed Boost!</h3>
+                      </div>
+                    </div>
+                    <div class="row-fluid">
+                      <div class="span10 offset1 text-center speed-boost-buttons">
+
+                        <div class="speed-boost-button one-hour psicash-buy-speedboost" data-distinguisher="1hr">
+                          <div class="speed-boost-duration" data-i18n="psicash#1-hour">1 hour</div>
+                          <div class="speed-boost-price">
+                            <img class="coin" src="psicash_coin_grey.png">&nbsp;
+                            <span class="js-psicash-sb-price" data-distinguisher="1hr">111</span>
+                          </div>
+                        </div>
+
+                        <div class="speed-boost-button one-day psicash-buy-speedboost" data-distinguisher="24hr">
+                          <div class="speed-boost-duration" data-i18n="psicash#1-day">1 day</div>
+                          <div class="speed-boost-price">
+                            <img class="coin" src="psicash_coin_grey.png">&nbsp;
+                            <span class="js-psicash-sb-price" data-distinguisher="24hr">811</span>
+                          </div>
+                        </div>
+
+                        <div class="speed-boost-button one-week psicash-buy-speedboost" data-distinguisher="7day">
+                          <div class="speed-boost-duration" data-i18n="psicash#1-week">1 week</div>
+                          <div class="speed-boost-price">
+                            <img class="coin" src="psicash_coin_grey.png">&nbsp;
+                            <span class="js-psicash-sb-price" data-distinguisher="7day">4,111</span>
+                          </div>
+                        </div>
+
+                        <div class="speed-boost-button one-month psicash-buy-speedboost" data-distinguisher="31day">
+                          <div class="speed-boost-duration" data-i18n="psicash#1-month">1 month</div>
+                          <div class="speed-boost-price">
+                            <img class="coin" src="psicash_coin_grey.png">&nbsp;
+                            <span class="js-psicash-sb-price" data-distinguisher="31day">13,111</span>
+                          </div>
+                        </div>
+
+                      </div><!-- /.speed-boost-buttons -->
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SB time left when boosting -->
+                <div class="js-show-if-boosting">
+                  <div class="row-fluid">
+                    <div class="span12">
+                      <span class="text-center boost-remaining">
+                        <span class="speed-boost-rocket"><img src="rocket.png"></span>
+                        <span class="speed-boost-time-remaining"></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Buy Psi -->
+                <div class="js-show-if-nsf">
+                  <div class="row-fluid js-hide-if-boosting">
+                    <div class="span12 text-center">
+                      <div class="width-limiter">
+                        <h3 data-i18n="psicash#pane-need-more-psicash-header">You need more PsiCash!</h3>
+                        <p data-i18n="psicash#pane-need-more-psicash-body">In order activate Speed Boost, you need to buy more PsiCash.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="js-hide-if-logged-out-account">
+                  <div class="row-fluid js-hide-if-nsf">
+                    <div class="span12 text-center">
+                      <!-- No <hr> if NSF, so bring the button closer to the message above -->
+                      <hr>
+                      <!-- The message above replaces this one, if NSF -->
+                      <h3 data-i18n="psicash#pane-need-psicash-visit-store">Need PsiCash? Visit our store to buy more!</h3>
+                    </div>
+                  </div>
+                  <div class="row-fluid">
+                    <div class="span12 text-center">
+                      <a class="psicash-buy-psi btn btn-info btn-large" href="#">
+                        <span data-i18n="psicash#ui-buypsi">Buy PsiCash</span> <img class="coin" src="psicash_coin.png">
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+              </div><!-- /.js-hide-if-vpn-mode -->
+
+              <!-- Bottom spacer (can be an Info block in the future) -->
+              <div class="row-fluid">
+                <div class="span12 text-center">
+                  &nbsp;
+                </div>
+              </div>
+
+            </div><!-- /.container-fluid -->
+
+            <!-- The UI-disabling overlay that will be used while actions are in progress -->
+            <div class="psicash-ui-overlay hidden">
+
+              <div class="text-center">
+                <i class="icon-spinner2 icon-spin"></i>
+                <div class="js-psicash-ui-overlay-messages">
+                  <h2 id="psicash-ui-overlay-logging-in" data-i18n="psicash#overlay-logging-in">Logging in…</h2>
+                  <h2 id="psicash-ui-overlay-logging-out" data-i18n="psicash#overlay-logging-out">Logging out…</h2>
+                  <h2 id="psicash-ui-overlay-buying-boost" data-i18n="[html]psicash#ui-buyingboost-buttontext">Starting Speed&nbsp;Boost!</h2>
+                </div>
+              </div>
+
+            </div>
+
+          </div><!-- /.overlay-container -->
+        </div><!-- /#psicash-pane -->
 
 
         <!-- SETTINGS ==================================================-->
@@ -656,9 +860,9 @@
                   </span>
                 </a>
               </div>
-              <div id="settings-accordion-systray-minimize" class="accordion-body collapse">
+              <div id="settings-accordion-systray-minimize" class="js-accordion-body collapse">
                 <div class="accordion-inner">
-                  <form>
+                  <form action="">
                     <fieldset>
                       <p data-i18n="settings#systray-minimize#help-text">
                         If enabled, when minimized the Psiphon application
@@ -699,9 +903,9 @@
                   </span>
                 </a>
               </div>
-              <div id="settings-accordion-disallowed-traffic-alert" class="accordion-body collapse">
+              <div id="settings-accordion-disallowed-traffic-alert" class="js-accordion-body collapse">
                 <div class="accordion-inner">
-                  <form>
+                  <form action="">
                     <fieldset>
                       <p data-i18n="settings#disallowed-traffic-alert#help-text">
                         Some types of internet traffic are not supported without an active Speed Boost.
@@ -740,9 +944,9 @@
                   </span>
                 </a>
               </div>
-              <div id="settings-accordion-split-tunnel" class="accordion-body collapse">
+              <div id="settings-accordion-split-tunnel" class="js-accordion-body collapse">
                 <div class="accordion-inner">
-                  <form class="vpn-incompatible">
+                  <form class="vpn-incompatible" action="">
                     <fieldset>
                       <p data-i18n="settings#split-tunnel#help-text">
                         If enabled, requests made to servers within your home country will not be
@@ -789,9 +993,9 @@
                   </span>
                 </a>
               </div>
-              <div id="settings-accordion-disable-timeouts" class="accordion-body collapse">
+              <div id="settings-accordion-disable-timeouts" class="js-accordion-body collapse">
                 <div class="accordion-inner">
-                  <form class="vpn-incompatible">
+                  <form class="vpn-incompatible" action="">
                     <fieldset>
                       <p data-i18n="settings#disable-timeouts#help-text">
                         If enabled, communication with the Psiphon server will not time out
@@ -836,9 +1040,9 @@
                   </span>
                 </a>
               </div>
-              <div id="settings-accordion-egress-region" class="accordion-body collapse">
+              <div id="settings-accordion-egress-region" class="js-accordion-body collapse">
                 <div class="accordion-inner">
-                  <form class="vpn-incompatible">
+                  <form class="vpn-incompatible" action="">
                     <fieldset>
                       <span class="help-block" data-i18n="settings#egress-region#description">
                         Psiphon has servers in many different countries and regions. Using
@@ -858,7 +1062,7 @@
                           (Doesn't work with L2TP/IPSec mode.)
                         </small>
                       </span>
-                      <span class="help-block egress-region-invalid">
+                      <span class="help-block js-egress-region-invalid">
                         <span class="text-error"
                               data-i18n="settings#egress-region#invalid-error-msg">
                           Choose a valid Psiphon server region.
@@ -1122,9 +1326,9 @@
                   </span>
                 </a>
               </div>
-              <div id="settings-accordion-local-proxy-ports" class="accordion-body collapse">
+              <div id="settings-accordion-local-proxy-ports" class="js-accordion-body collapse">
                 <div class="accordion-inner">
-                  <form class="form-horizontal">
+                  <form class="form-horizontal" action="">
                     <fieldset>
                       <p data-i18n="[html]settings#local-proxy-ports#leave-blank">
                         Leave <strong>blank</strong> for automatic port
@@ -1146,7 +1350,7 @@
                         <div class="controls">
                           <input type="text" id="LocalHttpProxyPort" class="port-entry"
                                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-                          <span class="help-inline LocalHttpProxyPort" data-i18n="settings#port-value-error-msg">
+                          <span class="help-inline js-LocalHttpProxyPort" data-i18n="settings#port-value-error-msg">
                             Must be between 1 and 65535.
                           </span>
                         </div>
@@ -1157,7 +1361,7 @@
                         <div class="controls">
                           <input type="text" id="LocalSocksProxyPort" class="port-entry"
                                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-                          <span class="help-inline LocalSocksProxyPort" data-i18n="settings#port-value-error-msg">
+                          <span class="help-inline js-LocalSocksProxyPort" data-i18n="settings#port-value-error-msg">
                             Must be between 1 and 65535.
                           </span>
                         </div>
@@ -1222,9 +1426,9 @@
                   </span>
                 </a>
               </div>
-              <div id="settings-accordion-upstream-proxy" class="accordion-body collapse">
+              <div id="settings-accordion-upstream-proxy" class="js-accordion-body collapse">
                 <div class="accordion-inner">
-                  <form class="form-horizontal vpn-incompatible">
+                  <form class="form-horizontal vpn-incompatible" action="">
                     <fieldset>
                       <p data-i18n="settings#upstream-proxy#by-default">
                         If your computer already has a proxy configured, by
@@ -1242,8 +1446,8 @@
                       <p data-i18n="settings#upstream-proxy#proxy-reqs">
                         Only HTTP proxies that support HTTPS are allowed.
                       </p>
-                      <div class="control-group skip-upstream-proxy-incompatible vpn-incompatible">
-                        <label for="UpstreamProxyHostname" class="control-label vpn-incompatible-label"
+                      <div class="control-group js-skip-upstream-proxy-incompatible vpn-incompatible">
+                        <label for="UpstreamProxyHostname" class="control-label"
                                 data-i18n="settings#upstream-proxy#hostname-label">
                           Hostname
                         </label>
@@ -1252,21 +1456,21 @@
                                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
                         </div>
                       </div>
-                      <div class="control-group skip-upstream-proxy-incompatible vpn-incompatible">
-                        <label for="UpstreamProxyPort" class="control-label vpn-incompatible-label"
+                      <div class="control-group js-skip-upstream-proxy-incompatible vpn-incompatible">
+                        <label for="UpstreamProxyPort" class="control-label"
                                 data-i18n="settings#upstream-proxy#port-label">
                           Port
                         </label>
                         <div class="controls">
                           <input type="text" id="UpstreamProxyPort" class="port-entry"
                                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-                          <span class="help-inline UpstreamProxyPort" data-i18n="settings#port-value-error-msg">
+                          <span class="help-inline js-UpstreamProxyPort" data-i18n="settings#port-value-error-msg">
                             Must be between 1 and 65535.
                           </span>
                         </div>
                       </div>
-                      <div class="control-group skip-upstream-proxy-incompatible vpn-incompatible">
-                        <label for="UpstreamProxyUsername" class="control-label vpn-incompatible-label"
+                      <div class="control-group js-skip-upstream-proxy-incompatible vpn-incompatible">
+                        <label for="UpstreamProxyUsername" class="control-label"
                                 data-i18n="settings#upstream-proxy#username-label">
                           Username
                         </label>
@@ -1275,8 +1479,8 @@
                                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
                         </div>
                       </div>
-                      <div class="control-group skip-upstream-proxy-incompatible vpn-incompatible">
-                        <label for="UpstreamProxyPassword" class="control-label vpn-incompatible-label"
+                      <div class="control-group js-skip-upstream-proxy-incompatible vpn-incompatible">
+                        <label for="UpstreamProxyPassword" class="control-label"
                                 data-i18n="settings#upstream-proxy#password-label">
                           Password
                         </label>
@@ -1285,8 +1489,8 @@
                                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
                         </div>
                       </div>
-                      <div class="control-group skip-upstream-proxy-incompatible vpn-incompatible">
-                        <label for="UpstreamProxyDomain" class="control-label vpn-incompatible-label"
+                      <div class="control-group js-skip-upstream-proxy-incompatible vpn-incompatible">
+                        <label for="UpstreamProxyDomain" class="control-label"
                                 data-i18n="settings#upstream-proxy#domain-label">
                           Domain
                         </label>
@@ -1341,9 +1545,9 @@
                   </span>
                 </a>
               </div>
-              <div id="settings-accordion-transport-mode" class="accordion-body collapse">
+              <div id="settings-accordion-transport-mode" class="js-accordion-body collapse">
                 <div class="accordion-inner">
-                  <form>
+                  <form action="">
                     <fieldset>
                       <div class="checkbox-container">
                         <div class="controls checkbox checkbox-warning">
@@ -1378,92 +1582,91 @@
           <h2 data-i18n="feedback#top_content_title">Give Us Your Feedback</h2>
 
           <div>
+            <p data-i18n="[html]feedback#top_para_2">
+              Many problems can be fixed by downloading the latest version. You can
+              <a class="NewVersionURL" href="#">download the latest version by clicking here</a>,
+              or you can send an email to <a class="NewVersionEmail" href="#"></a>.
+            </p>
+            <p data-i18n="[html]feedback#top_para_3">
+              You can also find solutions to many common problems in our
+              <a class="FaqURL" href="#">Frequently Asked Questions</a>.
+            </p>
+          </div>
+
+          <form id="feedback-form" action="feedback" method="get">
+
+            <div class="feedback-smiley-container">
+              <table class="feedback-smiley">
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="feedback-choice"
+                            data-feedback-choice-value=0
+                            data-feedback-choice-hash="24f5c290039e5b0a2fd17bfcdb8d3108"
+                            data-feedback-choice-title="Overall satisfaction"
+                            data-match-height=".feedback-choice" data-match-height-align="center">
+                        <i class="icon-happy-grin"></i>
+                        <br>
+                        <span data-i18n="feedback#smiley_happy">
+                          Psiphon connects and performs the way I want it to.
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="feedback-choice"
+                            data-feedback-choice-value=1
+                            data-feedback-choice-hash="24f5c290039e5b0a2fd17bfcdb8d3108"
+                            data-feedback-choice-title="Overall satisfaction"
+                            data-match-height=".feedback-choice" data-match-height-align="center">
+                        <i class="icon-mad"></i>
+                        <br>
+                        <span data-i18n="feedback#smiley_sad">
+                          Psiphon often fails to connect or doesn't perform well enough.
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div><!-- /feedback-smiley-container -->
+
             <div>
-              <p data-i18n="[html]feedback#top_para_2">
-                Many problems can be fixed by downloading the latest version. You can
-                <a class="NewVersionURL" href="#">download the latest version by clicking here</a>,
-                or you can send an email to <a class="NewVersionEmail" href="#"></a>.
-              </p>
-              <p data-i18n="[html]feedback#top_para_3">
-                You can also find solutions to many common problems in our
-                <a class="FaqURL" href="#">Frequently Asked Questions</a>.
-              </p>
+              <label for="feedback-comments" data-i18n="feedback#text_feedback_prompt">
+                Please enter your comments here:
+              </label>
+              <textarea class="input-block-level" id="feedback-comments" rows="3"></textarea>
             </div>
 
-            <form id="feedback-form" action="feedback" method="get">
+            <div>
+              <label for="feedback-email" data-i18n="feedback#text_feedback_email_prompt">
+                If you would like us to respond to you, please enter your email address:
+              </label>
+              <input type="email" id="feedback-email" class="input-block-level">
+            </div>
 
-              <div class="feedback-smiley-container">
-                <table class="feedback-smiley">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="happy feedback-choice"
-                             data-feedback-choice-value=0
-                             data-feedback-choice-hash="24f5c290039e5b0a2fd17bfcdb8d3108"
-                             data-feedback-choice-title="Overall satisfaction"
-                             data-match-height=".feedback-choice" data-match-height-align="center">
-                          <i class="icon-happy-grin"></i>
-                          <br>
-                          <span data-i18n="feedback#smiley_happy">
-                            Psiphon connects and performs the way I want it to.
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="sad feedback-choice"
-                             data-feedback-choice-value=1
-                             data-feedback-choice-hash="24f5c290039e5b0a2fd17bfcdb8d3108"
-                             data-feedback-choice-title="Overall satisfaction"
-                             data-match-height=".feedback-choice" data-match-height-align="center">
-                          <i class="icon-mad"></i>
-                          <br>
-                          <span data-i18n="feedback#smiley_sad">
-                            Psiphon often fails to connect or doesn't perform well enough.
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div><!-- /feedback-smiley-container -->
-
-              <div>
-                <label for="feedback-comments" data-i18n="feedback#text_feedback_prompt">
-                  Please enter your comments here:
-                </label>
-                <textarea class="input-block-level" id="feedback-comments" rows="3"></textarea>
-              </div>
-
-              <div>
-                <label for="feedback-email" data-i18n="feedback#text_feedback_email_prompt">
-                  If you would like us to respond to you, please enter your email address:
-                </label>
-                <input type="email" id="feedback-email" class="input-block-level">
-              </div>
-
-              <div>
-                <div class="checkbox-container">
-                  <div class="controls checkbox">
-                    <input type="checkbox" checked="true" id="feedback-send-diagnostic">
-                    <label for="feedback-send-diagnostic">
-                      <span data-i18n="[html]feedback#diagnostic_check">
-                        Upload diagnostic data. Please note that this diagnostic data does not
-                        identify you, and it will help us to keep Psiphon running smoothly.
-                        <a class="DataCollectionInfoURL" href="#">Click here to see what data we collect.</a>
-                      </span>
-                    </label>
-                  </div>
+            <div>
+              <div class="checkbox-container">
+                <div class="controls checkbox">
+                  <input type="checkbox" checked="true" id="feedback-send-diagnostic">
+                  <label for="feedback-send-diagnostic">
+                    <span data-i18n="[html]feedback#diagnostic_check">
+                      Upload diagnostic data. Please note that this diagnostic data does not
+                      identify you, and it will help us to keep Psiphon running smoothly.
+                      <a class="DataCollectionInfoURL" href="#">Click here to see what data we collect.</a>
+                    </span>
+                  </label>
                 </div>
               </div>
+            </div>
 
-              <div class="form-actions">
-                <a id="feedback-submit" class="btn btn-primary btn-large" data-i18n="feedback#submit_button">
-                  Submit
-                </a>
-              </div>
-            </form>
+            <div class="form-actions">
+              <a id="feedback-submit" class="btn btn-primary btn-large" data-i18n="feedback#submit_button">
+                Submit
+              </a>
+            </div>
+          </form>
 
-          </div><!-- /questionnaire content -->
+          <!-- /questionnaire content -->
 
           <div class="help-block" data-i18n="[html]feedback#text_feedback_bottom_para">
             If the above form is not working, or you would like to send screenshots, please email us at
@@ -1475,38 +1678,35 @@
 
         <!-- LOGS ==========================================================-->
         <div class="tab-pane fade" id="logs-pane">
-          <div>
-            <div class="checkbox-container">
-              <div class="controls checkbox invisible">
-                <input type="checkbox" id="show-debug-logs"/>
-                <label for="show-debug-logs">
-                  <span data-i18n="logs#show-debug-label">
-                    Show debug logs
-                  </span>
-                </label>
-              </div>
+          <div class="checkbox-container">
+            <div class="controls checkbox invisible">
+              <input type="checkbox" id="show-debug-logs"/>
+              <label for="show-debug-logs">
+                <span data-i18n="logs#show-debug-label">
+                  Show debug logs
+                </span>
+              </label>
             </div>
-
-            <!-- We're forcing this to LTR since logs aren't translated -->
-            <table dir="ltr" class="log-messages table">
-              <tr class="placeholder">
-                <td data-i18n="logs#placeholder">
-                  No logs yet
-                </td>
-              </tr>
-            </table>
-
-            <!-- Log template -->
-            <script type="text/html" id="log-template">
-              <tr data-class="priority">
-                <td class="timestamp" data-content-text="timestamp">
-                </td>
-                <td class="message" data-content-text="message">
-                </td>
-              </tr>
-            </script>
-
           </div>
+
+          <!-- We're forcing this to LTR since logs aren't translated -->
+          <table dir="ltr" class="log-messages table">
+            <tr class="placeholder">
+              <td data-i18n="logs#placeholder">
+                No logs yet
+              </td>
+            </tr>
+          </table>
+
+          <!-- Log template -->
+          <script type="text/html" id="log-template">
+            <tr data-class="priority">
+              <td class="timestamp" data-content-text="timestamp">
+              </td>
+              <td class="message" data-content-text="message">
+              </td>
+            </tr>
+          </script>
         </div><!-- /logs-pane -->
 
 
@@ -1561,7 +1761,8 @@
           <script type="text/html" id="locale-template">
             <div class="language-item">
               <a href="#" class="language-choice"
-                 data-value="localeCode" data-content-text="localeName"></a>
+                 data-template-bind='[{"attribute": "data-locale", "value": "localeCode"}]'
+                 data-content-text="localeName"></a>
             </div>
           </script>
         </div><!-- /language-pane -->
@@ -1569,7 +1770,7 @@
 
         <!-- DEBUG =========================================================-->
         <div class="tab-pane fade" id="debug-pane">
-          <form class="form-inline">
+          <form class="form-inline" action="">
             <label>Change connection state</label>
             <select id="debug-state">
               <option value="starting">starting</option>
@@ -1581,7 +1782,7 @@
 
           <hr>
 
-          <form class="form-inline" id="debug-log">
+          <form class="form-inline" id="debug-log" action="">
             <label>Add log</label>
             <select style="width:7em">
               <option value="1" selected>normal</option>
@@ -1594,7 +1795,7 @@
 
           <hr>
 
-          <form class="form-inline" id="debug-AvailableEgressRegions">
+          <form class="form-inline" id="debug-AvailableEgressRegions" action="">
             <label>Notice:AvailableEgressRegions</label>
 
             <div class="checkbox-container">
@@ -1824,7 +2025,7 @@
 
           <hr>
 
-          <form class="form-inline" id="debug-UpstreamProxyError">
+          <form class="form-inline" id="debug-UpstreamProxyError" action="">
             <label>Notice:UpstreamProxyError</label>
             <input type="text" placeholder="optional message">
             <a class="btn btn-primary"><i class="icon-arrow-right"></i></a>
@@ -1835,7 +2036,7 @@
 
           <hr>
 
-          <form class="form-inline" id="debug-TrafficRateLimits">
+          <form class="form-inline" id="debug-TrafficRateLimits" action="">
             <label>Notice:TrafficRateLimits</label>
             <input type="text" placeholder="threshold is 655360" value="500000">
             <a class="btn btn-primary"><i class="icon-arrow-right"></i></a>
@@ -1846,32 +2047,33 @@
           <p>
             Simple notices resulting in modals or log lines:
           </p>
-          <style>
-            #debug-modal-notices li {
-              list-style: none;
-            }
-          </style>
           <ul id="debug-modal-notices">
             <li>
-              <form class="form-inline" id="debug-HttpProxyPortInUse">
+              <form class="form-inline" id="debug-URLCopiedToClipboard" action="">
+                <label>Notice:PsiphonUI::URLCopiedToClipboard (alert)</label>
+                <a class="btn btn-primary"><i class="icon-arrow-right"></i></a>
+              </form>
+            </li>
+            <li>
+              <form class="form-inline" id="debug-HttpProxyPortInUse" action="">
                 <label>Notice:HttpProxyPortInUse (modal)</label>
                 <a class="btn btn-primary"><i class="icon-arrow-right"></i></a>
               </form>
             </li>
             <li>
-              <form class="form-inline" id="debug-SocksProxyPortInUse">
+              <form class="form-inline" id="debug-SocksProxyPortInUse" action="">
                 <label>Notice:SocksProxyPortInUse (modal)</label>
                 <a class="btn btn-primary"><i class="icon-arrow-right"></i></a>
               </form>
             </li>
             <li>
-              <form class="form-inline" id="debug-SetProxyError">
+              <form class="form-inline" id="debug-SetProxyError" action="">
                 <label>Notice:SystemProxySettings::SetProxyError (modal)</label>
                 <a class="btn btn-primary"><i class="icon-arrow-right"></i></a>
               </form>
             </li>
             <li>
-              <form class="form-inline" id="debug-SetProxyWarning">
+              <form class="form-inline" id="debug-SetProxyWarning" action="">
                 <label>Notice:SystemProxySettings::SetProxyWarning (log)</label>
                 <a class="btn btn-primary"><i class="icon-arrow-right"></i></a>
               </form>
@@ -1880,7 +2082,7 @@
 
           <hr>
 
-          <form class="form-inline" id="debug-UpdateDpiScaling">
+          <form class="form-inline" id="debug-UpdateDpiScaling" action="">
             <label>UpdateDpiScaling</label>
             <input type="text" placeholder="1.0, 1.2, 1.5, 2.0, ..." style="width:3em">
             <a class="btn btn-primary"><i class="icon-arrow-right"></i></a>
@@ -1888,19 +2090,23 @@
 
           <hr>
 
-          <form class="form-inline" id="debug-RefreshPsiCash">
+          <form class="form-inline" id="debug-RefreshPsiCash" action="">
             <label>RefreshPsiCash</label>
-            <label><input type="checkbox" id="debug-RefreshPsiCash-isAccount">isAccount</label>
             <input id="debug-RefreshPsiCash-balance" type="number" step="0.1" min="0" placeholder="balance in gigapsi" style="width:10em">
             <input id="debug-RefreshPsiCash-price-1hr" type="number" step="0.1" min="0" placeholder="1hr price in gigapsi" style="width:10em">
             <input id="debug-RefreshPsiCash-price-24hr" type="number" step="0.1" min="0" placeholder="24hr price in gigapsi" style="width:10em">
+            <input id="debug-RefreshPsiCash-price-7day" type="number" step="0.1" min="0" placeholder="7day price in gigapsi" style="width:10em">
+            <input id="debug-RefreshPsiCash-price-31day" type="number" step="0.1" min="0" placeholder="31day price in gigapsi" style="width:10em">
             <input id="debug-RefreshPsiCash-boost-remaining" type="number" step="1" placeholder="Boost mins remaining" style="width:10em">
+            <label><input type="checkbox" id="debug-RefreshPsiCash-isAccount">isAccount</label>
+            <label><input type="checkbox" id="debug-RefreshPsiCash-hasTokens" checked>hasTokens</label>
+            <input id="debug-RefreshPsiCash-accountUsername" type="text" placeholder="account username" style="width:10em;">
             <a class="btn btn-primary"><i class="icon-arrow-right"></i></a>
           </form>
 
           <hr>
 
-          <form class="form-inline" id="debug-PsiCashSpeedBoost">
+          <form class="form-inline" id="debug-PsiCashSpeedBoost" action="">
             <label>PsiCash SpeedBoost Purchase Response</label>
             <select id="debug-PsiCashSpeedBoost-response">
               <option value="Success">Success</option>
@@ -1916,7 +2122,7 @@
 
           <hr>
 
-          <form class="form-inline" id="debug-PsiCashLogin">
+          <form class="form-inline" id="debug-PsiCashLogin" action="">
             <label>PsiCash Account Login Response</label>
             <select id="debug-PsiCashLogin-response">
               <option value="Success">Success</option>
@@ -1930,7 +2136,7 @@
 
           <hr>
 
-          <form class="form-inline" id="debug-PsiCashLogout">
+          <form class="form-inline" id="debug-PsiCashLogout" action="">
             <label>PsiCash Account Logout Response</label>
             <select id="debug-PsiCashLogout-response">
               <option value="Success">Success</option>
@@ -1940,7 +2146,7 @@
 
           <hr>
 
-          <form class="form-inline" id="debug-PsiCashInitDone">
+          <form class="form-inline" id="debug-PsiCashInitDone" action="">
             <label>PsiCash Init()</label>
             <label><input type="checkbox" id="debug-PsiCashInitDone-error">error</label>
             <label><input type="checkbox" id="debug-PsiCashInitDone-recovered">recovered</label>
@@ -1949,7 +2155,7 @@
 
           <hr>
 
-          <form class="form-inline" id="debug-DisallowedTraffic">
+          <form class="form-inline" id="debug-DisallowedTraffic" action="">
             <label>Disallowed Traffic Server Alert</label>
             <a class="btn btn-primary"><i class="icon-arrow-right"></i></a>
           </form>
@@ -1993,142 +2199,176 @@
 
   <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
   <div id="psicash-buyspeedboost-purchase-complete" class="alert alert-success global-alert" style="display:none"
-       data-i18n="psicash#buyspeedboost-purchase-complete">
-    Speed&nbsp;Boost started!
+       data-i18n="psicash#alert#buyspeedboost-purchase-complete">
+    Speed Boost started!
   </div>
 
-  <!-- Modal dialog shown to user when there's an upstream proxy error -->
+  <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
+  <div id="alert-url-copied-to-clipboard" class="alert alert-warning global-alert" style="display:none"
+       data-i18n="[html]ui#alert#url-copied-to-clipboard">
+    URL copied to clipboard. If browser fails to open, paste the URL into the browser address bar.
+  </div>
+
+  <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
+  <div id="psicash-account-tokens-expired-alert" class="alert alert-warning global-alert" style="display:none"
+       data-i18n="psicash#alert#tokens-expired">
+       PsiCash login expired. Please log back in.
+  </div>
+
+  <!-- General purpose modal dialog with optional technical details; typically used for errors -->
   <div class="modal fade" id="NoticeModal" tabindex="-1" role="dialog"
        aria-labelledby="NoticeModalTitle" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title" id="NoticeModalTitle">
-            NoticeModalTitle
-          </h3>
-        </div>
-        <div class="modal-body">
-          <div class="notice-modal-body">
-          </div>
-          <div class="notice-modal-tech">
-            <br>
-            <p class="notice-modal-tech-preamble">
-            </p>
-            <p>
-              <!-- Don't try to newline+indent this HTML. The <pre> will interpret it literally. -->
-              <pre><code class="notice-modal-tech-info">technical info will go here</code></pre>
-            </p>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">
-            <span data-i18n="general#modal-close-button">
-              Close
-            </span>
-          </button>
-        </div>
+    <div class="modal-header">
+      <h3 class="js-modal-title" id="NoticeModalTitle">
+        NoticeModalTitle
+      </h3>
+    </div>
+    <div class="modal-body">
+      <i class="paragraph-icon paragraph-icon__warning icon-circle-minus hidden"></i>
+      <i class="paragraph-icon paragraph-icon__error icon-prohibited hidden"></i>
+      <i class="paragraph-icon paragraph-icon__info icon-notification hidden"></i>
+      <i class="paragraph-icon paragraph-icon__success icon-checkmark-circle hidden"></i>
+
+      <div class="js-notice-modal-body">
       </div>
+      <div class="js-notice-modal-tech">
+        <br>
+        <p class="js-notice-modal-tech-preamble">
+        </p>
+        <p>
+          <!-- Don't try to newline+indent this HTML. The <pre> will interpret it literally. -->
+          <pre><code class="js-notice-modal-tech-info">technical info will go here</code></pre>
+        </p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" data-dismiss="modal">
+        <span data-i18n="general#modal-close-button">
+          Close
+        </span>
+      </button>
     </div>
   </div><!-- /NoticeModal -->
 
   <!-- Modal dialog shown to user when they try to navigate away from settings without applying changes -->
   <div class="modal fade" id="SettingsUnappliedChangesPrompt" tabindex="-1" role="dialog"
        aria-labelledby="SettingsUnappliedChangesPromptTitle" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title" id="SettingsUnappliedChangesPromptTitle">
-            <span data-i18n="settings#unapplied-changes-prompt#title">
-              Settings Changed
-            </span>
-          </h3>
-        </div>
-        <div class="modal-body">
-          <p data-i18n="[html]settings#unapplied-changes-prompt#body">
-            You have made changes to your settings, but you have not applied the changes.
-            <br><br>
-            Do you wish to apply your changes now or discard them?
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary apply-button">
-            <span data-i18n="settings#unapplied-changes-prompt#apply-button">
-              Apply
-            </span>
-          </button>
-          <button type="button" class="btn btn-warning discard-button">
-            <span data-i18n="settings#unapplied-changes-prompt#discard-button">
-              Discard
-            </span>
-          </button>
-        </div>
-      </div>
+    <div class="modal-header">
+      <h3 class="js-modal-title" id="SettingsUnappliedChangesPromptTitle">
+        <span data-i18n="settings#unapplied-changes-prompt#title">
+          Settings Changed
+        </span>
+      </h3>
+    </div>
+    <div class="modal-body">
+      <p data-i18n="[html]settings#unapplied-changes-prompt#body">
+        You have made changes to your settings, but you have not applied the changes.
+        <br><br>
+        Do you wish to apply your changes now or discard them?
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary js-apply-button">
+        <span data-i18n="settings#unapplied-changes-prompt#apply-button">
+          Apply
+        </span>
+      </button>
+      <button type="button" class="btn btn-warning js-discard-button">
+        <span data-i18n="settings#unapplied-changes-prompt#discard-button">
+          Discard
+        </span>
+      </button>
     </div>
   </div><!-- /SettingsUnappliedChangesPrompt -->
 
   <!-- Modal dialog used for logging into PsiCash account -->
   <div class="modal fade" id="PsiCashAccountLogin" tabindex="-1" role="dialog"
     aria-labelledby="PsiCashAccountLoginTitle" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title" id="PsiCashAccountLoginTitle">
-            <span><!-- TODO: i18n -->
-              PsiCash Account
-            </span>
-          </h3>
-        </div>
-        <div class="modal-body">
-          <p><!-- TODO: i18n -->
-            <a class="PsiCashAccountSignupURL" href="#">Create a new account</a> or log in below.
-          </p>
-          <form class="form-horizontal">
-            <fieldset>
-              <div class="control-group">
-                <label for="AccountUsername" class="control-label"><!-- TODO: i18n -->
-                  Username
-                </label>
-                <div class="controls">
-                  <input type="text" id="AccountUsername" autocomplete="off"
-                    autocorrect="off" autocapitalize="off" spellcheck="false" />
-                </div>
-              </div>
-
-              <div class="control-group">
-                <label for="AccountPassword" class="control-label"><!-- TODO: i18n -->
-                  Password
-                </label>
-                <div class="controls">
-                  <input type="password" id="AccountPassword" autocomplete="off"
-                    autocorrect="off" autocapitalize="off" spellcheck="false" />
-                </div>
-              </div>
-            </fieldset>
-          </form>
-
-        </div><!-- .modal-body -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary submit-button">
-            <span><!-- TODO: i18n -->
-              Submit
-            </span>
-          </button>
-          <button type="button" class="btn btn-warning cancel-button" data-dismiss="modal">
-            <span><!-- TODO: i18n -->
-              Cancel
-            </span>
-          </button>
-        </div>
-      </div>
+    <div class="modal-header">
+      <h3 class="js-modal-title" id="PsiCashAccountLoginTitle">
+        <span data-i18n="psicash#modal-login-header">
+          PsiCash Account
+        </span>
+      </h3>
     </div>
-  </div><!-- /SettingsUnappliedChangesPrompt -->
+    <div class="modal-body">
+      <p data-i18n="[html]psicash#modal-login-body">
+        <a class="js-psicash-account-signup" href="#">Create a new account</a> or log in below.
+      </p>
+      <form class="form-horizontal" action="">
+        <fieldset>
+          <div class="control-group">
+            <label for="AccountUsername" class="control-label" data-i18n="psicash#modal-login-username-field">
+              Username
+            </label>
+            <div class="controls">
+              <input type="text" id="AccountUsername" autocomplete="off"
+                autocorrect="off" autocapitalize="off" spellcheck="false" />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="AccountPassword" class="control-label" data-i18n="psicash#modal-login-password-field">
+              Password
+            </label>
+            <div class="controls">
+              <input type="password" id="AccountPassword" autocomplete="off"
+                autocorrect="off" autocapitalize="off" spellcheck="false" />
+            </div>
+          </div>
+        </fieldset>
+      </form>
+
+    </div><!-- .modal-body -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary js-submit-button">
+        <span data-i18n="psicash#modal-login-submit-button">
+          Submit
+        </span>
+      </button>
+      <button type="button" class="btn btn-warning js-cancel-button" data-dismiss="modal">
+        <span data-i18n="psicash#modal-login-cancel-button">
+          Cancel
+        </span>
+      </button>
+    </div>
+  </div><!-- /PsiCashAccountLogin -->
+
+  <!-- Modal dialog shown to user to encourage making a PsiCash account -->
+  <div class="modal fade" id="PsiCashAccountEncouragement" tabindex="-1" role="dialog"
+    aria-labelledby="PsiCashAccountEncouragementTitle" aria-hidden="true" style="display: none;">
+    <div class="modal-header">
+      <h3 class="js-modal-title" id="PsiCashAccountEncouragementTitle">
+        <span data-i18n="psicash#modal-create-psicash-account-header">
+          Create a PsiCash Account
+        </span>
+      </h3>
+    </div>
+    <div class="modal-body">
+      <p data-i18n="psicash#modal-create-psicash-account-body">
+        We strongly encourage you to make a PsiCash account. Having an account allows you to share your balance between devices and protect your purchases.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary js-submit-button">
+        <span data-i18n="psicash#modal-create-psicash-account-create-button">
+          Create account
+        </span>
+      </button>
+      <button type="button" class="btn btn-warning js-cancel-button">
+        <span data-i18n="psicash#modal-create-psicash-account-continue-button">
+          Continue without account
+        </span>
+      </button>
+    </div>
+  </div><!-- /PsiCashAccountEncouragement -->
 
   <!--[if lt IE 8]>
   <script src="vendor/json2.js?__inline=true"></script>
   <![endif]-->
   <script src="node_modules/lodash-compat/index.js?__inline=true"></script>
   <script src="vendor/bootstrap-2.3.2/js/bootstrap.js?__inline=true"></script>
-  <script src="vendor/jquery.loadTemplate-1.4.5.min.js?__inline=true"></script>
+  <script src="vendor/jquery.loadTemplate-1.5.10.min.js?__inline=true"></script>
   <script src="vendor/jquery.textfill.js?__inline=true"></script>
   <script src="vendor/i18next.min.js?__inline=true"></script>
   <script src="vendor/moment-with-locales-2.24.0.min.js?__inline=true"></script>

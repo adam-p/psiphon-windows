@@ -62,7 +62,6 @@
       g_initObj.Config.FaqURL = g_initObj.Config.FaqURL || 'https://example.com/browser-FaqURL/en/faq.html';
       g_initObj.Config.DataCollectionInfoURL =
         g_initObj.Config.DataCollectionInfoURL || 'https://example.com/browser-DataCollectionInfoURL/en/privacy.html#information-collected';
-      g_initObj.Config.PsiCashAccountSignupURL = g_initObj.Config.PsiCashAccountSignupURL || 'https://example.com/signup?utm_source=browser-PsiCashAccountSignupURL';
       g_initObj.Config.DpiScaling = 1.0;
       g_initObj.Config.Debug = g_initObj.Config.Debug || true;
 
@@ -81,7 +80,7 @@
     }
 
     // Set the logo "info" link
-    $('.logo a').attr('href', g_initObj.Config.InfoURL).attr('title', g_initObj.Config.InfoURL);
+    $('.js-logo a').attr('href', g_initObj.Config.InfoURL).attr('title', g_initObj.Config.InfoURL);
 
     // Update the logo when the connected state changes
     $window.on(CONNECTED_STATE_CHANGE_EVENT, updateLogoConnectState);
@@ -95,31 +94,40 @@
       HtmlCtrlInterface_BannerClick();
     });
 
+    // Some elements besides the nav tabs switch to panes. Add handlers for that.
+    // Using `data-toggle`+`data-target` isn't good enough, as it doesn't result in the
+    // nav tab being activated.
+    $('[data-tab-switch]').on('click', function(e) {
+      e.preventDefault();
+      const target = $(this).data('tab-switch');
+      switchToTab(target, null);
+    });
+
     // Links to the download site and email address are parameterized and need to
     // be updated when the language changes.
-    var updateLinks = nextTickFn(function updateLinks() {
+    const updateLinks = nextTickFn(function updateLinks() {
       // For some languages we alter the "download site" links to point directly
       // to that language. But the site has different available languages than
       // this application does, so we don't just do it blindly.
-      var defaultLang = 'en';
-      var siteLangs = ['fa', 'zh'];
-      var currentLang = i18n.lng();
-      var replaceLang = _.includes(siteLangs, currentLang) ? currentLang : defaultLang;
-      var url;
+      const defaultLang = 'en';
+      const siteLangs = ['fa', 'zh'];
+      const currentLang = i18n.lng();                   // en_US
+      //const currentHTMLJSlang = $('html').prop('lang'); // en-US // unused
+      const replaceLang = _.includes(siteLangs, currentLang) ? currentLang : defaultLang;
 
       // Note that we're using the function-as-replacement form for String.replace()
       // because we don't entirely control the content of the language names, and
       // we don't want to run into any issues with magic values:
       // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_string_as_a_parameter
 
-      var replaceFn = function(match, p1, p2) {
+      const replaceFn = function(match, p1, p2) {
           return p1 + '/' + replaceLang + '/' + p2;
         };
 
       // This link may be to the redirect meta page (/index.html) or to a language-specific
       // page (/en/index.html). If it's to the meta page, we won't force to English, otherwise we will.
       // First change it to the meta page if it's not already
-      url = g_initObj.Config.InfoURL.replace('/en/', '/');
+      let url = g_initObj.Config.InfoURL.replace('/en/', '/');
       // Then force the language, but not to English
       if (replaceLang !== defaultLang) {
         // We're using the function form of
@@ -127,7 +135,7 @@
       }
       $('.InfoURL').attr('href', url).attr('title', url);
 
-      var regex = /^([^?#]*)\/en\/(.*)$/;
+      const regex = /^([^?#]*)\/en\/(.*)$/;
 
       url = g_initObj.Config.NewVersionURL.replace(regex, replaceFn);
       $('.NewVersionURL').attr('href', url).attr('title', url);
@@ -137,8 +145,6 @@
 
       url = g_initObj.Config.DataCollectionInfoURL.replace(regex, replaceFn);
       $('.DataCollectionInfoURL').attr('href', url).attr('title', url);
-
-      $('.PsiCashAccountSignupURL').attr('href', g_initObj.Config.PsiCashAccountSignupURL);
 
       // No replacement on the email address
       $('.NewVersionEmail').attr('href', 'mailto:' + g_initObj.Config.NewVersionEmail)
@@ -189,13 +195,13 @@
     // We want the content part of our window to fill the window, we don't want
     // excessive scroll bars, etc. It's difficult to do "fill the remaining height"
     // with just CSS, so we're going to do some on-resize height adjustment in JS.
-    var fillHeight = $window.innerHeight() - $('.main-height').position().top;
+    var fillHeight = $window.innerHeight() - $('.js-main-height').position().top;
     var footerHeight = $('.footer').outerHeight();
-    $('.main-height').outerHeight((fillHeight - footerHeight) / g_initObj.Config.DpiScaling);
-    $('.main-height').parentsUntil('body').add($('.main-height').siblings()).css('height', '100%');
+    $('.js-main-height').outerHeight((fillHeight - footerHeight) / g_initObj.Config.DpiScaling);
+    $('.js-main-height').parentsUntil('body').add($('.js-main-height').siblings()).css('height', '100%');
 
     // Let the panes know that content resized
-    $('.main-height').trigger('resize');
+    $('.js-main-height').trigger('resize');
 
     doMatchHeight();
     doMatchWidth();
@@ -301,8 +307,8 @@
   // Update the main connect button, as well as the connection indicator on the tab.
   function updateLogoConnectState() {
     var newSrc, stoppedSrc, connectedSrc;
-    stoppedSrc = $('.logo img').data('stopped-src');
-    connectedSrc = $('.logo img').data('connected-src');
+    stoppedSrc = $('.js-logo img').data('stopped-src');
+    connectedSrc = $('.js-logo img').data('connected-src');
 
     if (g_lastState === 'connected') {
       newSrc = connectedSrc;
@@ -311,7 +317,7 @@
       newSrc = stoppedSrc;
     }
 
-    $('.logo img').prop('src', newSrc);
+    $('.js-logo img').prop('src', newSrc);
   }
 
 
@@ -329,7 +335,7 @@
     egressRegionComboSetup();
 
     // Update the size of our elements when the tab content element resizes...
-    $('.main-height').on('resize', function() {
+    $('.js-main-height').on('resize', function() {
       // Only if this tab is active
       if ($('#connection-pane').hasClass('active')) {
         nextTick(resizeConnectContent);
@@ -439,13 +445,13 @@
     }
 
     function connectAttemptTooLong() {
-      $('.long-connecting-hide').addClass('hidden');
-      $('.long-connecting-show').removeClass('hidden');
+      $('.js-hide-if-long-connecting').addClass('hidden');
+      $('.js-show-if-long-connecting').removeClass('hidden');
     }
 
     function connectAttemptTooLongReset() {
-      $('.long-connecting-hide').removeClass('hidden');
-      $('.long-connecting-show').addClass('hidden');
+      $('.js-hide-if-long-connecting').removeClass('hidden');
+      $('.js-show-if-long-connecting').addClass('hidden');
     }
   }
 
@@ -578,7 +584,7 @@
     });
 
     // Change the accordion heading icon on expand/collapse
-    $('.accordion-body')
+    $('.js-accordion-body')
       .on('show', function() {
         var headingSelector = '.accordion-toggle[href="#' + this.id + '"]';
         $(headingSelector).addClass('accordion-expanded');
@@ -648,7 +654,7 @@
       // Note: If we don't first remove existing click handlers (with .off), then
       // the handler that wasn't clicked last time will still be present.
 
-      $modal.find('.apply-button').off('click').one('click', function() {
+      $modal.find('.js-apply-button').off('click').one('click', function() {
         $modal.modal('hide');
         if (applySettings()) {
           enableSettingsApplyButton(false);
@@ -659,7 +665,7 @@
         }
       });
 
-      $modal.find('.discard-button').off('click').one('click', function() {
+      $modal.find('.js-discard-button').off('click').one('click', function() {
         $modal.modal('hide');
         refreshSettings(g_initObj.Settings);
         enableSettingsApplyButton(false);
@@ -922,6 +928,7 @@
     showNoticeModal(
       'settings#error-modal#title',
       'settings#error-modal#body',
+      'error',
       null, null,
       function() {
         showSettingErrorSection();
@@ -1027,7 +1034,7 @@
     var valid = $currRegionElem.length > 0 && !$currRegionElem.hasClass('hidden');
 
     $('#EgressRegion').toggleClass('error', !valid);
-    $('#settings-accordion-egress-region .egress-region-invalid').toggleClass('hidden', valid);
+    $('#settings-accordion-egress-region .js-egress-region-invalid').toggleClass('hidden', valid);
 
     updateErrorAlert();
     return valid;
@@ -1047,6 +1054,7 @@
     showNoticeModal(
       'settings#egress-region#error-modal-title',
       'settings#egress-region#error-modal-body-http',
+      'warning',
       null, null, null);
 
     showSettingsSection('#settings-accordion-egress-region');
@@ -1132,12 +1140,12 @@
 
     if (httpPort !== false) {
       // Remove port value error message
-      $('.help-inline.LocalHttpProxyPort').addClass('hidden');
+      $('.help-inline.js-LocalHttpProxyPort').addClass('hidden');
     }
 
     if (socksPort !== false) {
       // Remove port value error message
-      $('.help-inline.LocalSocksProxyPort').addClass('hidden');
+      $('.help-inline.js-LocalSocksProxyPort').addClass('hidden');
     }
 
     if (unique) {
@@ -1148,13 +1156,13 @@
     if (httpPort === false) {
       // Add HTTP port error state
       $('#LocalHttpProxyPort').parents('.control-group').addClass('error');
-      $('.help-inline.LocalHttpProxyPort').removeClass('hidden');
+      $('.help-inline.js-LocalHttpProxyPort').removeClass('hidden');
     }
 
     if (socksPort === false) {
       // Add SOCKS port error state
       $('#LocalSocksProxyPort').parents('.control-group').addClass('error');
-      $('.help-inline.LocalSocksProxyPort').removeClass('hidden');
+      $('.help-inline.js-LocalSocksProxyPort').removeClass('hidden');
     }
 
     if (!unique) {
@@ -1180,6 +1188,7 @@
     showNoticeModal(
       'settings#local-proxy-ports#error-modal-title',
       bodyKey,
+      'error',
       null, null, null);
 
     // Switch to the appropriate settings section
@@ -1244,12 +1253,12 @@
     let portOK = validatePort($('#UpstreamProxyPort').val()) !== false;
     if (skip || portOK) {
       // Hide the port-specific message
-      $('.help-inline.UpstreamProxyPort').addClass('hidden')
+      $('.help-inline.js-UpstreamProxyPort').addClass('hidden')
         .parents('.control-group').removeClass('error');
     } else {
       valid = false;
       // Port value bad. Show error while typing
-      $('.help-inline.UpstreamProxyPort').removeClass('hidden')
+      $('.help-inline.js-UpstreamProxyPort').removeClass('hidden')
         .parents('.control-group').addClass('error');
     }
 
@@ -1294,8 +1303,8 @@
   // is set.
   function skipUpstreamProxyUpdate() {
     var skipUpstreamProxy = $('#SkipUpstreamProxy').prop('checked');
-    $('.skip-upstream-proxy-incompatible input').prop('disabled', skipUpstreamProxy);
-    $('.skip-upstream-proxy-incompatible').toggleClass('disabled-text', skipUpstreamProxy);
+    $('.js-skip-upstream-proxy-incompatible input').prop('disabled', skipUpstreamProxy);
+    $('.js-skip-upstream-proxy-incompatible').toggleClass('disabled-text', skipUpstreamProxy);
   }
 
   // The occurrence of an upstream proxy error might mean that a tunnel cannot
@@ -1350,6 +1359,7 @@
       showNoticeModal(
         'settings#upstream-proxy#error-modal-title',
         bodyKey,
+        'error',
         'general#notice-modal-tech-preamble',
         errorMessage,
         function() {
@@ -1389,7 +1399,10 @@
         .prop('disabled', vpn).toggleClass('disabled', vpn);
     $('.vpn-incompatible-msg').toggleClass('hidden', !vpn);
     $('.vpn-incompatible').toggleClass('disabled-text', vpn);
-    $('.vpn-incompatible-hide').toggleClass('hidden', vpn);
+    $('.js-vpn-incompatible-hide').toggleClass('hidden', vpn);
+
+    // The VPN mode also has implications for the PsiCash UI, so update it as well.
+    psiCashUIUpdater();
   }
 
   //
@@ -1568,11 +1581,11 @@
 
   // Used for temporary debugging messages.
   function DEBUG_LOG() {
-    debugLogHelper(window.console.log, Array.prototype.slice.call(arguments))
+    debugLogHelper(window.console.log, Array.prototype.slice.call(arguments));
   }
 
   function DEBUG_WARN() {
-    debugLogHelper(window.console.warn, Array.prototype.slice.call(arguments))
+    debugLogHelper(window.console.warn, Array.prototype.slice.call(arguments));
   }
 
   function debugLogHelper(consoleLogger, args) {
@@ -1755,7 +1768,7 @@
     // Set up the click handlers
     $('.language-choice').click(function(e) {
       e.preventDefault();
-      switchLocale($(this).attr('value'));
+      switchLocale($(this).data('locale'));
     });
   }
 
@@ -1815,8 +1828,9 @@
     * @property {!string} id
     * @property {!string} class
     * @property {!string} distinguisher
-    * @property {?moment} localTimeExpiry;
-    * @property {?moment} serverTimeExpiry;
+    * @property {!any} authorization
+    * @property {?moment} localTimeExpiry
+    * @property {?moment} serverTimeExpiry
     */
 
   /**
@@ -1831,11 +1845,14 @@
    * The expected payload passed to HtmlCtrlInterface_PsiCashMessage when a refresh should be done.
    * @typedef {Object} PsiCashRefreshData
    * @property {boolean} is_account
-   * @property {string[]} valid_token_types
+   * @property {boolean} has_tokens
+   * @property {?string} account_username Will be set iff is_account is true and has_tokens is true
    * @property {number} balance
    * @property {PsiCashPurchasePrice[]} purchase_prices
    * @property {PsiCashPurchase[]} purchases
-   * @property {string} buy_psi_url
+   * @property {?string} buy_psi_url
+   * @property {string} account_signup_url
+   * @property {string} account_management_url
    */
 
   /**
@@ -1871,7 +1888,7 @@
     PURCHASE: 'purchase',
     LOGIN: 'login',
     LOGOUT: 'logout'
-  }
+  };
 
   /**
    * PsiCash command base class constrcutor
@@ -1973,7 +1990,8 @@
   /** @type {Datastore} */
   const PsiCashStore = new Datastore({
     initDone: false,
-    purchaseInProgress: false
+    purchaseInProgress: false,
+    uiState: null
   }, 'PsiCashStore');
 
   $(function psicashInit() {
@@ -2013,6 +2031,32 @@
       }
       HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('settings-changed'));
     });
+
+    // We're going to set this click handler on the parent rather than the link, since the
+    // link element is going to be replaced on each language change (alternatively, we
+    // could set this on language change, but this is easier and fine).
+    $('.vpn-mode-ui a').parent().on('click', function(e) {
+      e.preventDefault();
+      showSettingsSection('#settings-accordion-transport-mode');
+      return false;
+    });
+
+    // Disallow external links (that don't have their own special handlers) from opening
+    // if we're not connected (per PsiCash behaviour rules).
+    $('a.js-psicash-account-signup, a.js-psicash-account-management').on('click', function(e) {
+      if (g_lastState !== 'connected') {
+        e.preventDefault();
+        showNoticeModal(
+          'psicash#mustconnect-modal#title',
+          'psicash#mustconnect-modal#body',
+          'info',
+          null, null,
+          function() {
+            switchToTab('#connection-tab');
+          }
+        );
+      }
+    });
   });
 
   /**
@@ -2028,6 +2072,7 @@
         showNoticeModal(
           'psicash#init-error-title',
           'psicash#init-error-body-recovered',
+          'error',
           'general#notice-modal-tech-preamble',
           data.error,
           null); // callback
@@ -2036,6 +2081,7 @@
         showNoticeModal(
           'psicash#init-error-title',
           'psicash#init-error-body-unrecovered',
+          'error',
           'general#notice-modal-tech-preamble',
           data.error,
           null); // callback
@@ -2053,14 +2099,9 @@
    *    g_PsiCashData will be used.
    */
   function psiCashStateInitialized(psicashData) {
-    if (psicashData) {
-      g_PsiCashData = psicashData;
-    }
-
     // If we have tokens then we're initialized, or if we have an account (regardless of
     // tokens, because we might be logged out).
-    return (psicashData.valid_token_types && psicashData.valid_token_types.length > 0)
-      || (psicashData.is_account === true);
+    return psicashData.has_tokens || psicashData.is_account;
   }
 
   var PSICASH_ENABLED_COOKIE = 'psicash::Enabled';
@@ -2084,15 +2125,14 @@
    * @readonly
    */
   const PsiCashUIState = {
-    ZERO_BALANCE: {uiSelector: '#psicash-interface-zerobalance'},
-    NSF_BALANCE: {uiSelector: '#psicash-interface-nsfbalance'},
-    ENOUGH_BALANCE: {uiSelector: '#psicash-interface-enoughbalance'},
-    BUYING_BOOST: {uiSelector: '#psicash-interface-buyingboost'},
-    ACTIVE_BOOST: {uiSelector: '#psicash-interface-activeboost'},
-    VPN_MODE_DISABLED: {uiSelector: '#psicash-interface-vpndisabled'},
-    ACCOUNT_LOGGED_OUT: {uiSelector: '#psicash-interface-accountloggedout'}
+    NSF_BALANCE: {uiSelector: '#psicash-corner-nsfbalance'},
+    ENOUGH_BALANCE: {uiSelector: '#psicash-corner-enoughbalance'},
+    BUYING_BOOST: {uiSelector: '#psicash-corner-buyingboost'},
+    ACTIVE_BOOST: {uiSelector: '#psicash-corner-activeboost'},
+    VPN_MODE_DISABLED: {uiSelector: '#psicash-corner-vpndisabled'},
+    ACCOUNT_LOGGED_OUT: {uiSelector: '#psicash-corner-accountloggedout'}
   };
-  PsiCashStore.set('uiState', PsiCashUIState.ZERO_BALANCE);
+  PsiCashStore.set('uiState', PsiCashUIState.NSF_BALANCE);
 
   /**
    * Called from refreshPsiCash and on an interval to update the PsiCash UI.
@@ -2105,18 +2145,65 @@
       psiCashUIUpdater.timeout = null;
     }
 
+    // g_PsiCashData gets reassigned in the next if-block, but we want to be able to
+    // reference the previous state. Note that this may be null.
+    const oldPsiCashData = g_PsiCashData;
+
     if (psicashData) {
+      let reconnectRequired = false; // TBD below
+
       if (g_PsiCashData) {
         // For later diagnostics, log if psicashData values changed
         if (!_.isNaN(psicashData.balance) && psicashData.balance !== g_PsiCashData.balance) {
           HtmlCtrlInterface_Log('PsiCash: balance change:', psicashData.balance - g_PsiCashData.balance);
         }
         // TODO: Log other changes? Kind of a hassle.
+
+        // We might need to reconnect, based on the new data. There are two possible reasons:
+        // 1. If there are new purchases with authorizations present -- possibly due to a
+        //    new Speed Boost purchase or login purchase retrieval, then we need to
+        //    reconnect to have the authorization(s) take effect.
+        // 2. If there were authorizations active, but our tokens just disappeared
+        //    (due logout or expiry).
+        // Note that we _don't_ need to reconnect when an authorization expires,
+        // as that is handled by tunnel-core/psiphond.
+        if (psicashData.purchases) {
+          for (let i = 0; i < psicashData.purchases.length; i++) {
+            const newPurchase = psicashData.purchases[i];
+            if (!newPurchase.authorization) {
+              continue;
+            }
+            if (!g_PsiCashData.purchases) {
+              DEBUG_LOG('psiCashUIUpdated: reconnect required due to new purchase authorization');
+              reconnectRequired = true;
+              break;
+            }
+            if (!g_PsiCashData.purchases.some((p) => p.id === newPurchase.id)) {
+              DEBUG_LOG('psiCashUIUpdated: reconnect required due to unmatched purchase authorization');
+              reconnectRequired = true;
+              break;
+            }
+          }
+        }
+        if (!psicashData.has_tokens &&
+            g_PsiCashData.has_tokens &&
+            g_PsiCashData.purchases &&
+            g_PsiCashData.purchases.some((p) => !!p.authorization)) {
+          DEBUG_LOG('psiCashUIUpdated: reconnect required due to loss of tokens');
+          reconnectRequired = true;
+        }
       }
 
       g_PsiCashData = psicashData;
+
+      if (reconnectRequired) {
+        // We'll continue with our UI update, but we need to reconnect to apply
+        // newly-arrived purchases.
+        HtmlCtrlInterface_ReconnectTunnel(/*suppressHomePage=*/true);
+      }
     }
-    else if (!g_PsiCashData) {
+
+    if (!g_PsiCashData) {
       // No data to use, nothing to do.
       return;
     }
@@ -2158,61 +2245,17 @@
       }
     }
 
-    if ($('#psicash-block').hasClass('hidden')) {
-      $('#psicash-block').removeClass('hidden');
-
-      // Some layout actions like height-matching won't have succeeded while the
-      // UI was hidden. So do a content-resize with the newly visible content.
-      nextTick(resizeContent);
-    }
-
-    if (psicashData.buy_psi_url) {
-      const urlComp = urlComponents(psicashData.buy_psi_url);
-      urlComp.search +=  (urlComp.search ? '&' : '?') + 'utm_source=windows_app';
-      $('a.psicash-buy-psi').prop('href', urlComp.href).removeClass('hidden');
-    }
-    else {
-      // For some states (like zero balance), hiding the "buy" button will look strange, but
-      // since that implies there's no earner token, the whole PsiCash UI will be hidden anyway.
-      $('a.psicash-buy-psi').addClass('hidden');
-    }
-
-    let sbPrices = {};
-    if (psicashData.purchase_prices) {
-      // NOTE: This does not handle disappearing prices.
-      for (let i = 0; i < psicashData.purchase_prices.length; i++) {
-        let pp = psicashData.purchase_prices[i];
-
-        if (pp['class'] === 'speed-boost') {
-          sbPrices[pp.distinguisher] = pp.price;
-
-          $(`.psicash-sb-price[data-distinguisher="${pp.distinguisher}"]`).text(formatPsi(parseInt(pp.price)));
-          $(`.psicash-sb-price[data-distinguisher="${pp.distinguisher}"]`).data('expectedPrice', pp.price);
-        }
-      }
-    }
-
-    // Some UI elements are shown/hidden depending on the is-account status, independent
-    // of the overall UI state.
-    $('.show-if-is-account').toggleClass('hidden', !psicashData.is_account);
-    $('.show-if-not-is-account').toggleClass('hidden', psicashData.is_account);
-
-    let state = PsiCashUIState.ZERO_BALANCE;
+    let state = PsiCashUIState.NSF_BALANCE;
     // DO NOT return early from this point. state must be updated in PsiCashStore.uiState.
 
-    // Only the 1-hour Speed Boost is considered for determining if the user has "enough" Psi
-    if (_.isNumber(psicashData.balance) && _.isNumber(sbPrices['1hr'])) {
-      if (psicashData.balance >= sbPrices['1hr']) {
-        state = PsiCashUIState.ENOUGH_BALANCE;
-
-        // Enable/disable the 1-day button depending on balance.
-        // (Note that this is only a cosmetic disabling, and the button will still respond
-        // to clicks. It will show an appropriate NSF message.)
-        const nsf1Day = (psicashData.balance < sbPrices['24hr']);
-        $('.psicash-buy[data-distinguisher="24hr"]').prop('disabled', nsf1Day).toggleClass('disabled', nsf1Day)
-      }
-      else if (psicashData.balance > 0) {
-        state = PsiCashUIState.NSF_BALANCE;
+    if (psicashData.purchase_prices) {
+      for (let i = 0; i < psicashData.purchase_prices.length; i++) {
+        let pp = psicashData.purchase_prices[i];
+        if (pp['class'] === 'speed-boost' && pp.price <= psicashData.balance) {
+          // We can afford at least one level of Speed Boost
+          state = PsiCashUIState.ENOUGH_BALANCE;
+          break;
+        }
       }
     }
 
@@ -2232,7 +2275,6 @@
         // until the user happens to connect and refresh PsiCash state.)
         // Note: We're making no special effort to check for multiple active Speed Boosts.
         // This should not happen, per server rules.
-
         if (psicashData.purchases[i]['class'] === 'speed-boost') {
           const localTimeExpiry = moment(psicashData.purchases[i].localTimeExpiry);
           if (g_lastState === 'connected' || localTimeExpiry.isAfter(moment())) {
@@ -2243,14 +2285,6 @@
             // purchase being used past the expiry in the purchase record. Ensure we're
             // not showing a negative value in the UI.
             millisOfSpeedBoostRemaining = Math.max(0, millisOfSpeedBoostRemaining);
-
-            const boostRemainingTime = moment
-                .duration(millisOfSpeedBoostRemaining)
-                .locale(momentLocale())
-                .humanize()
-                .replace(' ', '&nbsp;'); // avoid splitting the time portion
-            const boostRemainingText = i18n.t('psicash#ui-speedboost-active').replace('%s', boostRemainingTime);
-            $('.speed-boost-time-remaining').html(boostRemainingText);
             break;
           }
         }
@@ -2262,10 +2296,18 @@
       state = PsiCashUIState.BUYING_BOOST;
     }
 
-    if (psicashData.is_account && psicashData.valid_token_types.length === 0) {
+    if (psicashData.is_account && !psicashData.has_tokens) {
       // If we're in an account-logged-out state, PsiCash functionality is disabled until
       // the user logs back in (or resets data).
       state = PsiCashUIState.ACCOUNT_LOGGED_OUT;
+    }
+
+    // If we are newly transitioning into a logged out state, let the user know
+    if (state === PsiCashUIState.ACCOUNT_LOGGED_OUT && oldPsiCashData && oldPsiCashData.has_tokens) {
+      displayCornerAlert($('#psicash-account-tokens-expired-alert'));
+      // Log to UI and to diagnostics
+      addLog({priority: 2, message: 'Account logged out; probably due to expired tokens'});
+      HtmlCtrlInterface_Log('Account logged out; probably due to expired tokens');
     }
 
     // Speed Boost cannot function in L2TP/IPSec mode. We want to disabled controls and
@@ -2275,31 +2317,25 @@
     }
 
     // Show and hide the appropriate parts of the UI
-    $('.psicash-interface').not(state.uiSelector).addClass('hidden');
-    $(state.uiSelector).removeClass('hidden');
+    syncPsiCashUI(psicashData, state, millisOfSpeedBoostRemaining);
 
     // Now that the correct interface is showing, update the balance
     PsiCashBalanceChange.push(psicashData.balance, veryFirstUpdate);
 
-    // If Boost _is not_ active, then whether or not we show the speed limit UI depends
-    // on the baseline connection speed. If Boost _is_ active, then we always show the speed.
-    if (state === PsiCashUIState.ACTIVE_BOOST) {
-      DEBUG_LOG('Speed Boost active; showing speed limit');
-      $('.psicash-interface .speed-limit').removeClass('hidden');
+    // Some UI elements (i.e., the turtle speed limit) don't apply to users with a high
+    // baseline speed. So we'll selectively show/hide those elements depending on the
+    // the Psiphon speed limit.
+    const baselineRateLimit = getCookie('BaselineRateLimit');
+    const threshold = (5 << 20) / 8; // 5 mbps in bytes; arbitrarily "fast"
+    if (!baselineRateLimit || baselineRateLimit > threshold) {
+      // Either we don't yet have a baseline, or it's above the threshold
+      DEBUG_LOG('Baseline speed is high; hiding speed limit');
+      $('.js-hide-if-fast').addClass('hidden');
     }
     else {
-      const baselineRateLimit = getCookie('BaselineRateLimit');
-      const threshold = (5 << 20) / 8; // 5 mbps in bytes; arbitrarily "fast"
-      if (!baselineRateLimit || baselineRateLimit > threshold) {
-        // Either we don't yet have a baseline, or it's above the threshold
-        DEBUG_LOG('Baseline speed is high; hiding speed limit');
-        $('.psicash-interface .speed-limit').addClass('hidden');
-      }
-      else {
-        // The baseline is below the threshold
-        DEBUG_LOG('Baseline speed is low; showing speed limit');
-        $('.psicash-interface .speed-limit').removeClass('hidden');
-      }
+      // The baseline is below the threshold
+      DEBUG_LOG('Baseline speed is low; showing speed limit');
+      $('.js-hide-if-fast').removeClass('hidden');
     }
 
     // When we have an active speed boost, we want this function to be called repeatedly,
@@ -2321,6 +2357,91 @@
     }
 
     PsiCashStore.set('uiState', state);
+
+    /**
+     * Update relevant parts of the UI, depending on state and data
+     * @param {!PsiCashRefreshData} psicashData
+     * @param {!object} state
+     * @param {?Number} millisOfSpeedBoostRemaining
+     */
+    function syncPsiCashUI(psicashData, state, millisOfSpeedBoostRemaining) {
+      // Show the appropriate corner content
+      $('.js-psicash-corner').not(state.uiSelector).addClass('hidden');
+      $(state.uiSelector).removeClass('hidden');
+
+      // We can't use `state === PsiCashUIState.ACCOUNT_LOGGED_OUT` to determine this
+      // condition because VPN_MODE_DISABLED will supersede ACCOUNT_LOGGED_OUT.
+      const loggedOut = (psicashData.is_account && !psicashData.has_tokens);
+
+      $('.js-show-if-boosting').toggleClass('hidden', state !== PsiCashUIState.ACTIVE_BOOST);
+      $('.js-hide-if-boosting').toggleClass('hidden', state === PsiCashUIState.ACTIVE_BOOST);
+
+      $('.js-show-if-is-account').toggleClass('hidden', !psicashData.is_account);
+      $('.js-show-if-not-is-account').toggleClass('hidden', psicashData.is_account);
+      $('.js-show-if-logged-out-account').toggleClass('hidden', !loggedOut);
+      $('.js-hide-if-logged-out-account').toggleClass('hidden', loggedOut);
+
+      $('.js-show-if-nsf').toggleClass('hidden', state !== PsiCashUIState.NSF_BALANCE);
+      $('.js-hide-if-nsf').toggleClass('hidden', state === PsiCashUIState.NSF_BALANCE);
+
+      $('.psicash-username-container .js-psicash-account-signup').toggleClass('hidden', !!psicashData.account_username || loggedOut);
+      $('.psicash-username-container .psicash-username').text(psicashData.account_username).toggleClass('hidden', !psicashData.account_username);
+
+      if (psicashData.buy_psi_url) {
+        $('a.psicash-buy-psi').prop('href', psicashData.buy_psi_url).removeClass('hidden');
+      }
+      else {
+        // For some states, hiding the "buy" button will look strange, but since that
+        // implies there's no earner token, the whole PsiCash UI will be hidden anyway.
+        $('a.psicash-buy-psi').addClass('hidden');
+      }
+
+      $('a.js-psicash-account-signup').prop('href', psicashData.account_signup_url);
+      $('a.js-psicash-account-management').prop('href', psicashData.account_management_url);
+
+      if (psicashData.purchase_prices) {
+        for (let i = 0; i < psicashData.purchase_prices.length; i++) {
+          let pp = psicashData.purchase_prices[i];
+
+          if (pp['class'] === 'speed-boost') {
+            $(`.js-psicash-sb-price[data-distinguisher="${pp.distinguisher}"]`).text(formatPsi(parseInt(pp.price)));
+            $(`.js-psicash-sb-price[data-distinguisher="${pp.distinguisher}"]`).data('expectedPrice', pp.price);
+
+            $(`.speed-boost-button[data-distinguisher="${pp.distinguisher}"], .js-max-boost-container .js-psicash-buy-speedboost-price[data-distinguisher="${pp.distinguisher}"]`)
+                .toggleClass('enough-balance', psicashData.balance >= pp.price);
+            $(`.speed-boost-button[data-distinguisher="${pp.distinguisher}"], .js-max-boost-container .js-psicash-buy-speedboost-price[data-distinguisher="${pp.distinguisher}"]`)
+                .toggleClass('not-enough-balance', psicashData.balance < pp.price);
+          }
+        }
+
+        // Set proper visibility for the "buy max boost" button.
+        const maxEnoughBalance = $('.js-max-boost-container .js-psicash-buy-speedboost-price').addClass('hidden').filter('.enough-balance').last();
+        maxEnoughBalance.removeClass('hidden');
+        // Set the distinguisher on the button so the handler can pick it up.
+        $('.js-max-boost-container').data('distinguisher', maxEnoughBalance.data('distinguisher'));
+      }
+
+      const boostRemainingTime = moment
+          .duration(millisOfSpeedBoostRemaining)
+          .locale(momentLocale())
+          .humanize()
+          .replace(' ', '&nbsp;'); // avoid splitting the time portion
+      const boostRemainingText = i18n.t('psicash#ui-speedboost-active').replace('%s', boostRemainingTime);
+      $('.speed-boost-time-remaining').html(boostRemainingText);
+
+      const vpnMode = $('#VPN').prop('checked');
+      $('.js-show-if-vpn-mode').toggleClass('hidden', !vpnMode);
+      $('.js-hide-if-vpn-mode').toggleClass('hidden', vpnMode);
+
+      // Show the whole corner block, if it's hidden.
+      if ($('#psicash-block, #psicash-tab').hasClass('hidden')) {
+        $('#psicash-block, #psicash-tab').removeClass('hidden');
+
+        // Some layout actions like height-matching won't have succeeded while the
+        // UI was hidden. So do a content-resize with the newly visible content.
+        nextTick(resizeContent);
+      }
+    }
   }
 
   /**
@@ -2334,19 +2455,24 @@
   function doBalanceChange(newBalance, veryFirstUpdate) {
     const allDoneDefer = $.Deferred();
 
-    let previousBalance = parseInt($('.psicash-balance').data('psicash-balance')); // may be NaN
+    // There are two different kinds of balance display elements: those that get animated
+    // on balance change (.js-psicash-balance-anim) and those that don't (.js-psicash-balance-noanim).
+    // Start by directly updating the non-animated elements.
+    $('.js-psicash-balance-noanim').text(formatPsi(newBalance));
+
+    let previousBalance = parseInt($('.js-psicash-balance-anim').data('psicash-balance')); // may be NaN
     if (_.isNaN(previousBalance)) {
       // If this is the very first refresh after the UI is enabled, we want to animate the
       // balance change. But if this is just an app start-up that's restoring a previous
       // balance, then we don't.
       const startingPoint = veryFirstUpdate ? 0 : newBalance;
-      $('.psicash-balance').text(formatPsi(startingPoint)).data('psicash-balance', startingPoint);
+      $('.js-psicash-balance-anim').text(formatPsi(startingPoint)).data('psicash-balance', startingPoint);
       previousBalance = startingPoint;
     }
     else {
       // Update the value of the balance field. This is mostly so that a post-language-change
       // refresh will show the balance in the correct format.
-      $('.psicash-balance').text(formatPsi(previousBalance));
+      $('.js-psicash-balance-anim').text(formatPsi(previousBalance));
     }
 
     let balanceDiff = newBalance - previousBalance;
@@ -2355,125 +2481,125 @@
     // animate the change.
     if (balanceDiff === 0) {
       allDoneDefer.resolve();
+      return allDoneDefer.promise();
+    }
+
+    balanceDiff = _.isNaN(balanceDiff) ? newBalance : balanceDiff;
+
+    // Set the data value to the real balance immediately, to prevent later confusion.
+    $('.js-psicash-balance-anim').data('psicash-balance', newBalance);
+
+    // We're going to animate the balance increasing. We need to figure out the steps.
+    const BILLION = 1e9;
+    const balanceStepTime = 2000;   // ms
+    const balanceStopInterval = 25; // ms
+    const maxSteps = Math.trunc(balanceStepTime / balanceStopInterval);
+
+    // We only want to consider billions
+    const gigaBalanceDiff = balanceDiff / BILLION;
+
+    let balanceStepCount = Math.max(1, Math.min(Math.abs(gigaBalanceDiff), maxSteps));
+    const balanceStepSize = Math.trunc(gigaBalanceDiff / balanceStepCount) * BILLION;
+
+    // If we only stepped balanceStepSize, the last step might be huge. So we'll
+    // take some larger steps at the start.
+    let extraStepSize = balanceDiff - (Math.sign(balanceDiff) * balanceStepCount * balanceStepSize);
+
+    let intermediateBalance = previousBalance;
+
+    const $visiblePsiCashInterface = $('#psicash-block .js-psicash-corner').not('.hidden');
+    const $visibleBalanceElem = $visiblePsiCashInterface.find('.js-psicash-balance-anim');
+
+    // There are two different aynchronous animations that we want to want to wait
+    // on before declaring this balance change complete: The number ticking up or down,
+    // and the CSS delta transition. We're going to use promises to keep track of them finishing.
+    const tickDefer = $.Deferred();
+    const deltaDefer = $.Deferred();
+    $.when(tickDefer.promise(), deltaDefer.promise()).always(() => {
+      // Resolve the master deferred
+      allDoneDefer.resolve();
+    });
+
+    const finalTickStep = (balanceTickInterval) => {
+      if (!balanceTickInterval) {
+        return;
+      }
+      clearInterval(balanceTickInterval);
+      balanceTickInterval = null;
+      // Update all balance fields, not just the visible one.
+      $('.js-psicash-balance-anim').text(formatPsi(newBalance));
+      // Ticking is all done
+      tickDefer.resolve();
+    };
+
+    let balanceTickInterval = setInterval(() => {
+      balanceStepCount--;
+      if (balanceStepCount < 1) {
+        // Ticking is done
+        finalTickStep(balanceTickInterval);
+        return;
+      }
+
+      intermediateBalance += balanceStepSize;
+      if (extraStepSize > BILLION) {
+        intermediateBalance += BILLION;
+        extraStepSize -= BILLION;
+      }
+      $visibleBalanceElem.text(formatPsi(intermediateBalance));
+    }, 10);
+
+    // If our animation is super slow, the whole thing might take too long, so we're
+    // also going to time-bound the whole process.
+    setTimeout(() => {
+      finalTickStep(balanceTickInterval);
+    }, balanceStepTime);
+
+    // We're going to test that $visibleBalanceElem actually exists, otherwise we risk
+    // never resolving the animation promise.
+    if ($visibleBalanceElem.length > 0) {
+      let psiText = formatPsi(balanceDiff);
+      if (balanceDiff > 0) {
+        // Negative numbers naturally get a '-', but we'll need to add a '+' sign (localized)
+        psiText = i18n.t('positive-value-indicator').replace('%d', formatPsi(balanceDiff));
+      }
+
+      // Create and insert the element we'll use for the animation
+      const $deltaElem = $('<span class="psicash-balance-delta"></span>')
+                          .addClass((balanceDiff > 0) ? 'credit' : 'debit')
+                          .text(psiText)
+                          .insertAfter($visibleBalanceElem);
+
+      // It's unfortunate that we have to do the animation using jQuery's .animate()
+      // rather than CSS transitions, but transitions seem flaky in IE.
+      const animationCSSEnpoint = (balanceDiff > 0) ?
+        // credit
+        {
+          'font-size': '0',
+          'opacity': '0.4'
+        } :
+        // debit
+        {
+          'font-size': '500%',
+          'opacity': '0'
+        };
+
+      const animationPromise = $deltaElem
+        .delay(10)
+        .addClass('balance-changing')
+        .animate(animationCSSEnpoint, {
+          duration: (balanceDiff > 0) ? balanceStepTime : balanceStepTime,
+          easing: 'swing',
+          queue: true })
+        .promise();
+
+      animationPromise.always(() => {
+          $deltaElem.remove();
+          deltaDefer.resolve();
+      });
     }
     else {
-      balanceDiff = _.isNaN(balanceDiff) ? newBalance : balanceDiff;
-
-      // Set the data value to the real balance immediately, to prevent later confusion.
-      $('.psicash-balance').data('psicash-balance', newBalance);
-
-      // We're going to animate the balance increasing. We need to figure out the steps.
-      const BILLION = 1e9;
-      const balanceStepTime = 2000;   // ms
-      const balanceStopInterval = 25; // ms
-      const maxSteps = Math.trunc(balanceStepTime / balanceStopInterval);
-
-      // We only want to consider billions
-      const gigaBalanceDiff = balanceDiff / BILLION;
-
-      let balanceStepCount = Math.max(1, Math.min(Math.abs(gigaBalanceDiff), maxSteps));
-      const balanceStepSize = Math.trunc(gigaBalanceDiff / balanceStepCount) * BILLION;
-
-      // If we only stepped balanceStepSize, the last step might be huge. So we'll
-      // take some larger steps at the start.
-      let extraStepSize = balanceDiff - (Math.sign(balanceDiff) * balanceStepCount * balanceStepSize);
-
-      let intermediateBalance = previousBalance;
-
-      const $visiblePsiCashInterface = $('#psicash-block .psicash-interface').not('.hidden');
-      const $visibleBalanceElem = $visiblePsiCashInterface.find('.psicash-balance');
-
-      // There are two different aynchronous animations that we want to want to wait
-      // on before declaring this balance change complete: The number ticking up or down,
-      // and the CSS delta transition. We're going to use promises to keep track of them finishing.
-      const tickDefer = $.Deferred();
-      const deltaDefer = $.Deferred();
-      $.when(tickDefer.promise(), deltaDefer.promise()).always(() => {
-        // Resolve the master deferred
-        allDoneDefer.resolve();
-      });
-
-      const finalTickStep = (balanceTickInterval) => {
-        if (!balanceTickInterval) {
-          return;
-        }
-        clearInterval(balanceTickInterval);
-        balanceTickInterval = null;
-        // Update all balance fields, not just the visible one.
-        $('.psicash-balance').text(formatPsi(newBalance));
-        // Ticking is all done
-        tickDefer.resolve();
-      };
-
-      let balanceTickInterval = setInterval(() => {
-        balanceStepCount--;
-        if (balanceStepCount < 1) {
-          // Ticking is done
-          finalTickStep(balanceTickInterval);
-          return;
-        }
-
-        intermediateBalance += balanceStepSize;
-        if (extraStepSize > BILLION) {
-          intermediateBalance += BILLION;
-          extraStepSize -= BILLION;
-        }
-        $visibleBalanceElem.text(formatPsi(intermediateBalance));
-      }, 10)
-
-      // If our animation is super slow, the whole thing might take too long, so we're
-      // also going to time-bound the whole process.
-      setTimeout(() => {
-        finalTickStep(balanceTickInterval);
-      }, balanceStepTime);
-
-      // We're going to test that $visibleBalanceElem actually exists, otherwise we risk
-      // never resolving the animation promise.
-      if ($visibleBalanceElem.length > 0) {
-        let psiText = formatPsi(balanceDiff);
-        if (balanceDiff > 0) {
-          // Negative numbers naturally get a '-', but we'll need to add a '+' sign (localized)
-          psiText = i18n.t('positive-value-indicator').replace('%d', formatPsi(balanceDiff));
-        }
-
-        // Create and insert the element we'll use for the animation
-        const $deltaElem = $('<span class="psicash-balance-delta"></span>')
-                            .addClass((balanceDiff > 0) ? 'credit' : 'debit')
-                            .text(psiText)
-                            .insertAfter($visibleBalanceElem);
-
-        // It's unfortunate that we have to do the animation using jQuery's .animate()
-        // rather than CSS transitions, but transitions seem flaky in IE.
-        const animationCSSEnpoint = (balanceDiff > 0) ?
-          // credit
-          {
-            'font-size': '0',
-            'opacity': '0.4'
-          } :
-          // debit
-          {
-            'font-size': '500%',
-            'opacity': '0'
-          };
-
-        const animationPromise = $deltaElem
-          .delay(10)
-          .addClass('balance-changing')
-          .animate(animationCSSEnpoint, {
-            duration: (balanceDiff > 0) ? 2000 : 2000,
-            easing: 'swing',
-            queue: true })
-          .promise();
-
-        animationPromise.always(() => {
-            $deltaElem.remove();
-            deltaDefer.resolve();
-        });
-      }
-      else {
-        // We're not doing the transition animation, so just resolve the deferred
-        deltaDefer.resolve();
-      }
+      // We're not doing the transition animation, so just resolve the deferred
+      deltaDefer.resolve();
     }
 
     return allDoneDefer.promise();
@@ -2610,6 +2736,7 @@
       showNoticeModal(
         'psicash#mustconnect-modal#title',
         'psicash#mustconnect-modal#body',
+        'info',
         null, null,
         function() {
           switchToTab('#connection-tab');
@@ -2619,16 +2746,18 @@
     }
 
     const distinguisher = $(this).data('distinguisher');
-    const expectedPrice = $(`.psicash-sb-price[data-distinguisher="${distinguisher}"]`).data('expectedPrice');
+    const expectedPrice = $(`.js-psicash-sb-price[data-distinguisher="${distinguisher}"]`).data('expectedPrice');
 
     // Set the purchase-in-progress state and update UI.
     PsiCashStore.set('purchaseInProgress', true);
     psiCashUIUpdater();
+    psicashUIWaitState(true, '#psicash-ui-overlay-buying-boost');
 
     HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandPurchase(
       'speed-boost', distinguisher, expectedPrice))
       .then((result) => {
         // Clear the purchase-in-progress state and update UI.
+        psicashUIWaitState(false);
         PsiCashStore.set('purchaseInProgress', false);
         if (result.refresh) {
           // The reponse supplied refresh data
@@ -2644,6 +2773,7 @@
           showNoticeModal(
             'psicash#transaction-error-title',
             'psicash#transaction-error-body',
+            'error',
             'general#notice-modal-tech-preamble',
             result.error,
             null); // callback
@@ -2659,6 +2789,7 @@
               showNoticeModal(
                 'psicash#transaction-ExistingTransaction-title',
                 'psicash#transaction-ExistingTransaction-body',
+                'warning',
                 null,  // tech detail preamble
                 null,  // tech detail body
                 null); // callback
@@ -2673,6 +2804,7 @@
               showNoticeModal(
                 'psicash#transaction-InsufficientBalance-title',
                 'psicash#transaction-InsufficientBalance-body',
+                'warning',
                 null,  // tech detail preamble
                 null,  // tech detail body
                 null); // callback
@@ -2684,6 +2816,7 @@
               showNoticeModal(
                 'psicash#transaction-TransactionAmountMismatch-title',
                 'psicash#transaction-TransactionAmountMismatch-body',
+                'warning',
                 null,  // tech detail preamble
                 null,  // tech detail body
                 null); // callback
@@ -2695,6 +2828,7 @@
               showNoticeModal(
                 'psicash#transaction-TransactionTypeNotFound-title',
                 'psicash#transaction-TransactionTypeNotFound-body',
+                'warning',
                 null,  // tech detail preamble
                 null,  // tech detail body
                 null); // callback
@@ -2702,14 +2836,34 @@
 
             case PsiCashServerResponseStatus.InvalidTokens:
               // The tokens we tried to use were not accepted by the server.
-              // This shouldn't happen for Trackers, barring DB replication lag.
-              // TODO: support Accounts
-              showNoticeModal(
-                'psicash#transaction-InvalidTokens-title',
-                'psicash#transaction-InvalidTokens-body',
-                null,  // tech detail preamble
-                null,  // tech detail body
-                null); // callback
+
+              if (g_PsiCashData.is_account) {
+                // This can occur if the account's tokens have expired since the last
+                // RefreshState. It's unusual (because token expiry is long), but not
+                // unexpected or erroneous.
+                showNoticeModal(
+                  'psicash#transaction-InvalidTokens-title',
+                  'psicash#transaction-InvalidTokens-body-account',
+                  'warning',
+                  null,  // tech detail preamble
+                  null,  // tech detail body
+                  null); // callback
+              }
+              else {
+                // This shouldn't happen for Trackers, barring DB replication lag. It
+                // suggests datastore corruption, or a bad server problem.
+                showNoticeModal(
+                  'psicash#transaction-InvalidTokens-title',
+                  'psicash#transaction-InvalidTokens-body-tracker',
+                  'error',
+                  null,  // tech detail preamble
+                  null,  // tech detail body
+                  null); // callback
+              }
+
+              // We will refresh in either case. If we're an account, it should put us into
+              // a logged-out state. If we're a tracker... it might help.
+              HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('invalid-tokens'));
               break;
 
             case PsiCashServerResponseStatus.ServerError:
@@ -2717,6 +2871,7 @@
               showNoticeModal(
                 'psicash#transaction-ServerError-title',
                 'psicash#transaction-ServerError-body',
+                'error',
                 null,  // tech detail preamble
                 null,  // tech detail body
                 null); // callback
@@ -2724,9 +2879,9 @@
 
             case PsiCashServerResponseStatus.Success:
               // The purchase succeeded. We need to reconnect to apply the authorization.
-              displayCornerAlert($('#psicash-transaction-purchase-complete'));
-              // Suppress home page opening after reconnect (because it's a terrible UX).
-              HtmlCtrlInterface_ReconnectTunnel(true);
+              displayCornerAlert($('#psicash-buyspeedboost-purchase-complete'));
+              // We don't need to explicitly reconnect here, as the PsiCash data refresh
+              // will detect the need for one and do it.
               break;
 
             default:
@@ -2735,18 +2890,22 @@
         }
       });
   }
-  $('.psicash-buy').click(buySpeedBoostClick);
+  $('.psicash-buy-speedboost').click(buySpeedBoostClick);
 
 
   /**
    * Event handler for the "buy PsiCash with real money" button click.
    */
   function buyPsiClick(e) {
-    if (g_lastState !== 'connected') {
+    if (e) {
       e.preventDefault();
+    }
+
+    if (g_lastState !== 'connected') {
       showNoticeModal(
         'psicash#mustconnect-modal#title',
         'psicash#mustconnect-modal#body',
+        'info',
         null, null,
         function() {
           switchToTab('#connection-tab');
@@ -2754,9 +2913,38 @@
       );
       return;
     }
-    // Otherwise allow the default action
+
+    if (!buyPsiClick.skipAccountEncouragement && !g_PsiCashData.is_account) {
+      // We're showing a modal encouraging PsiCash account signup. The user can either
+      // choose to launch the sign-up process, or can continue on.
+      $('#PsiCashAccountEncouragement').modal('show');
+      switchToTab('#psicash-tab');
+      return;
+    }
+
+    buyPsiClick.skipAccountEncouragement = false;
+
+    window.location = $('a.psicash-buy-psi').prop('href');
   }
   $('a.psicash-buy-psi').click(buyPsiClick);
+
+  /**
+   * An encouragement to "sign up for a PsiCash account" is shown when the user attempts
+   * to buy PsiCash without an active account. These are handlers for its buttons.
+   */
+  $('#PsiCashAccountEncouragement .js-submit-button').on('click', (e) => {
+    e.preventDefault();
+    $('#PsiCashAccountEncouragement').modal('hide').one('hidden', () => {
+      psicashAccountLogin();
+    });
+  });
+  $('#PsiCashAccountEncouragement .js-cancel-button').on('click', (e) => {
+    e.preventDefault();
+    buyPsiClick.skipAccountEncouragement = true;
+    $('#PsiCashAccountEncouragement').modal('hide').one('hidden', () => {
+      buyPsiClick();
+    });
+  });
 
   /**
    * Format a numeric amount of PsiCash, for display in the UI.
@@ -2784,8 +2972,8 @@
       psi = psi.toLocaleString(currLang);
     }
     catch (e) {
-      // Our test locales (like devltr) are no valid and will cause an exception. Just fall
-      // back to English.
+      // Our test locales (like devltr) are not valid and will cause an exception.
+      // Just fall back to English.
       psi = psi.toLocaleString('en');
     }
 
@@ -2798,15 +2986,22 @@
     return psi;
   }
 
-  function psicashLoginAccountClick(event) {
+  /**
+   * Begin the account login flow (show the login modal).
+   * Should not be called if the user is already logged in.
+   * @param {?Event} event
+   */
+  function psicashAccountLogin(event) {
     if (event) {
       event.preventDefault();
     }
 
     if (g_lastState !== 'connected') {
+      // We're not connected, so no PsiCash ops are allowed. Switch to the connection tab.
       showNoticeModal(
         'psicash#mustconnect-modal#title',
         'psicash#mustconnect-modal#body',
+        'info',
         null, null,
         function() {
           switchToTab('#connection-tab');
@@ -2815,25 +3010,43 @@
       return;
     }
 
-    $('#PsiCashAccountLogin').modal('show').on('shown', function () {
+    // Clear any input error state
+    $('#PsiCashAccountLogin .control-group').removeClass('error');
+
+    // Show the login modal
+    $('#PsiCashAccountLogin').modal({
+      show: true,
+      backdrop: 'static'
+    }).one('shown', function () {
       $('#AccountUsername').trigger('focus');
-    }).on('hidden', function () {
-      $('body').css('cursor', 'default');
-      $('#PsiCashAccountLogin input').val('');
+    }).one('hidden', function () {
+      // The modal has closed; clear the password field
+      $('#PsiCashAccountLogin #AccountPassword').val('');
+
+      // We're purposely not clearing the username field. It's less sensitive (if the user
+      // logs in successfully it will be stored and displayed) and it will be helpful to
+      // the user to not have to type it in again if the login attempt fails.
     });
   }
-  $('.psicash-account-action .account-login').on('click', psicashLoginAccountClick);
+  $('.js-account-login').on('click', psicashAccountLogin);
 
-  function psicashLoginSubmitClick(event) {
+  /**
+   * Handler for the login dialog submit event.
+   * @param {Event} event
+   */
+  function psicashAccountLoginSubmitHandler(event) {
     if (event) {
       event.preventDefault();
     }
 
     if (g_lastState !== 'connected') {
+      // We're not connected, so no PsiCash ops are allowed. Close the login modal and
+      // switch to the connection tab.
       $('#PsiCashAccountLogin').modal('hide').one('hidden', function () {
         showNoticeModal(
           'psicash#mustconnect-modal#title',
           'psicash#mustconnect-modal#body',
+          'info',
           null, null,
           function() {
             switchToTab('#connection-tab');
@@ -2846,16 +3059,35 @@
     const username = $('#AccountUsername').val();
     const password = $('#AccountPassword').val();
 
-    // TODO: TEMP?
-    $('body').css('cursor', 'progress');
+    // Validate input (make sure the fields aren't blank)
+    $('#AccountUsername').parents('.control-group').toggleClass('error', !username);
+    $('#AccountPassword').parents('.control-group').toggleClass('error', !password);
+    if (!username || !password) {
+      $(!username ? '#AccountUsername' : '#AccountPassword').trigger('focus');
+      return;
+    }
 
-    HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogin(
-        username, password))
+    // We're going to dismiss the login modal before attempting login. This is partly
+    // so that we don't complicate the UI state and partly because modals-over-modals
+    // gets crash-y.
+    $('#PsiCashAccountLogin').modal('hide');
+
+    // Show the "login in progress UI overlay"
+    psicashUIWaitState(true, '#psicash-ui-overlay-logging-in');
+
+    HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogin(username, password))
       .then((result) => {
-        $('body').css('cursor', 'default');
+
+        // In the success case we want to maintain the wait state until after a refresh.
+        // In all other cases we drop it now.
+        if (result.status !== PsiCashServerResponseStatus.Success) {
+          psicashUIWaitState(false, null);
+        }
 
         if (result.refresh) {
-          // The reponse supplied refresh data
+          // The reponse supplied refresh data.
+          // Note that this will be incomplete -- no balance or purchases -- we still need
+          // to do a full refresh, below.
           psiCashUIUpdater(result.refresh);
         }
         else {
@@ -2864,56 +3096,86 @@
         }
 
         if (result.error) {
-          // Catastrophic failure. Show a modal error and hope the user can figure it out.
-
-          // TODO: text in login modal?
-          alert('Error: ' + result.error);
+          // Catastrophic failure. Hopefully the error string helps the user diagnose the problem.
+          showNoticeModal(
+            'psicash#login#failure-modal-title',
+            'psicash#login#catastrophic-error-body',
+            'error',
+            'general#notice-modal-tech-preamble',
+            result.error,
+            null); // callback
         }
         else {
           switch (result.status) {
             case PsiCashServerResponseStatus.InvalidCredentials:
-              // TODO: text in login modal?
-              alert('Invalid credentials');
+              showNoticeModal(
+                'psicash#login#failure-modal-title',
+                'psicash#login#invalid-credentials-body',
+                'warning',
+                null,  // tech preamble
+                null,  // tech detail
+                null); // callback
               break;
 
             case PsiCashServerResponseStatus.BadRequest:
-              // TODO: text in login modal?
-              alert('Bad request');
+              // The request was malformed in some way. This shouldn't happen.
+              showNoticeModal(
+                'psicash#login#failure-modal-title',
+                'psicash#login#badrequest-error-body',
+                'error',
+                null,  // tech preamble
+                null,  // tech detail
+                null); // callback
               break;
 
             case PsiCashServerResponseStatus.ServerError:
               // The server gave a 500-ish error
-
-              // TODO: text in login modal?
-              alert('Server error');
+              showNoticeModal(
+                'psicash#login#failure-modal-title',
+                'psicash#login#server-error-body',
+                'error',
+                null,  // tech preamble
+                null,  // tech detail
+                null); // callback
               break;
 
             case PsiCashServerResponseStatus.Success:
-              // Account login succeeded.
-              // TODO:
-              //alert('Login successful');
-              $('#PsiCashAccountLogin').modal('hide');
+              // Account login succeeded.  hard refresh is required.
+              if (result.last_tracker_merge) {
+                showNoticeModal(
+                  'psicash#login#success-modal-title',
+                  'psicash#login#last-tracker-merge-body',
+                  'success',
+                  null,  // tech preamble
+                  null,  // tech detail
+                  null); // callback
+              }
 
-              // A hard refresh is required after a login
-              // TODO: show status or progress indicating this is happening? Maybe show it in the dialog before dismissing it?
-              HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('new-login'));
+              // Don't clear the wait state until the refresh is complete, since we're not
+              // really "ready" until then.
+              HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('new-login')).then(() => {
+                psicashUIWaitState(false, null);
+              });
               break;
 
             default:
               throw new Error('Login: unknown PsiCashServerResponseStatus received: ' + result.status);
           }
         }
-
       });
   }
-  $('#PsiCashAccountLogin .submit-button').on('click', psicashLoginSubmitClick);
+  $('#PsiCashAccountLogin .js-submit-button').on('click', psicashAccountLoginSubmitHandler);
   $('#PsiCashAccountLogin input').on('keyup', function (event) {
     if (event.key === 'Enter' || event.keyCode === 13) {
-      psicashLoginSubmitClick();
+      psicashAccountLoginSubmitHandler();
     }
   });
 
-  function psicashManageAccountClick(event) {
+  /**
+   * Begin the account logout flow. Should not be called if the user is not logged in.
+   * @param {?Event} event
+   */
+  function psicashAccountLogout(event) {
     if (event) {
       event.preventDefault();
     }
@@ -2922,6 +3184,7 @@
       showNoticeModal(
         'psicash#mustconnect-modal#title',
         'psicash#mustconnect-modal#body',
+        'info',
         null, null,
         function () {
           switchToTab('#connection-tab');
@@ -2930,45 +3193,50 @@
       return;
     }
 
-    // TEMP
-    if (confirm('Do you want to log out?')) {
-      // TODO: TEMP?
-      $('body').css('cursor', 'progress');
+    psicashUIWaitState(true, '#psicash-ui-overlay-logging-out');
 
-      HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogout())
-        .then((result) => {
-          // TODO: TEMP
-          $('body').css('cursor', 'default');
+    HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogout())
+      .then((result) => {
+        psicashUIWaitState(false, null);
 
-          if (result.refresh) {
-            // The reponse supplied refresh data
-            psiCashUIUpdater(result.refresh);
-          }
-          else {
-            // We're not going to force a full refresh if the refresh data is absent,
-            // because we know we don't need it until another login occurs.
-            // But we do need to refresh the UI.
-            psiCashUIUpdater();
-          }
+        if (result.refresh) {
+          // The reponse supplied refresh data
+          psiCashUIUpdater(result.refresh);
+        }
 
-          if (result.error) {
-            // Catastrophic failure. Show a modal error and hope the user can figure it out.
-            showNoticeModal(
-              'TODO: logout error title',
-              'TODO: logout error body',
-              'general#notice-modal-tech-preamble',
-              result.error,
-              null); // callback
-          }
-          else {
-            // TODO:
-            alert('Logout successful');
-          }
-        });
-    }
+        if (result.error) {
+          // Catastrophic failure. Show a modal error and hope the user can figure it out.
+          showNoticeModal(
+            'psicash#modal-logout-header',
+            'psicash#modal-logout-error-body',
+            'error',
+            'general#notice-modal-tech-preamble',
+            result.error,
+            null); // callback
+        }
+        else {
+          // Note that tunnel reconnection may be necessary to clear any active
+          // authorizations (like Speed Boost), but that will be handled by the
+          // PsiCash data refresh.
+          HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('logout'));
+        }
+      });
   }
-  $('.psicash-account-action .show-if-is-account').on('click', psicashManageAccountClick);
+  $('.js-account-logout').on('click', psicashAccountLogout);
 
+  /**
+   *
+   * @param {boolean} start True if the wait state is starting, false if it should be cleared.
+   * @param {*} messageSelector The selector of the message that should be shown during the wait state. May be null if the wait state is ending.
+   */
+  function psicashUIWaitState(start, messageSelector) {
+    if (messageSelector) {
+      $('.js-psicash-ui-overlay-messages > *').not(messageSelector).addClass('hidden');
+      $(messageSelector).removeClass('hidden');
+    }
+
+    $('.psicash-ui-overlay, .psicash-block-overlay').toggleClass('hidden', !start);
+  }
 
   /**
    * Called when tunnel core indicates that there was an attempt to access a
@@ -3005,12 +3273,19 @@
 
     handleDisallowedTrafficNotice.alertDisallowedTraffic = false;
 
-    HtmlCtrlInterface_DisallowedTraffic()
+    HtmlCtrlInterface_DisallowedTraffic();
 
     showNoticeModal(
       'notice#disallowed-traffic-alert-title',
       'notice#disallowed-traffic-alert-body',
+      'info',
       null, null, () => {
+        if (!$('#psicash-tab').hasClass('hidden')) {
+          switchToTab('#psicash-tab');
+        }
+
+        /* Before we had the PsiCash pane, we would wiggle the bottom-left PsiCash block.
+        We'll leave this code in for now in case we decide that we prefer it.
         if (compareIEVersion('gte', 9, true)) {
           const psicashBlock = $('#psicash-block');
           if (!psicashBlock.hasClass('hidden')) {
@@ -3019,6 +3294,7 @@
             setTimeout(() => $('#psicash-block').removeClass('draw-attention'), 1500);
           }
         }
+        */
       });
   }
   handleDisallowedTrafficNotice.alertDisallowedTraffic = true;
@@ -3046,14 +3322,25 @@
   /* UI HELPERS ****************************************************************/
 
   function displayCornerAlert(elem) {
-    // Show -- and then hide -- the alert
-    var appearAnimationTime = 300;
-    var showingTime = 4000;
-    var disappearAnimationTime = 1000;
-    $(elem).toggle('fold', {horizFirst: true}, appearAnimationTime, function() {
-      setTimeout(function() {
-        $(elem).toggle('fold', {horizFirst: true}, disappearAnimationTime);
-      }, showingTime);
+    nextTick(() => {
+      // Show -- and then hide -- the alert
+      const appearAnimationTime = 500;
+      const showingTime = 4000;
+      const disappearAnimationTime = 1000;
+      // NOTE: Many of the JqueryUI animation effects don't work well with DPI scaling --
+      // they end up floating in the middle of the window, or jumping around, or hidden.
+      // The 'fade' effect is one of the few that is okay, but it's not really the visual
+      // we want. However, not supply an explicit effect provides a default that works and
+      // looks pretty good. I was unable to figure out which named effect it corresponds
+      // to (I didn't go looking in the jQueryUI source code, though).
+      $(elem).toggle({
+        duration: appearAnimationTime,
+        complete: () => {
+          setTimeout(function() {
+            $(elem).toggle({duration: disappearAnimationTime});
+          }, showingTime);
+        }
+      });
     });
   }
 
@@ -3062,13 +3349,13 @@
   function switchToTab(tab, callback) {
     var $tab = $(tab);
     if ($tab.hasClass('active')) {
-      // Tab already showing.
+      // Target tab already showing.
       if (callback) {
         nextTick(callback);
       }
     }
     else {
-      // Settings tab not already showing. Switch to it before expanding and scrolling.
+      // Target tab not already showing. Switch to it before expanding and scrolling.
       if (callback) {
         $tab.find('[data-toggle="tab"]').one('show', callback);
       }
@@ -3081,25 +3368,31 @@
    * The "tech" values are optional.
    * @param {!string} titleKey
    * @param {!string} bodyKey
+   * @param {?string} levelIcon optional; must be one of "error", "warning", "info", "success"
    * @param {?string} techPreambleKey
    * @param {?string} techInfoString An explicit string -- not a string table key.
    * @param {?callback} closedCallback Optional and will be called when the modal is closed.
    */
-  function showNoticeModal(titleKey, bodyKey, techPreambleKey, techInfoString, closedCallback) {
+  function showNoticeModal(titleKey, bodyKey, levelIcon, techPreambleKey, techInfoString, closedCallback) {
     DEBUG_ASSERT(titleKey && bodyKey, 'missing titleKey or bodyKey', titleKey, bodyKey);
 
     var $modal = $('#NoticeModal');
 
-    $modal.find('.modal-title').html(i18n.t(titleKey));
-    $modal.find('.notice-modal-body').html(i18n.t(bodyKey));
+    $modal.find('.js-modal-title').html(i18n.t(titleKey));
+    $modal.find('.js-notice-modal-body').html(i18n.t(bodyKey));
+
+    $modal.find('.paragraph-icon').addClass('hidden');
+    if (levelIcon) {
+      $modal.find(`.paragraph-icon__${levelIcon}`).removeClass('hidden');
+    }
 
     if (techPreambleKey && techInfoString) {
-      $modal.find('.notice-modal-tech-preamble').html(i18n.t(techPreambleKey));
-      $modal.find('.notice-modal-tech-info').text(techInfoString);
-      $modal.find('.notice-modal-tech').removeClass('hidden');
+      $modal.find('.js-notice-modal-tech-preamble').html(i18n.t(techPreambleKey));
+      $modal.find('.js-notice-modal-tech-info').text(techInfoString);
+      $modal.find('.js-notice-modal-tech').removeClass('hidden');
     }
     else {
-      $modal.find('.notice-modal-tech').addClass('hidden');
+      $modal.find('.js-notice-modal-tech').addClass('hidden');
     }
 
     // Put up the modal
@@ -3338,7 +3631,11 @@
    */
   function getCookie(name) {
     if (IS_BROWSER) {
-      return JSON.parse(window.localStorage.getItem(name)) || g_cookies[name];
+      const localVal = JSON.parse(window.localStorage.getItem(name));
+      if (!_.isUndefined(localVal) & localVal !== null) {
+        return localVal;
+      }
+      return g_cookies[name];
     }
 
     return g_cookies[name];
@@ -3470,7 +3767,7 @@
       if (!check) {
         let message = 'DEBUG_ASSERT failed: ' + check + '; args: \n';
         for (let i = 1; i < arguments.length; i++) {
-          message += '\t' + arguments[i] + '\n'
+          message += '\t' + arguments[i] + '\n';
         }
         throw new Error(message);
       }
@@ -3505,12 +3802,12 @@
    * Splits the given URL into components that can be accessed with `result.hash`, etc.
    * @param {string} url
    * @returns {HTMLAnchorElement}
-   */
+   */ /* unused
   function urlComponents(url) {
     const parser = document.createElement('a');
     parser.href = url;
     return parser;
-  }
+  }*/
 
 
   /* DEBUGGING *****************************************************************/
@@ -3536,14 +3833,14 @@
         HtmlCtrlInterface_SetState({state: 'starting'});
         setTimeout(function() {
           HtmlCtrlInterface_SetState({state: 'connected'});
-        }, 5000);
+        }, 2000);
       }
       else if (buttonConnectState === 'starting' || buttonConnectState === 'connected') {
         console.log('DEBUG: connection stopping');
         HtmlCtrlInterface_SetState({state: 'stopping'});
         setTimeout(function() {
           HtmlCtrlInterface_SetState({state: 'stopped'});
-        }, 5000);
+        }, 2000);
       }
       // the stopping button is disabled
     });
@@ -3578,6 +3875,13 @@
       HtmlCtrlInterface_AddNotice({
         noticeType: 'AvailableEgressRegions',
         data: { regions: regions }
+      });
+    });
+
+    // Wire up the PsiphonUI::URLCopiedToClipboard notice
+    $('#debug-URLCopiedToClipboard a').click(function() {
+      HtmlCtrlInterface_AddNotice({
+        noticeType: 'PsiphonUI::URLCopiedToClipboard'
       });
     });
 
@@ -3637,7 +3941,9 @@
     $('#debug-RefreshPsiCash a').click(function debugRefreshPsiCashClick() {
       if (!$('#debug-RefreshPsiCash-balance').val() ||
           !$('#debug-RefreshPsiCash-price-1hr').val() ||
-          !$('#debug-RefreshPsiCash-price-24hr').val()) {
+          !$('#debug-RefreshPsiCash-price-24hr').val() ||
+          !$('#debug-RefreshPsiCash-price-7day').val() ||
+          !$('#debug-RefreshPsiCash-price-31day').val()) {
         return;
       }
 
@@ -3645,8 +3951,13 @@
       HtmlCtrlInterface_PsiCashMessage(msg);
 
       setCookie('debug-RefreshPsiCash-balance', msg.payload.balance);
-      setCookie('debug-RefreshPsiCash-price-1hr', msg.payload.purchase_prices.find(pp => pp.distinguisher==='1hr').price);
-      setCookie('debug-RefreshPsiCash-price-24hr', msg.payload.purchase_prices.find(pp => pp.distinguisher==='24hr').price);
+      setCookie('debug-RefreshPsiCash-price-1hr', msg.payload.purchase_prices.length ? msg.payload.purchase_prices.find(pp => pp.distinguisher==='1hr').price : null);
+      setCookie('debug-RefreshPsiCash-price-24hr', msg.payload.purchase_prices.length ? msg.payload.purchase_prices.find(pp => pp.distinguisher==='24hr').price : null);
+      setCookie('debug-RefreshPsiCash-price-7day', msg.payload.purchase_prices.length ? msg.payload.purchase_prices.find(pp => pp.distinguisher==='7day').price : null);
+      setCookie('debug-RefreshPsiCash-price-31day', msg.payload.purchase_prices.length ? msg.payload.purchase_prices.find(pp => pp.distinguisher==='31day').price : null);
+      setCookie('debug-RefreshPsiCash-isAccount', msg.payload.is_account);
+      setCookie('debug-RefreshPsiCash-hasTokens', msg.payload.has_tokens);
+      setCookie('debug-RefreshPsiCash-accountUsername', msg.payload.account_username);
     });
 
     // Wire up the PsiCash InitDone test
@@ -3655,10 +3966,16 @@
     });
 
     const BILLION = 1e9;
-    // Populate the PsiCash balance and price
-    $('#debug-RefreshPsiCash-balance').val(getCookie('debug-RefreshPsiCash-balance') ? getCookie('debug-RefreshPsiCash-balance') / BILLION : '');
-    $('#debug-RefreshPsiCash-price-1hr').val(getCookie('debug-RefreshPsiCash-price-1hr') ? getCookie('debug-RefreshPsiCash-price-1hr') / BILLION : '');
-    $('#debug-RefreshPsiCash-price-24hr').val(getCookie('debug-RefreshPsiCash-price-24hr') ? getCookie('debug-RefreshPsiCash-price-24hr') / BILLION : '');
+    // Populate the PsiCash balance, price, and account info
+    $('#debug-RefreshPsiCash-balance').val(_.isNumber(getCookie('debug-RefreshPsiCash-balance')) ? getCookie('debug-RefreshPsiCash-balance') / BILLION : '');
+    $('#debug-RefreshPsiCash-price-1hr').val(_.isNumber(getCookie('debug-RefreshPsiCash-price-1hr')) ? getCookie('debug-RefreshPsiCash-price-1hr') / BILLION : '');
+    $('#debug-RefreshPsiCash-price-24hr').val(_.isNumber(getCookie('debug-RefreshPsiCash-price-24hr')) ? getCookie('debug-RefreshPsiCash-price-24hr') / BILLION : '');
+    $('#debug-RefreshPsiCash-price-7day').val(_.isNumber(getCookie('debug-RefreshPsiCash-price-7day')) ? getCookie('debug-RefreshPsiCash-price-7day') / BILLION : '');
+    $('#debug-RefreshPsiCash-price-31day').val(_.isNumber(getCookie('debug-RefreshPsiCash-price-31day')) ? getCookie('debug-RefreshPsiCash-price-31day') / BILLION : '');
+
+    $('#debug-RefreshPsiCash-isAccount')[0].checked = getCookie('debug-RefreshPsiCash-isAccount');
+    $('#debug-RefreshPsiCash-hasTokens')[0].checked = getCookie('debug-RefreshPsiCash-hasTokens');
+    $('#debug-RefreshPsiCash-accountUsername').val(getCookie('debug-RefreshPsiCash-accountUsername') ? getCookie('debug-RefreshPsiCash-accountUsername') : '');
 
     // Wire up the Disallowed Traffic test
     $('#debug-DisallowedTraffic a').click(function debugPsiCashInitDoneClick() {
@@ -3676,9 +3993,10 @@
     let purchase = null; /** @type {?PsiCashPurchase} */
     if ($('#debug-RefreshPsiCash-boost-remaining').val()) {
       purchase = {
-        id: 'purchase-id',
+        id: `purchase-id-${randomID()}`,
         'class': 'speed-boost',
         distinguisher: '1hr',
+        authorization: 'myfakeauth',
         localTimeExpiry: moment().add(parseFloat($('#debug-RefreshPsiCash-boost-remaining').val()), 'minutes').toISOString()
       };
     }
@@ -3688,7 +4006,7 @@
       type: PsiCashMessageTypeEnum.REFRESH,
       id: msg_id,
       payload: makeTestRefreshPayload(purchase)
-    }
+    };
 
     return msg;
   }
@@ -3698,18 +4016,37 @@
    * @param {?PsiCashPurchase} purchase
    * @param {?boolean} isAccount
    * @param {?boolean} hasTokens
+   * @param {?string} accountUsername Must be set if isAccount&&hasTokens are true
    * @returns {PsiCashRefreshData}
    */
-  function makeTestRefreshPayload(purchase=null, isAccount=null, hasTokens=true) {
+  function makeTestRefreshPayload(purchase=undefined, isAccount=undefined, hasTokens=undefined, accountUsername=undefined) {
     const BILLION = 1e9;
 
-    if (isAccount == null) {
+    if (_.isUndefined(isAccount)) {
       isAccount = $('#debug-RefreshPsiCash-isAccount')[0].checked;
+    }
+    else {
+      $('#debug-RefreshPsiCash-isAccount')[0].checked = isAccount;
+    }
+
+    if (_.isUndefined(hasTokens)) {
+      hasTokens = $('#debug-RefreshPsiCash-hasTokens')[0].checked;
+    }
+    else {
+      $('#debug-RefreshPsiCash-hasTokens')[0].checked = hasTokens;
+    }
+
+    if (_.isUndefined(accountUsername)) {
+      accountUsername = $('#debug-RefreshPsiCash-accountUsername').val();
+    }
+    else {
+      $('#debug-RefreshPsiCash-accountUsername').val(accountUsername ? accountUsername : '');
     }
 
     return {
       is_account: isAccount,
-      valid_token_types: hasTokens ? ['spender', 'earner', 'indicator'] : [],
+      account_username: accountUsername,
+      has_tokens: hasTokens,
       balance: hasTokens ? parseFloat($('#debug-RefreshPsiCash-balance').val()) * BILLION : 0,
       purchase_prices: hasTokens ? [
         {
@@ -3721,10 +4058,22 @@
           'class': 'speed-boost',
           distinguisher: '24hr',
           price: parseFloat($('#debug-RefreshPsiCash-price-24hr').val()) * BILLION
+        },
+        {
+          'class': 'speed-boost',
+          distinguisher: '7day',
+          price: parseFloat($('#debug-RefreshPsiCash-price-7day').val()) * BILLION
+        },
+        {
+          'class': 'speed-boost',
+          distinguisher: '31day',
+          price: parseFloat($('#debug-RefreshPsiCash-price-31day').val()) * BILLION
         }
       ] : [],
-      purchases: purchase ? [purchase] : null,
-      buy_psi_url: 'https://buy.psi.cash/#psicash=example'
+      purchases: hasTokens && purchase ? [purchase] : null,
+      buy_psi_url: 'https://example.com/buy.psi.cash/#psicash=example',
+      account_signup_url: 'https://example.com/my.psi.cash/signup?etc',
+      account_management_url: 'https://my.psi.cash/?etc',
     };
   }
 
@@ -3742,7 +4091,7 @@
         error: 'test init error message',
         recovered: recovered
       } : {}
-    }
+    };
 
     setTimeout(() => HtmlCtrlInterface_PsiCashMessage(msg), 200);
   }
@@ -3788,21 +4137,25 @@
       if (command.distinguisher === '24hr') {
         expiry = moment().add(24, 'hour').toISOString();
       }
+      else if (command.distinguisher === '7day') {
+        expiry = moment().add(7, 'day').toISOString();
+      }
+      else if (command.distinguisher === '31day') {
+        expiry = moment().add(31, 'day').toISOString();
+      }
 
       /** @type {PsiCashPurchase} */
       let purchase = {
-        id: 'debugpurchaseid',
+        id: `debugpurchaseid-${randomID()}`,
         'class': command.transactionClass, // quoting key b/c it's a keyword and old IE will complain
         distinguisher: command.distinguisher,
+        authorization: 'myfakeauth', // not the correct format, and assuming we always want it, but that's okay for now
         localTimeExpiry: expiry,
         serverTimeExpiry: expiry
       };
-      msg.payload.refresh = makeTestRefreshPayload(purchase);
 
-      debugSetPsiCashData({
-        balance: g_PsiCashData.balance-command.expectedPrice,
-        purchases: [purchase]
-      });
+      $('#debug-RefreshPsiCash-balance').val((g_PsiCashData.balance - command.expectedPrice) / 1e9);
+      msg.payload.refresh = makeTestRefreshPayload(purchase);
     }
     else {
       msg.payload.status = PsiCashServerResponseStatus[resp];
@@ -3845,7 +4198,7 @@
 
       msg.payload.last_tracker_merge = $('#debug-PsiCashLogin-last_tracker_merge')[0].checked;
 
-      msg.payload.refresh = makeTestRefreshPayload(null, true, true);
+      msg.payload.refresh = makeTestRefreshPayload(undefined, true, true, 'DebugUsername');
     }
     else {
       msg.payload.status = PsiCashServerResponseStatus[resp];
@@ -3878,15 +4231,11 @@
       msg.payload.error = 'debug error';
     }
     else {
-      msg.payload.refresh = makeTestRefreshPayload(null, true, false);
+      msg.payload.refresh = makeTestRefreshPayload(undefined, true, false, null);
     }
 
     // Pretend the request takes a while.
     setTimeout(() => HtmlCtrlInterface_PsiCashMessage(msg), 5000);
-  }
-
-  function debugSetPsiCashData(data) {
-    g_PsiCashData = Object.assign(g_PsiCashData, data);
   }
 
 
@@ -3941,6 +4290,7 @@
         showNoticeModal(
           'notice#systemproxysettings-setproxy-error-title',
           'notice#systemproxysettings-setproxy-error-body',
+          'error',
           null, null, null);
       }
       else if (args.noticeType === 'SystemProxySettings::SetProxyWarning') {
@@ -3949,6 +4299,9 @@
           priority: 2, // high
           message: _.template(setProxyWarningTemplate)({data: args.data})
         });
+      }
+      else if (args.noticeType === 'PsiphonUI::URLCopiedToClipboard') {
+        displayCornerAlert($('#alert-url-copied-to-clipboard'));
       }
     });
   }
@@ -4050,7 +4403,7 @@
           break;
       }
 
-      // Resolve any promies that's awaiting this message/response.
+      // Resolve any promise that's awaiting this message/response.
       if (args.id && !_.isUndefined(g_PsiCashCommandIDToResolver[args.id])) {
         // Trigger a unique event so that the waiting promise can be resolved.
         g_PsiCashCommandIDToResolver[args.id].call(null, args.payload);
@@ -4168,6 +4521,7 @@
     }
     nextTick(function() {
       if (IS_BROWSER) {
+        alert('Tunnel reconnected requested');
         console.log(appURL);
       }
       else {

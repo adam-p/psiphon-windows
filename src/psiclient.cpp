@@ -42,6 +42,8 @@
 
 //==== Globals ================================================================
 
+#define DEBUG_UI    _DEBUG
+
 #define MAX_LOADSTRING 100
 
 HINSTANCE g_hInst;
@@ -99,9 +101,8 @@ void OnCreate(HWND hWndParent)
     initJSON["Config"]["NewVersionURL"] = GET_NEW_VERSION_URL;
     initJSON["Config"]["FaqURL"] = FAQ_URL;
     initJSON["Config"]["DataCollectionInfoURL"] = DATA_COLLECTION_INFO_URL;
-    initJSON["Config"]["PsiCashAccountSignupURL"] = psicash::Lib::AccountSignupURL();
     initJSON["Config"]["DpiScaling"] = g_dpiScaling;
-#ifdef _DEBUG
+#if DEBUG_UI
     initJSON["Config"]["Debug"] = true;
 #else
     initJSON["Config"]["Debug"] = false;
@@ -1033,6 +1034,13 @@ static void HtmlUI_BeforeNavigateHandler(LPCTSTR url)
     else {
         // Not one of our links. Open it in an external browser.
         OpenBrowser(url);
+
+        // Copy the URL to the clipboard and let the UI know we did so, so the user can be informed
+        if (CopyToClipboard(g_hWnd, url)) {
+            UI_Notice("PsiphonUI::URLCopiedToClipboard", WStringToUTF8(url));
+        }
+
+        my_print(NOT_SENSITIVE, true, _T("%s: external URL opened and copied to clipboard"), __TFUNCTION__);
     }
 
 done:
@@ -1213,9 +1221,9 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 //==== Main window functions ==================================================
 
-#define WINDOW_X_START  780
+#define WINDOW_X_START  900
 #define WINDOW_Y_START  700
-#define WINDOW_X_MIN    680
+#define WINDOW_X_MIN    780
 #define WINDOW_Y_MIN    700
 
 static void SaveWindowPlacement()
@@ -1679,19 +1687,29 @@ void InitPsiCash() {
 }
 
 nlohmann::json MakeRefreshPsiCashPayload() {
+    nonstd::optional<string> accountUsernameOpt = psicash::Lib::_().AccountUsername();
     nlohmann::json res = {
         { "is_account", psicash::Lib::_().IsAccount() },
-        { "valid_token_types", psicash::Lib::_().ValidTokenTypes() },
+        { "has_tokens", psicash::Lib::_().HasTokens() },
+        { "has_tokens", psicash::Lib::_().HasTokens() },
         { "balance",  psicash::Lib::_().Balance() },
         { "purchase_prices", psicash::Lib::_().GetPurchasePrices() },
-        { "purchases", psicash::Lib::_().GetPurchases() }
+        { "purchases", psicash::Lib::_().GetPurchases() },
+        { "account_signup_url", psicash::Lib::_().GetAccountSignupURL() },
+        { "account_management_url", psicash::Lib::_().GetAccountManagementURL() },
+
+        // Trying to use ternary conditionals for these will cause a crash
+        { "account_username", nullptr },
+        { "buy_psi_url", nullptr }
     };
 
-    // Trying to do this with a ternary conditional will cause a crash
-    auto buyPsiURL = psicash::Lib::_().GetBuyPsiURL();
-    res["buy_psi_url"] = nullptr;
-    if (buyPsiURL) {
-        res["buy_psi_url"] = *buyPsiURL;
+    if (accountUsernameOpt) {
+        res["account_username"] = *accountUsernameOpt;
+    }
+
+    auto buyPsiURLOpt = psicash::Lib::_().GetBuyPsiURL();
+    if (buyPsiURLOpt) {
+        res["buy_psi_url"] = *buyPsiURLOpt;
     }
 
     return res;

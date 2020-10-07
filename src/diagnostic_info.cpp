@@ -356,7 +356,8 @@ wstring GetDLLVersion(const string& dllFileName)
                 WCHAR subBlock[50];
                 for (size_t i = 0; i < (langAndCodePagesSize / sizeof(struct LANGANDCODEPAGE)); i++)
                 {
-                    if (langAndCodePages[i].wLanguage == 0x0409)
+                    // All English language code pages are like 0x??09
+                    if ((langAndCodePages[i].wLanguage & 0x00FF) == 0x0009)
                     {
                         swprintf_s(
                             subBlock,
