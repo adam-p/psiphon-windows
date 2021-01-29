@@ -134,11 +134,13 @@ ConnectionManagerState ConnectionManager::GetState()
 
 void ConnectionManager::SetReconnecting()
 {
+    my_print(NOT_SENSITIVE, false, _T("Reconnecting..."));
     SetState(CONNECTION_MANAGER_STATE_STARTING);
 }
 
 void ConnectionManager::SetReconnected()
 {
+    my_print(NOT_SENSITIVE, false, _T("Reconnected"));
     SetState(CONNECTION_MANAGER_STATE_CONNECTED);
 }
 
@@ -290,10 +292,10 @@ DWORD WINAPI ConnectionManager::ConnectionManagerStartThread(void* object)
             // currently connected tunnel, go ahead and restart the application
             // using the new version.
             // TODO: if ShellExecute fails, don't die?
-            TCHAR filename[1000];
-            if (GetModuleFileName(NULL, filename, 1000))
+            tstring exePath;
+            if (GetOwnExecutablePath(exePath))
             {
-                ShellExecute(0, NULL, filename, 0, 0, SW_SHOWNORMAL);
+                ShellExecute(0, NULL, exePath.c_str(), 0, 0, SW_SHOWNORMAL);
                 PostMessage(g_hWnd, WM_QUIT, 0, 0);
                 break;
             }
@@ -959,16 +961,15 @@ void ConnectionManager::PaveUpgrade(const string& download)
 
     // Find current process binary path
 
-    TCHAR filename[1000];
-    if (!GetModuleFileName(NULL, filename, 1000))
+    tstring exe_path;
+    if (!GetOwnExecutablePath(exe_path))
     {
         // Abort upgrade
         return;
     }
 
     // Rename current binary to archive name
-
-    tstring archive_filename(filename);
+    tstring archive_filename(exe_path);
     archive_filename += _T(".orig");
 
     bool bArchiveCreated = false;
@@ -984,7 +985,7 @@ void ConnectionManager::PaveUpgrade(const string& download)
             throw std::exception("Upgrade - DeleteFile failed");
         }
 
-        if (!MoveFile(filename, archive_filename.c_str()))
+        if (!MoveFile(exe_path.c_str(), archive_filename.c_str()))
         {
             throw std::exception("Upgrade - MoveFile failed");
         }
@@ -993,7 +994,7 @@ void ConnectionManager::PaveUpgrade(const string& download)
 
         // Write new version to current binary file name
 
-        AutoHANDLE file = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+        AutoHANDLE file = CreateFile(exe_path.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
         if (file == INVALID_HANDLE_VALUE)
         {
@@ -1021,7 +1022,7 @@ void ConnectionManager::PaveUpgrade(const string& download)
         // Try to restore the original version
         if (bArchiveCreated)
         {
-            CopyFile(archive_filename.c_str(), filename, FALSE);
+            CopyFile(archive_filename.c_str(), exe_path.c_str(), FALSE);
         }
 
         // Abort upgrade
@@ -1050,14 +1051,14 @@ void ConnectionManager::ActiveAuthorizationIDs(
         for (const auto& p : activePurchases) {
             ss << p.transaction_class + ":" + p.distinguisher + "; ";
         }
-        my_print(NOT_SENSITIVE, false, _T("%hs"), ss.str().c_str());
+        my_print(NOT_SENSITIVE, true, _T("%hs"), ss.str().c_str());
     }
 
     // Items in inactiveIDs are invalid or expired, so we should modify our
     // locally stored set of purchases.
     vector<psicash::TransactionID> purchasesToRemove;
     for (const auto& p : inactivePurchases) {
-        my_print(NOT_SENSITIVE, false, _T("Removing expired purchase: class:%hs; distinguisher:%hs; expiry:%hs"), p.transaction_class.c_str(), p.distinguisher.c_str(), p.authorization->expires.ToISO8601().c_str());
+        my_print(NOT_SENSITIVE, true, _T("Removing expired purchase: class:%hs; distinguisher:%hs; expiry:%hs"), p.transaction_class.c_str(), p.distinguisher.c_str(), p.authorization->expires.ToISO8601().c_str());
         purchasesToRemove.push_back(p.id);
     }
 
@@ -1065,11 +1066,11 @@ void ConnectionManager::ActiveAuthorizationIDs(
     if (!res)
     {
         // We'll log, but not take any other action
-        my_print(NOT_SENSITIVE, false, _T("%s: RemovePurchases failed (%d): %hs"), __TFUNCTION__, GetLastError(), res.error().ToString().c_str());
+        my_print(NOT_SENSITIVE, true, _T("%s: RemovePurchases failed (%d): %hs"), __TFUNCTION__, GetLastError(), res.error().ToString().c_str());
     }
 
     // Our active purchase state changed, so update the UI.
-    UI_RefreshPsiCash("");
+    UI_RefreshPsiCash("", false);
 }
 
 // Makes a thread-safe copy of m_currentSessionInfo
@@ -1201,9 +1202,9 @@ bool ConnectionManager::DoSendFeedback(LPCWSTR feedbackJSON)
                     email,
                     surveyJSON,
                     sendDiagnosticInfo);
-        
+
         unique_ptr<FeedbackUploadWorker> feedbackUpload;
- 
+
         // Kick off the feedback upload and poll for it to complete. Interrupt
         // the operation if the VPN is connecting or disconnecting, and retry
         // when it is connected or disconnected again.
@@ -1212,7 +1213,7 @@ bool ConnectionManager::DoSendFeedback(LPCWSTR feedbackJSON)
 
             bool vpnModeStarted = g_connectionManager.VPNModeStarted();
 
-            if (feedbackUpload == NULL && vpnModeStarted && 
+            if (feedbackUpload == NULL && vpnModeStarted &&
                 (GetState() == CONNECTION_MANAGER_STATE_STOPPED || GetState() == CONNECTION_MANAGER_STATE_CONNECTED))
             {
                 // Start the upload in VPN mode if the transport is stopped, or
@@ -1275,7 +1276,7 @@ bool ConnectionManager::DoSendFeedback(LPCWSTR feedbackJSON)
                     success = feedbackUpload->UploadSuccessful();
                     break;
                 }
-                else if (feedbackUpload->UploadStopped() || feedbackUpload->IsVPNMode() != vpnModeStarted) 
+                else if (feedbackUpload->UploadStopped() || feedbackUpload->IsVPNMode() != vpnModeStarted)
                 {
                     // Worker has been stopped by the stop signal going high or
                     // the transport mode has changed to, or from, VPN mode. In

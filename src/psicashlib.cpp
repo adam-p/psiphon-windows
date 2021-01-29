@@ -85,11 +85,12 @@ enum class RequestType : int {
 };
 
 void Lib::RefreshState(
-    std::function<void(error::Result<Status>)> callback)
+    bool local_only,
+    std::function<void(error::Result<RefreshStateResponse>)> callback)
 {
     // Don't queue this if there is already an outstanding RefreshState
     auto queued = m_requestQueue.dispatch((int)RequestType::RefreshState, { (int)RequestType::RefreshState }, [=] {
-        callback(PsiCash::RefreshState({ "speed-boost" }));
+        callback(PsiCash::RefreshState(local_only, { "speed-boost" }));
     });
 
     if (!queued) {
@@ -123,7 +124,7 @@ void Lib::AccountLogin(
 }
 
 void Lib::AccountLogout(
-    std::function<void(error::Error)> callback)
+    std::function<void(error::Result<AccountLogoutResponse>)> callback)
 {
     // Don't queue this if there is already an outstanding AccountLogout
     (void)m_requestQueue.dispatch(

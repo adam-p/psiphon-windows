@@ -38,10 +38,12 @@ public:
     /// Update the client region (in the request metadata) as it's better known.
     error::Error UpdateClientRegion(const string& region);
 
-    /// Makes a RefreshState request.
+    /// Makes a RefreshState request. If `localOnly` is true, no network request will be
+    /// attempted -- the refresh will only examine local data.
     /// Network and callback will happen on a separate thread.
     void RefreshState(
-        std::function<void(error::Result<Status>)> callback);
+        bool localOnly,
+        std::function<void(error::Result<RefreshStateResponse>)> callback);
 
     /// Makes a NewExpiringPurchase request.
     /// Network and callback will happen on a separate thread.
@@ -61,7 +63,7 @@ public:
     /// Makes an AccountLogout request.
     /// Network and callback will happen on a separate thread.
     void AccountLogout(
-        std::function<void(error::Error)> callback);
+        std::function<void(error::Result<AccountLogoutResponse>)> callback);
 
 protected:
     /// If this returns true, the request has been made and requestTask has been moved.

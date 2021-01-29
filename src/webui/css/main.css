@@ -2208,6 +2208,7 @@ table th[class*="span"],
 }
 .fade {
   opacity: 0;
+  filter: alpha(opacity=0);
   -moz-transition: opacity 0.15s linear;
   -webkit-transition: opacity 0.15s linear;
   -o-transition: opacity 0.15s linear;
@@ -2215,6 +2216,7 @@ table th[class*="span"],
 }
 .fade.in {
   opacity: 1;
+  filter: alpha(opacity=100);
 }
 .collapse {
   position: relative;
@@ -3219,7 +3221,7 @@ input[type="submit"].btn.btn-mini {
   min-height: 40px;
   padding-left: 20px;
   padding-right: 20px;
-  background-color: #fafafa;
+  background-color: #f2f2f2;
   background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
   background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
@@ -3575,7 +3577,7 @@ input[type="submit"].btn.btn-mini {
   border-radius: 6px 0 6px 6px;
 }
 .navbar-inverse .navbar-inner {
-  background-color: #1b1b1b;
+  background-color: #111111;
   background-image: -moz-linear-gradient(top, #222222, #111111);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#111111));
   background-image: -webkit-linear-gradient(top, #222222, #111111);
@@ -4421,7 +4423,7 @@ a.badge:focus {
   overflow: hidden;
   height: 20px;
   margin-bottom: 20px;
-  background-color: #f7f7f7;
+  background-color: #f9f9f9;
   background-image: -moz-linear-gradient(top, #f5f5f5, #f9f9f9);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), to(#f9f9f9));
   background-image: -webkit-linear-gradient(top, #f5f5f5, #f9f9f9);
@@ -4444,7 +4446,7 @@ a.badge:focus {
   font-size: 12px;
   text-align: center;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #0e90d2;
+  background-color: #0480be;
   background-image: -moz-linear-gradient(top, #149bdf, #0480be);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#149bdf), to(#0480be));
   background-image: -webkit-linear-gradient(top, #149bdf, #0480be);
@@ -4489,7 +4491,7 @@ a.badge:focus {
 }
 .progress-danger .bar,
 .progress .bar-danger {
-  background-color: #dd514c;
+  background-color: #c43c35;
   background-image: -moz-linear-gradient(top, #ee5f5b, #c43c35);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#c43c35));
   background-image: -webkit-linear-gradient(top, #ee5f5b, #c43c35);
@@ -4509,7 +4511,7 @@ a.badge:focus {
 }
 .progress-success .bar,
 .progress .bar-success {
-  background-color: #5eb95e;
+  background-color: #57a957;
   background-image: -moz-linear-gradient(top, #62c462, #57a957);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#62c462), to(#57a957));
   background-image: -webkit-linear-gradient(top, #62c462, #57a957);
@@ -4529,7 +4531,7 @@ a.badge:focus {
 }
 .progress-info .bar,
 .progress .bar-info {
-  background-color: #4bb1cf;
+  background-color: #339bb9;
   background-image: -moz-linear-gradient(top, #5bc0de, #339bb9);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5bc0de), to(#339bb9));
   background-image: -webkit-linear-gradient(top, #5bc0de, #339bb9);
@@ -4549,7 +4551,7 @@ a.badge:focus {
 }
 .progress-warning .bar,
 .progress .bar-warning {
-  background-color: #faa732;
+  background-color: #f89406;
   background-image: -moz-linear-gradient(top, #fbb450, #f89406);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fbb450), to(#f89406));
   background-image: -webkit-linear-gradient(top, #fbb450, #f89406);
@@ -5595,20 +5597,20 @@ a.badge:focus {
   .controls-row [class*="span"] + [class*="span"] {
     margin-left: 0;
   }
+  /* PSIPHON
+  HACK: These styles mess up on IE (but not Chrome). I can't figure out how to fix them,
+  and our window doesn't get small that we need them, so I'm disabling them.
   .modal {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top:   20px;
+    left:  20px;
     right: 20px;
     width: auto;
     margin: 0;
+    &.fade  { top: -100px; }
+    &.fade.in { top: 20px; }
   }
-  .modal.fade {
-    top: -100px;
-  }
-  .modal.fade.in {
-    top: 20px;
-  }
+  */
 }
 @media (max-width: 480px) {
   .nav-collapse {
@@ -6859,7 +6861,11 @@ body[dir="rtl"] #language-pane .language-item {
   /* IE7 inline-block hack */
   *zoom: 1;
   text-transform: uppercase;
+  -ms-transform: skew(-10deg) rotate(-7deg);
   transform: skew(-10deg) rotate(-7deg);
+  -webkit-transform-origin: right;
+  -moz-transform-origin: right;
+  -ms-transform-origin: right;
   transform-origin: right;
   display: table;
   margin: 1em auto 3em auto;
@@ -6982,23 +6988,24 @@ body[dir="rtl"] #psicash-block > div .psicash-title-balance .psicash-balance-del
   border-bottom-right-radius: 10px;
 }
 #psicash-block > div .psicash-corner-cluster .psicash-corner-cluster-item.label {
-  padding: 1em;
-  white-space: initial;
-  font-size: 1.2em;
-  line-height: 1.1em;
+  white-space: normal;
+  padding: 0.7em;
+  font-size: 1em;
+  line-height: 1.2em;
 }
-#psicash-block > div .psicash-buy-speedboost,
-#psicash-block > div .psicash-buy-speedboost-fake {
+#psicash-block > div .psicash-corner-cluster .psicash-corner-cluster-item.label-success {
+  background-color: #51A253;
+}
+#psicash-block > div .psicash-buy-speedboost {
   display: block;
   border-radius: 0;
+  padding: 4px 2px;
 }
-#psicash-block > div .psicash-buy-speedboost .psicash-buy-speedboost-label,
-#psicash-block > div .psicash-buy-speedboost-fake .psicash-buy-speedboost-label {
+#psicash-block > div .psicash-buy-speedboost .psicash-buy-speedboost-label {
   text-transform: uppercase;
   font-weight: bold;
 }
-#psicash-block > div .psicash-buy-speedboost table,
-#psicash-block > div .psicash-buy-speedboost-fake table {
+#psicash-block > div .psicash-buy-speedboost table {
   margin: auto;
 }
 #psicash-block > div .psicash-buy-speedboost-more-options {
@@ -7030,27 +7037,49 @@ body[dir="rtl"] #psicash-block > div .psicash-title-balance .psicash-balance-del
   position: relative;
   font-size: 40px;
 }
+#psicash-pane hr {
+  margin: 5px 0 10px 0;
+}
 #psicash-pane .width-limiter {
   max-width: 600px;
   margin: auto;
 }
-body[dir="rtl"] #psicash-pane .psicash-pane__user-and-balance > div {
-  float: right;
+#psicash-pane .psicash-pane__user-and-balance {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 5px;
 }
 #psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__log-in-out-buttons {
+  white-space: nowrap;
   text-align: right;
 }
 body[dir="rtl"] #psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__log-in-out-buttons {
   text-align: left;
 }
-#psicash-pane .psicash-username-container {
+#psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__username-container {
+  width: 100%;
   font-weight: bold;
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
 }
-#psicash-pane .psicash-username-container .psicash-username {
+#psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__username-container .psicash-pane__user-and-balance__username-container__username {
   font-size: 1.5em;
 }
-#psicash-pane .psicash-balance-row {
+#psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__balance {
   font-size: 1.5em;
+}
+#psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__balance .psicash-balance-coin {
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+}
+#psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__manage-web {
+  white-space: nowrap;
+  text-align: right;
+}
+body[dir="rtl"] #psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__manage-web {
+  text-align: left;
 }
 #psicash-pane .speed-boost-buttons .speed-boost-button {
   display: inline-block;
@@ -7065,6 +7094,12 @@ body[dir="rtl"] #psicash-pane .psicash-pane__user-and-balance .psicash-pane__use
   -webkit-border-radius: 7px;
   -moz-border-radius: 7px;
   border-radius: 7px;
+}
+@media (max-width: 920px) {
+  #psicash-pane .speed-boost-buttons .speed-boost-button {
+    height: 125px;
+    width: 121px;
+  }
 }
 #psicash-pane .speed-boost-buttons .speed-boost-button.enough-balance:hover {
   -webkit-box-shadow: 0px 0px 10px 0px #6c6c6c;
@@ -7220,6 +7255,64 @@ html.no-csstransforms #psicash-pane .speed-boost-buttons .speed-boost-button .sp
 #psicash-pane .speed-limit .badge {
   font-size: 20px;
 }
+#psicash-pane .speed-limit .badge img {
+  height: 1.5em;
+}
+#psicash-pane .speed-limit .badge table {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+  *zoom: 1;
+}
+#psicash-pane .badge .psicash-pane__speed-limit__collapser {
+  text-decoration: none;
+  text-shadow: none;
+  margin-top: 4px;
+  color: #e6e6e6;
+}
+#psicash-pane .badge .psicash-pane__speed-limit__collapser:hover {
+  color: #fff;
+}
+body[dir="ltr"] #psicash-pane .badge .psicash-pane__speed-limit__collapser {
+  float: right;
+}
+body[dir="rtl"] #psicash-pane .badge .psicash-pane__speed-limit__collapser {
+  float: left;
+}
+#psicash-pane h3 .psicash-pane__speed-limit__collapser {
+  font-size: 14px;
+  text-decoration: none;
+  text-shadow: none;
+  display: inline-block\9;
+}
+#psicash-pane h3 .psicash-pane__speed-limit__collapser.icon-question-circle,
+#psicash-pane h3 .psicash-pane__speed-limit__collapser.icon-question {
+  padding: 0;
+  border: 0;
+}
+#psicash-pane .psicash-pane__speed-limit__collapse {
+  -moz-transition: height 0.35s ease, margin-top 0.35s ease, opacity 0.35s ease, border 0.35s ease;
+  -webkit-transition: height 0.35s ease, margin-top 0.35s ease, opacity 0.35s ease, border 0.35s ease;
+  -o-transition: height 0.35s ease, margin-top 0.35s ease, opacity 0.35s ease, border 0.35s ease;
+  transition: height 0.35s ease, margin-top 0.35s ease, opacity 0.35s ease, border 0.35s ease;
+}
+#psicash-pane .psicash-pane__speed-limit__collapse:not(.in) {
+  opacity: 0;
+  border: none;
+}
+#psicash-pane .speed-limit {
+  background-color: rgba(204, 102, 76, 0);
+  background-image: -moz-linear-gradient(top, rgba(204, 102, 76, 0.1), rgba(204, 102, 76, 0));
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(204, 102, 76, 0.1)), to(rgba(204, 102, 76, 0)));
+  background-image: -webkit-linear-gradient(top, rgba(204, 102, 76, 0.1), rgba(204, 102, 76, 0));
+  background-image: -o-linear-gradient(top, rgba(204, 102, 76, 0.1), rgba(204, 102, 76, 0));
+  background-image: linear-gradient(to bottom, rgba(204, 102, 76, 0.1), rgba(204, 102, 76, 0));
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#19cc664c', endColorstr='#00cc664c', GradientType=0);
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
 .speed-limit .badge,
 .speed-limit.badge {
   display: block;
@@ -7273,11 +7366,11 @@ body[dir="rtl"] .speed-limit.badge img {
 }
 body[dir="ltr"] .global-alert {
   right: 0;
-  left: initial;
+  left: auto;
 }
 body[dir="rtl"] .global-alert {
   left: 0;
-  right: initial;
+  right: auto;
 }
 .z-behind {
   z-index: -2;
@@ -7312,7 +7405,6 @@ hr.dotted {
 }
 .paragraph-icon {
   font-size: 2.2em;
-  margin: 5px 10px 5px 0;
   font-weight: bold;
 }
 .paragraph-icon.paragraph-icon__warning {
@@ -7329,7 +7421,9 @@ hr.dotted {
 }
 body[dir="ltr"] .paragraph-icon {
   float: left;
+  margin: 5px 10px 10px 0;
 }
 body[dir="rtl"] .paragraph-icon {
   float: right;
+  margin: 5px 0 10px 10px;
 }

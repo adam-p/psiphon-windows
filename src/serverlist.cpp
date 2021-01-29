@@ -26,7 +26,6 @@
 #include "utilities.h"
 #include <algorithm>
 #include <sstream>
-#include <random>
 
 
 ServerList::ServerList(LPCSTR listName)
@@ -76,9 +75,7 @@ size_t ServerList::AddEntriesToList(
 
     // This list may contain more than one discovered server
     // Randomize this list for load-balancing
-    std::random_device rng;
-    std::default_random_engine urng(rng());
-    std::shuffle(decodedServerEntries.begin(), decodedServerEntries.end(), urng);
+    ShuffleVector(decodedServerEntries.begin(), decodedServerEntries.end());
 
     ServerEntries oldServerEntryList = GetList();
 
@@ -273,9 +270,7 @@ ServerEntries ServerList::GetList()
     {
         embeddedServerEntryList = GetListFromEmbeddedValues();
         // Randomize this list for load-balancing
-        std::random_device rng;
-        std::default_random_engine urng(rng());
-        std::shuffle(embeddedServerEntryList.begin(), embeddedServerEntryList.end(), urng);
+        ShuffleVector(embeddedServerEntryList.begin(), embeddedServerEntryList.end());
     }
     catch (std::exception &ex)
     {

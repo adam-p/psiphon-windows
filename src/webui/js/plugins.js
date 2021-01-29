@@ -494,3 +494,241 @@ Datastore.prototype = {
     return unsubscribe;
   }
 };
+
+
+/**
+ * Internationalization helper. Must be initialized before use.
+ * Should be accessed via `window.i18n`, with the exception of `I18n.localeBestMatch`.
+ */
+function I18n() {
+
+  /**
+   * Initializes this object.
+   * @param {Object} translations The set of translations available to us.
+   *    Must be of the form `{en: {translation:{key1:"string1",key2:"string2",...}}, ...}
+   * @param {string} fallbackLocale The locale to use if a string key is missing from a translation,
+   *    or if `setLocale` is passed a locale that it can't find a match for.
+   */
+  this.init = function(translations, fallbackLocale) {
+    this.translations = translations;
+    this.locales = Object.keys(translations);
+
+    if (!this.translations[fallbackLocale]) {
+      throw new Error(`fallbackLocale '${fallbackLocale}' must exactly match a locale in translations`);
+    }
+    this.fallbackLocale = fallbackLocale;
+    this.currentLocale = this.fallbackLocale;
+  };
+
+  /**
+   * Sets the current locale of this object to a best match of `locale`. If UI l10n
+   * update is also desired, `localizeUI` should be called after this.
+   * @param {string} locale
+   */
+  this.setLocale = function(locale) {
+    this.currentLocale = I18n.localeBestMatch(locale, this.locales) || this.fallbackLocale;
+  };
+
+  /**
+   * Returns true if the current locale is RTL, false otherwise.
+   * @returns {boolean}
+   */
+  this.isRTL = function() {
+    // Factors to keep in mind:
+    // - some languages are RTL in their default script; like Arabic and Hebrew
+    // - some languages sometimes use Arabic script, but not by default; like Kazakh
+    // - any locale can have the `Arab` script set and become RTL (probably other
+    //   scripts as well, but that's the only one we'll check for)
+    const defaultRTLLanguages = ['devrtl', 'fa', 'ar', 'ug', 'ur', 'he', 'ps', 'sd'];
+    // This isn't all of them, but the ones we might reasonably encounter combined with an RTL language. We may need to expand this with time.
+    const ltrScripts = ['Latn', 'Cyrl', 'Deva'];
+    // We may need to expand this with time.
+    const rtlScripts = ['Arab'];
+
+    // Note that script names are always four characters, and language and country codes
+    // are always 2 characters, so we're not going to accidentally match a script name.
+
+    // Do we have an explicit RTL script?
+    for (let i = 0; i < rtlScripts.length; i++) {
+      if (this.currentLocale.toLowerCase().indexOf(rtlScripts[i].toLowerCase()) >= 0) { // eslint-disable-line
+        return true;
+      }
+    }
+
+    // Do we have an explicit LTR script?
+    for (let i = 0; i < ltrScripts.length; i++) {
+      if (this.currentLocale.toLowerCase().indexOf(ltrScripts[i].toLowerCase()) >= 0) { // eslint-disable-line
+        return false;
+      }
+    }
+
+    // Does the current language default to RTL?
+    for (let i = 0; i < defaultRTLLanguages.length; i++) {
+      if (this.currentLocale.toLowerCase().startsWith(defaultRTLLanguages[i].toLowerCase())) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  /**
+   * Find the string corresponding to `key` for the current locale (falling back if
+   * necessary). If the key can't be found, an exception will be thrown.
+   * @param {string} key
+   * @returns {string}
+   */
+  this.t = function(key) {
+    const translation = this.translations[this.currentLocale].translation[key]
+                        || this.translations[this.fallbackLocale].translation[key];
+    if (!translation) {
+      throw new Error(`failed to find translation for key '${key}' and locale '${this.currentLocale}'`);
+    }
+    return translation;
+  };
+
+  /**
+   * Update the UI with translations for the current locale.
+   */
+  this.localizeUI = function() {
+    const translatableElems = $('[data-i18n]');
+    for (let i = 0; i < translatableElems.length; i++) {
+      const elem = translatableElems.eq(i);
+      const key = elem.data('i18n');
+      if (key.startsWith('[html]')) {
+        elem.html(this.t(key.slice('[html]'.length)));
+      }
+      else {
+        elem.text(this.t(key));
+      }
+    }
+
+    $('html').attr('lang', this.currentLocale);
+    const rtl = this.isRTL();
+    $('body').attr('dir', rtl ? 'rtl' : 'ltr')
+             .css('direction', rtl ? 'rtl' : 'ltr');
+  };
+
+  /**
+   * Finds the best match for `desiredLocale` among `availableLocales`. Returns a locale
+   * from `availableLocales`, or `null` if no acceptable match can be found.
+   * @param {string} desiredLocale
+   * @param {string[]} availableLocales
+   * @returns {?string}
+   */
+  /* Adheres to this behaviour:
+  [
+    {
+      _desc: 'Exact match',
+      desiredLocale: 'zh-Hans-CN',
+      availableLocales: ['en', 'zh-Hans-CN', 'zh'],
+      want: 'zh-Hans-CN'
+    },
+    {
+      _desc: 'Language-only match',
+      desiredLocale: 'zh-Hans-CN',
+      availableLocales: ['en', 'zh', 'de'],
+      want: 'zh'
+    },
+    {
+      _desc: 'Language+script match',
+      desiredLocale: 'zh-Hans-CN',
+      availableLocales: ['en', 'zh', 'zh-Hans', 'zh-Hant-TW', 'de'],
+      want: 'zh-Hans'
+    },
+    {
+      _desc: 'Language+country match',
+      desiredLocale: 'zh-Hans-CN',
+      availableLocales: ['en', 'zh', 'zh-CN', 'zh-Hant-TW', 'de'],
+      want: 'zh-CN'
+    },
+    {
+      _desc: 'Case-insensitive best match',
+      desiredLocale: 'ZH-HANS-CN',
+      availableLocales: ['en-US', 'zh-TW', 'de-DE'],
+      want: 'zh-TW'
+    },
+    {
+      _desc: 'Shortest best match',
+      desiredLocale: 'zh-Hans-CN',
+      availableLocales: ['en-US', 'zh-XX', 'zh', 'zh-TW', 'de-DE'],
+      want: 'zh'
+    },
+    {
+      _desc: 'Equally good matches will be determined by input order; part 1',
+      desiredLocale: 'zh-XX-YY',
+      availableLocales: ['en-US', 'zh-XX', 'zh', 'zh-YY', 'de-DE'],
+      want: 'zh-XX'
+    },
+    {
+      _desc: 'Equally good matches will be determined by input order; part 2',
+      desiredLocale: 'zh-XX-YY',
+      availableLocales: ['en-US', 'zh-YY', 'zh', 'zh-XX', 'de-DE'],
+      want: 'zh-YY'
+    },
+  ].forEach((test) => {
+    const got = I18n.localeBestMatch(test.desiredLocale, test.availableLocales);
+    if (got !== test.want) {
+      throw new Error(`test failed: "${test._desc}"; got "${got}"; wanted "${test.want}"`)
+    }
+    console.log(`pass: ${test._desc}`);
+  });
+  console.log('all tests passed');
+  */
+  I18n.localeBestMatch = function(desiredLocale, availableLocales) {
+    // Our translation locales are like 'en', 'en-Latn', 'en-US', or 'en-Latn-US' (BCP 47 subset).
+    // `localeID` can also be like any of those, but not necessarily the same.
+    // We want to match intelligently.
+
+    // First try to match exactly. This is case sensitive. If there's a match that
+    // requires case-insensitivity, it will be found below.
+    for (let i = 0; i < availableLocales.length; i++) {
+      if (availableLocales[i] === desiredLocale) {
+        return desiredLocale;
+      }
+    }
+
+    // We'll break the IDs up into pieces and try to find a best match that must include
+    // the first, language, part.
+    const desiredLocaleParts = desiredLocale.toLowerCase().split('-');
+
+    let maxMatchScore = 0, maxMatchLocale = null;
+
+    for (let i = 0; i < availableLocales.length; i++) {
+      const translationLocale = availableLocales[i];
+      const translationLocaleParts = translationLocale.toLowerCase().split('-');
+      if (translationLocaleParts[0] !== desiredLocaleParts[0]) {
+        // The language part must match.
+        continue;
+      }
+
+      let currentScore = 1;
+
+      for (let j = 1; j < desiredLocaleParts.length; j++) {
+        for (let k = 1; k < translationLocaleParts.length; k++) {
+          if (desiredLocaleParts[j] === translationLocaleParts[k]) {
+            currentScore += 1;
+          }
+        }
+      }
+
+      if (currentScore > maxMatchScore) {
+        maxMatchScore = currentScore;
+        maxMatchLocale = translationLocale;
+      }
+      else if (currentScore === maxMatchScore) {
+        // We're going to break ties by preferring the shortest locale. This allows us,
+        // for example, to prefer "zh" over "zh-TW" for "zh-CN" and "zh-Hans-CN".
+        if (translationLocale.length < maxMatchLocale.length) {
+          maxMatchScore = currentScore;
+          maxMatchLocale = translationLocale;
+        }
+      }
+    }
+
+    return maxMatchLocale;
+  };
+
+}
+
+window.i18n = new I18n();

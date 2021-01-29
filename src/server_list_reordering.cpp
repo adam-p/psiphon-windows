@@ -25,7 +25,6 @@
 #include "utilities.h"
 #include "diagnostic_info.h"
 #include "server_list_reordering.h"
-#include <random>
 
 
 const int MAX_WORKER_THREADS = 30;
@@ -107,10 +106,6 @@ DWORD WINAPI ServerListReorder::ReorderServerListThread(void* data)
     // by Stop().
 
     ServerListReorder* object = (ServerListReorder*)data;
-
-    // Seed built-in non-crypto PRNG used for shuffling (load balancing)
-    unsigned int seed = (unsigned)time(NULL);
-    srand(seed);
 
     ReorderServerList(*(object->m_serverList), StopInfo(&object->m_stopSignal, STOP_REASON_ANY_STOP_TUNNEL));
 
@@ -226,9 +221,7 @@ void ReorderServerList(ServerList& serverList, const StopInfo& stopInfo)
 
     if (serverEntries.size() > MAX_WORKER_THREADS)
     {
-        std::random_device rng;
-        std::default_random_engine urng(rng());
-        std::shuffle(serverEntries.begin() + MAX_WORKER_THREADS/2, serverEntries.end(), urng);
+        ShuffleVector(serverEntries.begin() + MAX_WORKER_THREADS / 2, serverEntries.end());
     }
 
     for (ServerEntryIterator entry = serverEntries.begin(); entry != serverEntries.end(); ++entry)
@@ -319,9 +312,7 @@ void ReorderServerList(ServerList& serverList, const StopInfo& stopInfo)
         }
     }
 
-    std::random_device rng;
-    std::default_random_engine urng(rng());
-    std::shuffle(respondingServers.begin(), respondingServers.end(), urng);
+    ShuffleVector(respondingServers.begin(), respondingServers.end());
 
     // Merge back into server entry list. MoveEntriesToFront will move
     // these servers to the top of the list in the order submitted. Any

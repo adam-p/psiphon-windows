@@ -1445,6 +1445,7 @@
       "psicash#1-month": "[1 ḿǿǿƞŧħ]",
       "psicash#1-week": "[1 ẇḗḗḗḗķ]",
       "psicash#alert#buyspeedboost-purchase-complete": "[Şƥḗḗḗḗḓ Ɓǿǿǿǿşŧ şŧȧȧřŧḗḗḓ!]",
+      "psicash#alert#logged-out": "[ƤşīīƇȧȧşħ ȧȧƈƈǿǿŭŭƞŧ ŀǿǿɠǿǿŭŭŧ ƈǿǿḿƥŀḗḗŧḗḗ.]",
       "psicash#alert#tokens-expired": "[ƤşīīƇȧȧşħ ŀǿǿɠīīƞ ḗḗẋƥīīřḗḗḓ. Ƥŀḗḗȧȧşḗḗ ŀǿǿɠ ƀȧȧƈķ īīƞ.]",
       "psicash#corner-logged-out": "[Ẏǿǿŭŭ ȧȧřḗḗ ŀǿǿɠɠḗḗḓ ǿǿŭŭŧ ǿǿƒ ƤşīīƇȧȧşħ]",
       "psicash#init-error-body-recovered": "[ƤşīīƇȧȧşħ ƒȧȧīīŀḗḗḓ ŧǿǿ īīƞīīŧīīȧȧŀīīẑḗḗ. Ŧħīīş īīş ƥřǿǿƀȧȧƀŀẏ ḓŭŭḗḗ ŧǿǿ ȧȧ ƒīīŀḗḗ şẏşŧḗḗḿ ƥřǿǿƀŀḗḗḿ, şŭŭƈħ ȧȧş ƀḗḗīīƞɠ ǿǿŭŭŧ ǿǿƒ ḓīīşķ şƥȧȧƈḗḗ. Ẏǿǿŭŭř ƀȧȧŀȧȧƞƈḗḗ ȧȧƞḓ ǿǿŧħḗḗř şŧȧȧŧḗḗ ħȧȧṽḗḗ ƀḗḗḗḗƞ řḗḗşḗḗŧ.]",
@@ -1457,18 +1458,24 @@
       "psicash#login#last-tracker-merge-body": "[Ẏǿǿŭŭ ȧȧřḗḗ ŀǿǿɠɠḗḗḓ īīƞŧǿǿ ẏǿǿŭŭř ƤşīīƇȧȧşħ ȧȧƈƈǿǿŭŭƞŧ. Ŧħḗḗ ƥřḗḗḗḗẋīīşŧīīƞɠ ƀȧȧŀȧȧƞƈḗḗ ƒřǿǿḿ ŧħīīş ḓḗḗṽīīƈḗḗ ħȧȧş ƀḗḗḗḗƞ ŧřȧȧƞşƒḗḗřřḗḗḓ īīƞŧǿǿ ẏǿǿŭŭř ȧȧƈƈǿǿŭŭƞŧ, ƀŭŭŧ ŧħīīş īīş ŧħḗḗ ŀȧȧşŧ ŧīīḿḗḗ ȧȧ ƀȧȧŀȧȧƞƈḗḗ ḿḗḗřɠḗḗ ẇīīŀŀ ǿǿƈƈŭŭř.]",
       "psicash#login#server-error-body": "[Ŧħḗḗ ƤşīīƇȧȧşħ şḗḗřṽḗḗř řḗḗşƥǿǿƞḓḗḗḓ ẇīīŧħ ȧȧƞ ḗḗřřǿǿř ẇħīīŀḗḗ ŧřẏīīƞɠ ŧǿǿ ŀǿǿɠ ẏǿǿŭŭ īīƞ. Ƥŀḗḗȧȧşḗḗ ŧřẏ ȧȧɠȧȧīīƞ ŀȧȧŧḗḗř.]",
       "psicash#login#success-modal-title": "[ƤşīīƇȧȧşħ Ŀǿǿɠīīƞ Şŭŭƈƈḗḗşş]",
-      "psicash#modal-create-psicash-account-body": "[Ẇḗḗ şŧřǿǿƞɠŀẏ ḗḗƞƈǿǿŭŭřȧȧɠḗḗ ẏǿǿŭŭ ŧǿǿ ḿȧȧķḗḗ ȧȧ ƤşīīƇȧȧşħ ȧȧƈƈǿǿŭŭƞŧ. Ħȧȧṽīīƞɠ ȧȧƞ ȧȧƈƈǿǿŭŭƞŧ ȧȧŀŀǿǿẇş ẏǿǿŭŭ ŧǿǿ şħȧȧřḗḗ ẏǿǿŭŭř ƀȧȧŀȧȧƞƈḗḗ ƀḗḗŧẇḗḗḗḗƞ ḓḗḗṽīīƈḗḗş ȧȧƞḓ ƥřǿǿŧḗḗƈŧ ẏǿǿŭŭř ƥŭŭřƈħȧȧşḗḗş.]",
+      "psicash#modal-create-psicash-account-body": "[Ẇḗḗ şŧřǿǿƞɠŀẏ ḗḗƞƈǿǿŭŭřȧȧɠḗḗ ẏǿǿŭŭ ŧǿǿ ḿȧȧķḗḗ ȧȧ ƤşīīƇȧȧşħ ȧȧƈƈǿǿŭŭƞŧ ƀḗḗƒǿǿřḗḗ ƀŭŭẏīīƞɠ ƤşīīƇȧȧşħ. Ħȧȧṽīīƞɠ ȧȧƞ ȧȧƈƈǿǿŭŭƞŧ ȧȧŀŀǿǿẇş ẏǿǿŭŭ ŧǿǿ şħȧȧřḗḗ ẏǿǿŭŭř ƀȧȧŀȧȧƞƈḗḗ ƀḗḗŧẇḗḗḗḗƞ ḓḗḗṽīīƈḗḗş ȧȧƞḓ ƥřǿǿŧḗḗƈŧ ẏǿǿŭŭř ƥŭŭřƈħȧȧşḗḗş.]",
       "psicash#modal-create-psicash-account-continue-button": "[Ƈǿǿƞŧīīƞŭŭḗḗ ẇīīŧħǿǿŭŭŧ ȧȧƈƈǿǿŭŭƞŧ]",
       "psicash#modal-create-psicash-account-create-button": "[Ƈřḗḗȧȧŧḗḗ ǿǿř ŀǿǿɠ īīƞŧǿǿ ȧȧƈƈǿǿŭŭƞŧ]",
       "psicash#modal-create-psicash-account-header": "[Ƈřḗḗȧȧŧḗḗ ȧȧ ƤşīīƇȧȧşħ Ȧȧƈƈǿǿŭŭƞŧ]",
       "psicash#modal-login-body": "[<a class=\"js-psicash-account-signup\" href=\"#\">Ƈřḗḗȧȧŧḗḗ ȧȧ ƞḗḗẇ ȧȧƈƈǿǿŭŭƞŧ</a> ǿǿř ŀǿǿɠ īīƞ ƀḗḗŀǿǿẇ.]",
       "psicash#modal-login-cancel-button": "[Ƈȧȧƞƈḗḗŀ]",
+      "psicash#modal-login-forgot-passwork-link": "[Ƒǿǿřɠǿǿŧ ẏǿǿŭŭř ŭŭşḗḗřƞȧȧḿḗḗ ǿǿř ƥȧȧşşẇǿǿřḓ?]",
       "psicash#modal-login-header": "[ƤşīīƇȧȧşħ Ȧȧƈƈǿǿŭŭƞŧ]",
       "psicash#modal-login-password-field": "[Ƥȧȧşşẇǿǿřḓ]",
       "psicash#modal-login-submit-button": "[Şŭŭƀḿīīŧ]",
       "psicash#modal-login-username-field": "[Ŭŭşḗḗřƞȧȧḿḗḗ]",
       "psicash#modal-logout-error-body": "[Ẏǿǿŭŭ ŀǿǿɠǿǿŭŭŧ ȧȧŧŧḗḗḿƥŧ ƒȧȧīīŀḗḗḓ ŭŭƞḗḗẋƥḗḗƈŧḗḗḓŀẏ. Ƥŀḗḗȧȧşḗḗ ŧřẏ řḗḗşŧȧȧřŧīīƞɠ ŧħḗḗ ȧȧƥƥŀīīƈȧȧŧīīǿǿƞ. Īīƒ ŧħȧȧŧ ḓǿǿḗḗşƞ'ŧ ẇǿǿřķ, ẏǿǿŭŭ ẇīīŀŀ ƞḗḗḗḗḓ ŧǿǿ <a href=\"https://psiphon3.com/faq.html#clear-windows-data\">ƈŀḗḗȧȧř ẏǿǿŭŭř ŀǿǿƈȧȧŀ şŧǿǿřȧȧɠḗḗ</a>.]",
       "psicash#modal-logout-header": "[ƤşīīƇȧȧşħ Ȧȧƈƈǿǿŭŭƞŧ Ŀǿǿɠǿǿŭŭŧ]",
+      "psicash#modal-psicash-logout-offline-body": "[Ɓḗḗīīƞɠ ƈǿǿƞƞḗḗƈŧḗḗḓ ŧǿǿ ŧħḗḗ Ƥşīīƥħǿǿƞ ƞḗḗŧẇǿǿřķ ḗḗƞȧȧƀŀḗḗş ȧȧ ḿǿǿřḗḗ şḗḗƈŭŭřḗḗ ƤşīīƇȧȧşħ ŀǿǿɠǿǿŭŭŧ. Ẇǿǿŭŭŀḓ ẏǿǿŭŭ ŀīīķḗḗ ŧǿǿ ƈǿǿƞƞḗḗƈŧ ƀḗḗƒǿǿřḗḗ ŀǿǿɠɠīīƞɠ ǿǿŭŭŧ?]",
+      "psicash#modal-psicash-logout-offline-cancel-button": "[Ƈȧȧƞƈḗḗŀ]",
+      "psicash#modal-psicash-logout-offline-connect-button": "[Ƈǿǿƞƞḗḗƈŧ]",
+      "psicash#modal-psicash-logout-offline-header": "[ƤşīīƇȧȧşħ Ȧȧƈƈǿǿŭŭƞŧ Ŀǿǿɠǿǿŭŭŧ]",
+      "psicash#modal-psicash-logout-offline-logout-anyway-button": "[Ŀǿǿɠǿǿŭŭŧ ȧȧƞẏẇȧȧẏ]",
       "psicash#more-ellipsis": "[Ḿǿǿřḗḗ…]",
       "psicash#mustconnect-modal#body": "[Īīƞ ǿǿřḓḗḗř ŧǿǿ ŭŭşḗḗ ƤşīīƇȧȧşħ, ẏǿǿŭŭ ḿŭŭşŧ ƀḗḗ ƈǿǿƞƞḗḗƈŧḗḗḓ ŧǿǿ ŧħḗḗ Ƥşīīƥħǿǿƞ ƞḗḗŧẇǿǿřķ.]",
       "psicash#mustconnect-modal#title": "[Ƥşīīƥħǿǿƞ Ƈǿǿƞƞḗḗƈŧīīǿǿƞ Řḗḗɋŭŭīīřḗḗḓ]",
@@ -1476,6 +1483,7 @@
       "psicash#overlay-logging-out": "[Ŀǿǿɠɠīīƞɠ ǿǿŭŭŧ…]",
       "psicash#pane-balance-header": "[Ɓȧȧŀȧȧƞƈḗḗ:]",
       "psicash#pane-create-account": "[Ƈřḗḗȧȧŧḗḗ ȧȧƞ ȧȧƈƈǿǿŭŭƞŧ ŧǿǿ ƥřǿǿŧḗḗƈŧ ẏǿǿŭŭř ƤşīīƇȧȧşħ!]",
+      "psicash#pane-create-account-plea": "[Ƈřḗḗȧȧŧīīƞɠ ȧȧ ƤşīīƇȧȧşħ ȧȧƈƈǿǿŭŭƞŧ ẇīīŀŀ ħḗḗŀƥ ƥřḗḗşḗḗřṽḗḗ ẏǿǿŭŭř ƤşīīƇȧȧşħ īīƒ ẏǿǿŭŭ ƈŀḗḗȧȧř ŧħḗḗ ȧȧƥƥ'ş şŧǿǿřȧȧɠḗḗ ǿǿř ŭŭşḗḗ Ƥşīīƥħǿǿƞ ǿǿƞ ȧȧƞǿǿŧħḗḗř ḓḗḗṽīīƈḗḗ. <a href=\"https://psiphon.ca/faq.html#psicash-account\">Ŀḗḗȧȧřƞ ḿǿǿřḗḗ.</a>]",
       "psicash#pane-create-new-account": "[Ƈřḗḗȧȧŧḗḗ ȧȧ Ƞḗḗẇ Ȧȧƈƈǿǿŭŭƞŧ]",
       "psicash#pane-l2tp-incompatible": "[Şƥḗḗḗḗḓ Ɓǿǿǿǿşŧ ƈȧȧƞƞǿǿŧ ƀḗḗ ŭŭşḗḗḓ ẇħīīŀḗḗ Ƥşīīƥħǿǿƞ īīş ƈǿǿƞƞḗḗƈŧḗḗḓ īīƞ <a href=\"#\">Ŀ2ŦƤ/ĪīƤŞḗḗƈ ŧřȧȧƞşƥǿǿřŧ ḿǿǿḓḗḗ</a>.]",
       "psicash#pane-log-in": "[Ŀǿǿɠ Īīƞ!]",
@@ -1485,10 +1493,11 @@
       "psicash#pane-need-more-psicash-body": "[Īīƞ ǿǿřḓḗḗř ȧȧƈŧīīṽȧȧŧḗḗ Şƥḗḗḗḗḓ Ɓǿǿǿǿşŧ, ẏǿǿŭŭ ƞḗḗḗḗḓ ŧǿǿ ƀŭŭẏ ḿǿǿřḗḗ ƤşīīƇȧȧşħ.]",
       "psicash#pane-need-more-psicash-header": "[Ẏǿǿŭŭ ƞḗḗḗḗḓ ḿǿǿřḗḗ ƤşīīƇȧȧşħ!]",
       "psicash#pane-need-psicash-visit-store": "[Ƞḗḗḗḗḓ ƤşīīƇȧȧşħ? Ṽīīşīīŧ ǿǿŭŭř şŧǿǿřḗḗ ŧǿǿ ƀŭŭẏ ḿǿǿřḗḗ!]",
-      "psicash#pane-speed-boost-cta": "[Īīƞƈřḗḗȧȧşḗḗ ẏǿǿŭŭř Ƥşīīƥħǿǿƞ şƥḗḗḗḗḓ ẇīīŧħ Şƥḗḗḗḗḓ Ɓǿǿǿǿşŧ!]",
+      "psicash#pane-speed-boost-cta": "[Ŭŭƞŀḗḗȧȧşħ ŧħḗḗ ƒŭŭŀŀ ƥǿǿŧḗḗƞŧīīȧȧŀ ǿǿƒ Ƥşīīƥħǿǿƞ ẇīīŧħ Şƥḗḗḗḗḓ&nbsp;Ɓǿǿǿǿşŧ!]",
       "psicash#pane-speed-port-limits-body": "[Ẇīīŧħǿǿŭŭŧ ȧȧƈŧīīṽḗḗ Şƥḗḗḗḗḓ Ɓǿǿǿǿşŧ, ẏǿǿŭŭř şƥḗḗḗḗḓ īīş ŀīīḿīīŧḗḗḓ ȧȧƞḓ şǿǿḿḗḗ īīƞŧḗḗřƞḗḗŧ ŧřȧȧƒƒīīƈ īīş ƞǿǿŧ şŭŭƥƥǿǿřŧḗḗḓ. Ȧȧƈŧīīṽȧȧŧḗḗ Şƥḗḗḗḗḓ Ɓǿǿǿǿşŧ ẇīīŧħ ƤşīīƇȧȧşħ ŧǿǿ ŭŭƞŀǿǿƈķ ŧħḗḗ ƒŭŭŀŀ ƥǿǿŧḗḗƞŧīīȧȧŀ ǿǿƒ ẏǿǿŭŭř Ƥşīīƥħǿǿƞ ḗḗẋƥḗḗřīīḗḗƞƈḗḗ.]",
       "psicash#pane-speed-port-limits-head": "[Şƥḗḗḗḗḓ ȧȧƞḓ Ƥǿǿřŧ Ŀīīḿīīŧş]",
       "psicash#psiphon-speed": "[Ƥşīīƥħǿǿƞ<br>Şƥḗḗḗḗḓ]",
+      "psicash#psiphon-speed-nobreak": "[Ƥşīīƥħǿǿƞ Şƥḗḗḗḗḓ]",
       "psicash#transaction-ExistingTransaction-body": "[Ẏǿǿŭŭ ħȧȧṽḗḗ ȧȧƞ ḗḗẋīīşŧīīƞɠ ƤşīīƇȧȧşħ ƥŭŭřƈħȧȧşḗḗ ǿǿƒ ŧħīīş ŧẏƥḗḗ. Ȧȧƞǿǿŧħḗḗř ƥŭŭřƈħȧȧşḗḗ ǿǿƒ ŧħīīş ŧẏƥḗḗ īīş ƞǿǿŧ ȧȧŀŀǿǿẇḗḗḓ ŭŭƞŧīīŀ ŧħḗḗ ƥřḗḗṽīīǿǿŭŭş ǿǿƞḗḗ ḗḗẋƥīīřḗḗş. Ẏǿǿŭŭř ƤşīīƇȧȧşħ şŧȧȧŧḗḗ ẇīīŀŀ ƀḗḗ řḗḗƒřḗḗşħḗḗḓ ƞǿǿẇ.]",
       "psicash#transaction-ExistingTransaction-title": "[ƤşīīƇȧȧşħ ƥŭŭřƈħȧȧşḗḗ ȧȧŀřḗḗȧȧḓẏ ḗḗẋīīşŧş]",
       "psicash#transaction-InsufficientBalance-body": "[Ẏǿǿŭŭ ḓǿǿ ƞǿǿŧ ħȧȧṽḗḗ şŭŭƒƒīīƈīīḗḗƞŧ ƤşīīƇȧȧşħ ƀȧȧŀȧȧƞƈḗḗ ƒǿǿř ŧħīīş ƥŭŭřƈħȧȧşḗḗ.]",
@@ -1684,6 +1693,7 @@
       "psicash#1-month": "1 ‮ɯouʇɥ‬",
       "psicash#1-week": "1 ‮ʍǝǝʞ‬",
       "psicash#alert#buyspeedboost-purchase-complete": "‮Sdǝǝp‬ ‮Ԑoosʇ‬ ‮sʇɐɹʇǝp‬!",
+      "psicash#alert#logged-out": "‮ԀsıↃɐsɥ‬ ‮ɐɔɔonuʇ‬ ‮ʅoƃonʇ‬ ‮ɔoɯdʅǝʇǝ‬.",
       "psicash#alert#tokens-expired": "‮ԀsıↃɐsɥ‬ ‮ʅoƃıu‬ ‮ǝxdıɹǝp‬. ‮Ԁʅǝɐsǝ‬ ‮ʅoƃ‬ ‮qɐɔʞ‬ ‮ıu‬.",
       "psicash#corner-logged-out": "‮ʎon‬ ‮ɐɹǝ‬ ‮ʅoƃƃǝp‬ ‮onʇ‬ ‮oɟ‬ ‮ԀsıↃɐsɥ‬",
       "psicash#init-error-body-recovered": "‮ԀsıↃɐsɥ‬ ‮ɟɐıʅǝp‬ ‮ʇo‬ ‮ıuıʇıɐʅızǝ‬. ‮⊥ɥıs‬ ‮ıs‬ ‮dɹoqɐqʅʎ‬ ‮pnǝ‬ ‮ʇo‬ ‮ɐ‬ ‮ɟıʅǝ‬ ‮sʎsʇǝɯ‬ ‮dɹoqʅǝɯ‬, ‮snɔɥ‬ ‮ɐs‬ ‮qǝıuƃ‬ ‮onʇ‬ ‮oɟ‬ ‮pısʞ‬ ‮sdɐɔǝ‬. ‮ʎonɹ‬ ‮qɐʅɐuɔǝ‬ ‮ɐup‬ ‮oʇɥǝɹ‬ ‮sʇɐʇǝ‬ ‮ɥɐʌǝ‬ ‮qǝǝu‬ ‮ɹǝsǝʇ‬.",
@@ -1696,18 +1706,24 @@
       "psicash#login#last-tracker-merge-body": "‮ʎon‬ ‮ɐɹǝ‬ ‮ʅoƃƃǝp‬ ‮ıuʇo‬ ‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮ɐɔɔonuʇ‬. ‮⊥ɥǝ‬ ‮dɹǝǝxısʇıuƃ‬ ‮qɐʅɐuɔǝ‬ ‮ɟɹoɯ‬ ‮ʇɥıs‬ ‮pǝʌıɔǝ‬ ‮ɥɐs‬ ‮qǝǝu‬ ‮ʇɹɐusɟǝɹɹǝp‬ ‮ıuʇo‬ ‮ʎonɹ‬ ‮ɐɔɔonuʇ‬, ‮qnʇ‬ ‮ʇɥıs‬ ‮ıs‬ ‮ʇɥǝ‬ ‮ʅɐsʇ‬ ‮ʇıɯǝ‬ ‮ɐ‬ ‮qɐʅɐuɔǝ‬ ‮ɯǝɹƃǝ‬ ‮ʍıʅʅ‬ ‮oɔɔnɹ‬.",
       "psicash#login#server-error-body": "‮⊥ɥǝ‬ ‮ԀsıↃɐsɥ‬ ‮sǝɹʌǝɹ‬ ‮ɹǝsdoupǝp‬ ‮ʍıʇɥ‬ ‮ɐu‬ ‮ǝɹɹoɹ‬ ‮ʍɥıʅǝ‬ ‮ʇɹʎıuƃ‬ ‮ʇo‬ ‮ʅoƃ‬ ‮ʎon‬ ‮ıu‬. ‮Ԁʅǝɐsǝ‬ ‮ʇɹʎ‬ ‮ɐƃɐıu‬ ‮ʅɐʇǝɹ‬.",
       "psicash#login#success-modal-title": "‮ԀsıↃɐsɥ‬ ‮˥oƃıu‬ ‮Snɔɔǝss‬",
-      "psicash#modal-create-psicash-account-body": "‮Ｍǝ‬ ‮sʇɹouƃʅʎ‬ ‮ǝuɔonɹɐƃǝ‬ ‮ʎon‬ ‮ʇo‬ ‮ɯɐʞǝ‬ ‮ɐ‬ ‮ԀsıↃɐsɥ‬ ‮ɐɔɔonuʇ‬. ‮Hɐʌıuƃ‬ ‮ɐu‬ ‮ɐɔɔonuʇ‬ ‮ɐʅʅoʍs‬ ‮ʎon‬ ‮ʇo‬ ‮sɥɐɹǝ‬ ‮ʎonɹ‬ ‮qɐʅɐuɔǝ‬ ‮qǝʇʍǝǝu‬ ‮pǝʌıɔǝs‬ ‮ɐup‬ ‮dɹoʇǝɔʇ‬ ‮ʎonɹ‬ ‮dnɹɔɥɐsǝs‬.",
+      "psicash#modal-create-psicash-account-body": "‮Ｍǝ‬ ‮sʇɹouƃʅʎ‬ ‮ǝuɔonɹɐƃǝ‬ ‮ʎon‬ ‮ʇo‬ ‮ɯɐʞǝ‬ ‮ɐ‬ ‮ԀsıↃɐsɥ‬ ‮ɐɔɔonuʇ‬ ‮qǝɟoɹǝ‬ ‮qnʎıuƃ‬ ‮ԀsıↃɐsɥ‬. ‮Hɐʌıuƃ‬ ‮ɐu‬ ‮ɐɔɔonuʇ‬ ‮ɐʅʅoʍs‬ ‮ʎon‬ ‮ʇo‬ ‮sɥɐɹǝ‬ ‮ʎonɹ‬ ‮qɐʅɐuɔǝ‬ ‮qǝʇʍǝǝu‬ ‮pǝʌıɔǝs‬ ‮ɐup‬ ‮dɹoʇǝɔʇ‬ ‮ʎonɹ‬ ‮dnɹɔɥɐsǝs‬.",
       "psicash#modal-create-psicash-account-continue-button": "‮Ↄouʇıunǝ‬ ‮ʍıʇɥonʇ‬ ‮ɐɔɔonuʇ‬",
       "psicash#modal-create-psicash-account-create-button": "‮Ↄɹǝɐʇǝ‬ ‮oɹ‬ ‮ʅoƃ‬ ‮ıuʇo‬ ‮ɐɔɔonuʇ‬",
       "psicash#modal-create-psicash-account-header": "‮Ↄɹǝɐʇǝ‬ ‮ɐ‬ ‮ԀsıↃɐsɥ‬ ‮∀ɔɔonuʇ‬",
       "psicash#modal-login-body": "<a class=\"js-psicash-account-signup\" href=\"#\">‮Ↄɹǝɐʇǝ‬ ‮ɐ‬ ‮uǝʍ‬ ‮ɐɔɔonuʇ‬</a> ‮oɹ‬ ‮ʅoƃ‬ ‮ıu‬ ‮qǝʅoʍ‬.",
       "psicash#modal-login-cancel-button": "‮Ↄɐuɔǝʅ‬",
+      "psicash#modal-login-forgot-passwork-link": "‮ɟoɹƃoʇ‬ ‮ʎonɹ‬ ‮nsǝɹuɐɯǝ‬ ‮oɹ‬ ‮dɐssʍoɹp‬?",
       "psicash#modal-login-header": "‮ԀsıↃɐsɥ‬ ‮∀ɔɔonuʇ‬",
       "psicash#modal-login-password-field": "‮Ԁɐssʍoɹp‬",
       "psicash#modal-login-submit-button": "‮Snqɯıʇ‬",
       "psicash#modal-login-username-field": "‮∩sǝɹuɐɯǝ‬",
       "psicash#modal-logout-error-body": "‮ʎon‬ ‮ʅoƃonʇ‬ ‮ɐʇʇǝɯdʇ‬ ‮ɟɐıʅǝp‬ ‮nuǝxdǝɔʇǝpʅʎ‬. ‮Ԁʅǝɐsǝ‬ ‮ʇɹʎ‬ ‮ɹǝsʇɐɹʇıuƃ‬ ‮ʇɥǝ‬ ‮ɐddʅıɔɐʇıou‬. ‮Iɟ‬ ‮ʇɥɐʇ‬ ‮poǝsu‬'‮ʇ‬ ‮ʍoɹʞ‬, ‮ʎon‬ ‮ʍıʅʅ‬ ‮uǝǝp‬ ‮ʇo‬ <a href=\"https://psiphon3.com/faq.html#clear-windows-data\">‮ɔʅǝɐɹ‬ ‮ʎonɹ‬ ‮ʅoɔɐʅ‬ ‮sʇoɹɐƃǝ‬</a>.",
       "psicash#modal-logout-header": "‮ԀsıↃɐsɥ‬ ‮∀ɔɔonuʇ‬ ‮˥oƃonʇ‬",
+      "psicash#modal-psicash-logout-offline-body": "‮Ԑǝıuƃ‬ ‮ɔouuǝɔʇǝp‬ ‮ʇo‬ ‮ʇɥǝ‬ ‮Ԁsıdɥou‬ ‮uǝʇʍoɹʞ‬ ‮ǝuɐqʅǝs‬ ‮ɐ‬ ‮ɯoɹǝ‬ ‮sǝɔnɹǝ‬ ‮ԀsıↃɐsɥ‬ ‮ʅoƃonʇ‬. ‮Ｍonʅp‬ ‮ʎon‬ ‮ʅıʞǝ‬ ‮ʇo‬ ‮ɔouuǝɔʇ‬ ‮qǝɟoɹǝ‬ ‮ʅoƃƃıuƃ‬ ‮onʇ‬?",
+      "psicash#modal-psicash-logout-offline-cancel-button": "‮Ↄɐuɔǝʅ‬",
+      "psicash#modal-psicash-logout-offline-connect-button": "‮Ↄouuǝɔʇ‬",
+      "psicash#modal-psicash-logout-offline-header": "‮ԀsıↃɐsɥ‬ ‮∀ɔɔonuʇ‬ ‮˥oƃonʇ‬",
+      "psicash#modal-psicash-logout-offline-logout-anyway-button": "‮˥oƃonʇ‬ ‮ɐuʎʍɐʎ‬",
       "psicash#more-ellipsis": "‮Woɹǝ‬…",
       "psicash#mustconnect-modal#body": "‮Iu‬ ‮oɹpǝɹ‬ ‮ʇo‬ ‮nsǝ‬ ‮ԀsıↃɐsɥ‬, ‮ʎon‬ ‮ɯnsʇ‬ ‮qǝ‬ ‮ɔouuǝɔʇǝp‬ ‮ʇo‬ ‮ʇɥǝ‬ ‮Ԁsıdɥou‬ ‮uǝʇʍoɹʞ‬.",
       "psicash#mustconnect-modal#title": "‮Ԁsıdɥou‬ ‮Ↄouuǝɔʇıou‬ ‮ᴚǝbnıɹǝp‬",
@@ -1715,6 +1731,7 @@
       "psicash#overlay-logging-out": "‮˥oƃƃıuƃ‬ ‮onʇ‬…",
       "psicash#pane-balance-header": "‮Ԑɐʅɐuɔǝ‬:",
       "psicash#pane-create-account": "‮Ↄɹǝɐʇǝ‬ ‮ɐu‬ ‮ɐɔɔonuʇ‬ ‮ʇo‬ ‮dɹoʇǝɔʇ‬ ‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬!",
+      "psicash#pane-create-account-plea": "‮Ↄɹǝɐʇıuƃ‬ ‮ɐ‬ ‮ԀsıↃɐsɥ‬ ‮ɐɔɔonuʇ‬ ‮ʍıʅʅ‬ ‮ɥǝʅd‬ ‮dɹǝsǝɹʌǝ‬ ‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮ıɟ‬ ‮ʎon‬ ‮ɔʅǝɐɹ‬ ‮ʇɥǝ‬ ‮ɐdd‬'‮s‬ ‮sʇoɹɐƃǝ‬ ‮oɹ‬ ‮nsǝ‬ ‮Ԁsıdɥou‬ ‮ou‬ ‮ɐuoʇɥǝɹ‬ ‮pǝʌıɔǝ‬. <a href=\"https://psiphon.ca/faq.html#psicash-account\">‮˥ǝɐɹu‬ ‮ɯoɹǝ‬.</a>",
       "psicash#pane-create-new-account": "‮Ↄɹǝɐʇǝ‬ ‮ɐ‬ ‮Nǝʍ‬ ‮∀ɔɔonuʇ‬",
       "psicash#pane-l2tp-incompatible": "‮Sdǝǝp‬ ‮Ԑoosʇ‬ ‮ɔɐuuoʇ‬ ‮qǝ‬ ‮nsǝp‬ ‮ʍɥıʅǝ‬ ‮Ԁsıdɥou‬ ‮ıs‬ ‮ɔouuǝɔʇǝp‬ ‮ıu‬ <a href=\"#\">‮˥‬2‮⊥Ԁ‬/‮IԀSǝɔ‬ ‮ʇɹɐusdoɹʇ‬ ‮ɯopǝ‬</a>.",
       "psicash#pane-log-in": "‮˥oƃ‬ ‮Iu‬!",
@@ -1724,10 +1741,11 @@
       "psicash#pane-need-more-psicash-body": "‮Iu‬ ‮oɹpǝɹ‬ ‮ɐɔʇıʌɐʇǝ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬, ‮ʎon‬ ‮uǝǝp‬ ‮ʇo‬ ‮qnʎ‬ ‮ɯoɹǝ‬ ‮ԀsıↃɐsɥ‬.",
       "psicash#pane-need-more-psicash-header": "‮ʎon‬ ‮uǝǝp‬ ‮ɯoɹǝ‬ ‮ԀsıↃɐsɥ‬!",
       "psicash#pane-need-psicash-visit-store": "‮Nǝǝp‬ ‮ԀsıↃɐsɥ‬? ‮Ʌısıʇ‬ ‮onɹ‬ ‮sʇoɹǝ‬ ‮ʇo‬ ‮qnʎ‬ ‮ɯoɹǝ‬!",
-      "psicash#pane-speed-boost-cta": "‮Iuɔɹǝɐsǝ‬ ‮ʎonɹ‬ ‮Ԁsıdɥou‬ ‮sdǝǝp‬ ‮ʍıʇɥ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬!",
+      "psicash#pane-speed-boost-cta": "‮∩uʅǝɐsɥ‬ ‮ʇɥǝ‬ ‮ɟnʅʅ‬ ‮doʇǝuʇıɐʅ‬ ‮oɟ‬ ‮Ԁsıdɥou‬ ‮ʍıʇɥ‬ ‮Sdǝǝp‬&nbsp;‮Ԑoosʇ‬!",
       "psicash#pane-speed-port-limits-body": "‮Ｍıʇɥonʇ‬ ‮ɐɔʇıʌǝ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬, ‮ʎonɹ‬ ‮sdǝǝp‬ ‮ıs‬ ‮ʅıɯıʇǝp‬ ‮ɐup‬ ‮soɯǝ‬ ‮ıuʇǝɹuǝʇ‬ ‮ʇɹɐɟɟıɔ‬ ‮ıs‬ ‮uoʇ‬ ‮snddoɹʇǝp‬. ‮∀ɔʇıʌɐʇǝ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬ ‮ʍıʇɥ‬ ‮ԀsıↃɐsɥ‬ ‮ʇo‬ ‮nuʅoɔʞ‬ ‮ʇɥǝ‬ ‮ɟnʅʅ‬ ‮doʇǝuʇıɐʅ‬ ‮oɟ‬ ‮ʎonɹ‬ ‮Ԁsıdɥou‬ ‮ǝxdǝɹıǝuɔǝ‬.",
       "psicash#pane-speed-port-limits-head": "‮Sdǝǝp‬ ‮ɐup‬ ‮Ԁoɹʇ‬ ‮˥ıɯıʇs‬",
       "psicash#psiphon-speed": "‮Ԁsıdɥou‬<br>‮Sdǝǝp‬",
+      "psicash#psiphon-speed-nobreak": "‮Ԁsıdɥou‬ ‮Sdǝǝp‬",
       "psicash#transaction-ExistingTransaction-body": "‮ʎon‬ ‮ɥɐʌǝ‬ ‮ɐu‬ ‮ǝxısʇıuƃ‬ ‮ԀsıↃɐsɥ‬ ‮dnɹɔɥɐsǝ‬ ‮oɟ‬ ‮ʇɥıs‬ ‮ʇʎdǝ‬. ‮∀uoʇɥǝɹ‬ ‮dnɹɔɥɐsǝ‬ ‮oɟ‬ ‮ʇɥıs‬ ‮ʇʎdǝ‬ ‮ıs‬ ‮uoʇ‬ ‮ɐʅʅoʍǝp‬ ‮nuʇıʅ‬ ‮ʇɥǝ‬ ‮dɹǝʌıons‬ ‮ouǝ‬ ‮ǝxdıɹǝs‬. ‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮sʇɐʇǝ‬ ‮ʍıʅʅ‬ ‮qǝ‬ ‮ɹǝɟɹǝsɥǝp‬ ‮uoʍ‬.",
       "psicash#transaction-ExistingTransaction-title": "‮ԀsıↃɐsɥ‬ ‮dnɹɔɥɐsǝ‬ ‮ɐʅɹǝɐpʎ‬ ‮ǝxısʇs‬",
       "psicash#transaction-InsufficientBalance-body": "‮ʎon‬ ‮po‬ ‮uoʇ‬ ‮ɥɐʌǝ‬ ‮snɟɟıɔıǝuʇ‬ ‮ԀsıↃɐsɥ‬ ‮qɐʅɐuɔǝ‬ ‮ɟoɹ‬ ‮ʇɥıs‬ ‮dnɹɔɥɐsǝ‬.",
@@ -2241,25 +2259,32 @@
       "psicash#pane-log-in": "Log In!",
       "psicash#pane-log-out": "Log Out",
       "psicash#pane-manage-web": "Manage on the web",
+      "psicash#pane-create-account-plea": "Creating a PsiCash account will help preserve your PsiCash if you clear the app's storage or use Psiphon on another device. <a href=\"https://psiphon.ca/faq.html#psicash-account\">Learn more.</a>",
       "psicash#pane-l2tp-incompatible": "Speed Boost cannot be used while Psiphon is connected in <a href=\"#\">L2TP/IPSec transport mode</a>.",
       "psicash#pane-must-log-in": "You must log in to use PsiCash.",
       "psicash#pane-create-new-account": "Create a New Account",
       "psicash#pane-speed-port-limits-head": "Speed and Port Limits",
       "psicash#pane-speed-port-limits-body": "Without active Speed Boost, your speed is limited and some internet traffic is not supported. Activate Speed Boost with PsiCash to unlock the full potential of your Psiphon experience.",
-      "psicash#pane-speed-boost-cta": "Increase your Psiphon speed with Speed Boost!",
+      "psicash#pane-speed-boost-cta": "Unleash the full potential of Psiphon with Speed&nbsp;Boost!",
       "psicash#pane-need-more-psicash-header": "You need more PsiCash!",
       "psicash#pane-need-more-psicash-body": "In order activate Speed Boost, you need to buy more PsiCash.",
       "psicash#pane-need-psicash-visit-store": "Need PsiCash? Visit our store to buy more!",
       "psicash#overlay-logging-in": "Logging in…",
       "psicash#overlay-logging-out": "Logging out…",
       "psicash#modal-create-psicash-account-header": "Create a PsiCash Account",
-      "psicash#modal-create-psicash-account-body": "We strongly encourage you to make a PsiCash account. Having an account allows you to share your balance between devices and protect your purchases.",
+      "psicash#modal-create-psicash-account-body": "We strongly encourage you to make a PsiCash account before buying PsiCash. Having an account allows you to share your balance between devices and protect your purchases.",
       "psicash#modal-create-psicash-account-create-button": "Create or log into account",
       "psicash#modal-create-psicash-account-continue-button": "Continue without account",
+      "psicash#modal-psicash-logout-offline-header": "PsiCash Account Logout",
+      "psicash#modal-psicash-logout-offline-body": "Being connected to the Psiphon network enables a more secure PsiCash logout. Would you like to connect before logging out?",
+      "psicash#modal-psicash-logout-offline-connect-button": "Connect",
+      "psicash#modal-psicash-logout-offline-logout-anyway-button": "Logout anyway",
+      "psicash#modal-psicash-logout-offline-cancel-button": "Cancel",
       "psicash#modal-login-header": "PsiCash Account",
       "psicash#modal-login-body": "<a class=\"js-psicash-account-signup\" href=\"#\">Create a new account</a> or log in below.",
       "psicash#modal-login-username-field": "Username",
       "psicash#modal-login-password-field": "Password",
+      "psicash#modal-login-forgot-passwork-link": "Forgot your username or password?",
       "psicash#modal-login-submit-button": "Submit",
       "psicash#modal-login-cancel-button": "Cancel",
       "psicash#alert#buyspeedboost-purchase-complete": "Speed Boost started!",
@@ -2272,6 +2297,7 @@
       "psicash#init-error-body-unrecovered": "PsiCash failed to initialize. This is probably due to a file system problem, such as being out of disk space. Your balance and other state have been lost. PsiCash will not be usable. You can try restarting the application to recover from the problem.",
       "psicash#init-error-body-recovered": "PsiCash failed to initialize. This is probably due to a file system problem, such as being out of disk space. Your balance and other state have been reset.",
       "psicash#psiphon-speed": "Psiphon<br>Speed",
+      "psicash#psiphon-speed-nobreak": "Psiphon Speed",
       "psicash#corner-logged-out": "You are logged out of PsiCash",
       "psicash#more-ellipsis": "More…",
       "psicash#login#failure-modal-title": "PsiCash Login Failed",
@@ -2282,6 +2308,7 @@
       "psicash#login#success-modal-title": "PsiCash Login Success",
       "psicash#login#last-tracker-merge-body": "You are logged into your PsiCash account. The preexisting balance from this device has been transferred into your account, but this is the last time a balance merge will occur.",
       "psicash#alert#tokens-expired": "PsiCash login expired. Please log back in.",
+      "psicash#alert#logged-out": "PsiCash account logout complete.",
       "notice#disallowed-traffic-alert-title": "Upgrade your Psiphon connection",
       "notice#disallowed-traffic-alert-body": "<p>Apps not working?</p>\n<p>Some internet traffic is not supported without an active Speed Boost. Activate Speed Boost with PsiCash to unlock the full potential of your Psiphon experience.</p>",
       "appbackend#disallowed-traffic-notification-title": "Apps not working?",
@@ -2686,7 +2713,7 @@
       "banner#sponsored-by": "اسپانسر شده با  "
     }
   },
-  "fa_AF": {
+  "fa-AF": {
     "name": "فارسی دری",
     "translation": {
       "banner#long-connecting": "<strong>اوه، نی!</strong> به نظر میرسد برای متصل شدن مشکل دارید!<br>\nآخرین نسخه سایفون را از <a class=\"NewVersionURL\" href=\"#\">سایت دانلود</a>، دانلود کنید\nیا یک ایمیل به <a class=\"NewVersionEmail\" href=\"#\"></a> بفرستید",
@@ -5641,7 +5668,7 @@
       "banner#sponsored-by": "Spoonserri"
     }
   },
-  "pt_BR": {
+  "pt-BR": {
     "name": "Português (Brasil)",
     "translation": {
       "banner#long-connecting": "<strong>Oh não!</strong> Você parece estar tendo problemas de conexão!<br>\nBaixe a versão mais recente do Psiphon na <a class=\"NewVersionURL\" href=\"#\">página de download</a>\nou envie o programa por email para <a class=\"NewVersionEmail\" href=\"#\"></a>",
@@ -5838,7 +5865,7 @@
       "banner#sponsored-by": "Patrocinado por"
     }
   },
-  "pt_PT": {
+  "pt-PT": {
     "name": "Português (Portugal)",
     "translation": {
       "banner#long-connecting": "<strong>Oh no!</strong> You seem to be having trouble connecting!<br>\nDownload the latest version of Psiphon from the <a class=\"NewVersionURL\" href=\"#\">download site</a>\nor by sending an email to <a class=\"NewVersionEmail\" href=\"#\"></a>",
@@ -7808,7 +7835,7 @@
       "banner#sponsored-by": "تعاون بذریعہ"
     }
   },
-  "uz@Latn": {
+  "uz-Latn": {
     "name": "O'zbekcha",
     "translation": {
       "banner#long-connecting": "<strong>Ana xolos!</strong> Aloqa o‘rnatishda muammolar borga o‘xshaydi!<br>\nPsiphonning oxirgi versiyasini <a class=\"newVersionURL\" href=\"#\">saytimizdan</a>\nyoki <a class=\"NewVersionEmail\" href=\"#\"></a> manziliga xat yuborib olishingiz mumkin.",
@@ -8399,7 +8426,7 @@
       "banner#sponsored-by": "赞助者："
     }
   },
-  "zh_TW": {
+  "zh-TW": {
     "name": "繁体中文",
     "translation": {
       "banner#long-connecting": "<strong>真遺憾！</strong>您似乎在連接時遇到了麻煩。<br>\n從<a class=\"NewVersionURL\" href=\"#\">下載網站</a>下載賽風的最新版本，或者向我們發郵件至 <a class=\"NewVersionEmail\" href=\"#\"></a>",

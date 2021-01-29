@@ -211,7 +211,7 @@ static filesystem::path GetBasePsiphonDataDir()
     {
         pathToUse = psiLocal;
     }
-    else 
+    else
     {
         my_print(NOT_SENSITIVE, true, _T("%s: MigratePsiphonDataDir failed to move roaming to local (%d)"), __TFUNCTION__, GetLastError());
         pathToUse = psiRoaming;
@@ -333,6 +333,17 @@ bool GetUniqueTempFilename(const tstring& extension, tstring& o_filepath)
 
     o_filepath = tempFile.tstring();
 
+    return true;
+}
+
+
+bool GetOwnExecutablePath(tstring& o_path) {
+    o_path.clear();
+    TCHAR szTemp[MAX_PATH * 2];
+    if (!GetModuleFileName(NULL, szTemp, ARRAYSIZE(szTemp))) {
+        return false;
+    }
+    o_path = szTemp;
     return true;
 }
 
@@ -1088,6 +1099,83 @@ bool ReadRegistryStringValue(LPCSTR name, wstring& value)
 }
 
 
+bool WriteRegistryProtocolHandler(const tstring& scheme)
+{
+    /* We're creating a structure that looks like this:
+
+    [HKEY_CURRENT_USER\SOFTWARE\Classes\psiphon]
+    @="URL:psiphon"
+    "URL Protocol"=""
+
+    [HKEY_CURRENT_USER\SOFTWARE\Classes\psiphon\shell]
+
+    [HKEY_CURRENT_USER\SOFTWARE\Classes\psiphon\shell\open]
+
+    [HKEY_CURRENT_USER\SOFTWARE\Classes\psiphon\shell\open\command]
+    @="\"C:\\<path_to>\\psiphon3.exe\" -- \"%1\""
+    */
+
+    tstring exePath;
+    if (!GetOwnExecutablePath(exePath)) {
+        return false;
+    }
+
+    struct Entry {
+        wstring keyPath;
+        wstring name;
+        wstring value;
+    };
+    vector<Entry> entries = {
+        {_T("SOFTWARE\\Classes\\")+scheme, _T(""), _T("URL:")+scheme},
+        {_T("SOFTWARE\\Classes\\")+scheme, _T("URL Protocol"), _T("")},
+        {_T("SOFTWARE\\Classes\\")+scheme+_T("\\shell\\open\\command"), _T(""), _T("\"") + exePath + _T("\" -- \"%1\"")},
+    };
+
+    for (const auto& entry : entries) {
+        HKEY key = 0;
+        LONG returnCode = RegCreateKeyEx(
+                            HKEY_CURRENT_USER,
+                            entry.keyPath.c_str(),
+                            0,
+                            0,
+                            0,
+                            KEY_WRITE,
+                            0,
+                            &key,
+                            0);
+        if (returnCode != ERROR_SUCCESS)
+        {
+            my_print(NOT_SENSITIVE, true, _T("%s: RegCreateKeyEx failed for '%hs' with code %ld"), __TFUNCTION__, entry.keyPath.c_str(), returnCode);
+            return false;
+        }
+
+        // It's inefficient to close the key on each iteration,
+        // but it's simpler and doesn't need to be high-perfomance.
+        auto closeKey = finally([=]() {
+            auto lastError = GetLastError();
+            RegCloseKey(key);
+            SetLastError(lastError); // restore the previous error code
+        });
+
+        returnCode = RegSetValueExW(
+            key,
+            entry.name.c_str(),
+            0,
+            REG_SZ,
+            (LPBYTE)entry.value.c_str(),
+            (entry.value.length() + 1) * sizeof(wchar_t)); // Write the null terminator
+        if (returnCode != ERROR_SUCCESS)
+        {
+            my_print(NOT_SENSITIVE, true, _T("%s: RegSetValueExW failed for '%hs' with code %ld"), __TFUNCTION__, entry.name.c_str(), returnCode);
+
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
 int TextHeight(void)
 {
     HWND hWnd = CreateWindow(L"Static", 0, 0, 0, 0, 0, 0, 0, 0, g_hInst, 0);
@@ -1374,37 +1462,106 @@ Json::Value LoadJSONArray(const char* jsonArrayString)
 }
 
 
-tstring GetLocaleName()
+wstring GetLocaleID()
 {
-    int size = GetLocaleInfo(
-        LOCALE_USER_DEFAULT,
+    //
+    // Language
+    //
+
+    auto size = GetLocaleInfoEx(
+        LOCALE_NAME_USER_DEFAULT,
         LOCALE_SISO639LANGNAME,
         NULL,
         0);
 
     if (size <= 0)
     {
-        return _T("");
+        return L"";
     }
 
-    LPTSTR buf = new TCHAR[size];
+    auto buf = std::make_unique<wchar_t[]>(size);
 
-    size = GetLocaleInfo(
-        LOCALE_USER_DEFAULT,
+    size = GetLocaleInfoEx(
+        LOCALE_NAME_USER_DEFAULT,
         LOCALE_SISO639LANGNAME,
-        buf,
+        buf.get(),
         size);
 
     if (size <= 0)
     {
-        return _T("");
+        return L"";
     }
 
-    tstring ret = buf;
+    wstring language = buf.get();
 
-    delete[] buf;
+    //
+    // Script
+    //
 
-    return ret;
+    size = GetLocaleInfoEx(
+        LOCALE_NAME_USER_DEFAULT,
+        LOCALE_SSCRIPTS,
+        NULL,
+        0);
+
+    if (size <= 0)
+    {
+        return L"";
+    }
+
+    buf = std::make_unique<wchar_t[]>(size);
+
+    size = GetLocaleInfoEx(
+        LOCALE_NAME_USER_DEFAULT,
+        LOCALE_SSCRIPTS,
+        buf.get(),
+        size);
+
+    if (size <= 0)
+    {
+        return L"";
+    }
+
+    // We now have a semicolon-separated list of scripts; we'll use the first
+    wstring script;
+    auto scripts = split(wstring(buf.get()), L';');
+    if (!scripts.empty() && !scripts.front().empty()) {
+        script = scripts.front();
+    }
+    
+    //
+    // Country
+    //
+
+    size = GetLocaleInfoEx(
+        LOCALE_NAME_USER_DEFAULT,
+        LOCALE_SISO3166CTRYNAME,
+        NULL,
+        0);
+
+    if (size <= 0)
+    {
+        return L"";
+    }
+
+    buf = std::make_unique<wchar_t[]>(size);
+
+    size = GetLocaleInfoEx(
+        LOCALE_NAME_USER_DEFAULT,
+        LOCALE_SISO3166CTRYNAME,
+        buf.get(),
+        size);
+
+    if (size <= 0)
+    {
+        return L"";
+    }
+
+    wstring country = buf.get();
+
+    wstring bcp47 = language + (script.empty() ? L"" : L"-") + script + (country.empty() ? L"" : L"-") + country;
+
+    return bcp47;
 }
 
 

@@ -194,6 +194,9 @@ public:
     /// client_version, client_region, sponsor_id, and propagation_channel_id.
     error::Error SetRequestMetadataItem(const std::string& key, const std::string& value);
 
+    /// Set current UI locale.
+    error::Error SetLocale(const std::string& locale);
+
     //
     // Stored info accessors
     //
@@ -259,11 +262,14 @@ public:
     /// where the user can buy PsiCash for real money.
     error::Result<std::string> GetBuyPsiURL() const;
 
-    /// Returns the URL that should be used for signing up a new account.
-    std::string GetAccountSignupURL() const;
-
-    /// Returns the URL that should be used for managing and existing account.
-    std::string GetAccountManagementURL() const;
+    enum class UserSiteURLType {
+      AccountSignup = 0,
+      AccountManagement,
+      ForgotAccount
+    };
+    /// Returns the `my.psi.cash` URL of the give type.
+    /// If `webview` is true, the URL will be appended to with `?webview=true`.
+    std::string GetUserSiteURL(UserSiteURLType url_type, bool webview) const;
 
     /// Creates a data package that should be included with a webhook for a user
     /// action that should be rewarded (such as watching a rewarded video).
@@ -313,6 +319,10 @@ public:
 
     Input parameters:
 
+    • local_only: If true, no network call will be made, and the refresh will utilize only
+      locally-stored data (i.e., only token expiry will be checked, and a transition into
+      a logged-out state may result).
+
     • purchase_classes: The purchase class names for which prices should be
       retrieved, like `{"speed-boost"}`. If null or empty, no purchase prices will be retrieved.
 
@@ -321,6 +331,13 @@ public:
     • error: If set, the request failed utterly and no other params are valid.
 
     • status: Request success indicator. See below for possible values.
+
+    • reconnect_required: If true, a reconnect is required due to the effects of this call.
+      There are two main scenarios where this is the case:
+      1. A Speed Boost purchase was retrieved and its authorization needs to be applied to
+         the tunnel.
+      2. Speed Boost is active when account tokens expires, so the authorization needs to
+         be removed from the tunnel.
 
     Possible status codes:
 
@@ -333,7 +350,13 @@ public:
     • InvalidTokens: Should never happen (indicates something like local storage
       corruption). The local user state will be cleared.
     */
-    error::Result<Status> RefreshState(const std::vector<std::string>& purchase_classes);
+    struct RefreshStateResponse {
+        Status status;
+        bool reconnect_required;
+    };
+    error::Result<RefreshStateResponse> RefreshState(
+      bool local_only,
+      const std::vector<std::string>& purchase_classes);
 
     /**
     Makes a new transaction for an "expiring-purchase" class, such as "speed-boost".
@@ -386,7 +409,6 @@ public:
         Status status;
         nonstd::optional<Purchase> purchase;
     };
-
     error::Result<NewExpiringPurchaseResponse> NewExpiringPurchase(
             const std::string& transaction_class,
             const std::string& distinguisher,
@@ -394,6 +416,12 @@ public:
 
     /**
     Logs out a currently logged-in account.
+
+    Result fields:
+    • error: If set, the request failed utterly and no other params are valid.
+    • reconnect_required: If true, a reconnect is required due to the effects of this call.
+      This typically means that a Speed Boost was active at the time of logout.
+
     An error will be returned in these cases:
     • If the user is not an account
     • If the request to the server fails
@@ -404,7 +432,10 @@ public:
     NOTE: This (usually) does involve a network operation, so wrappers may want to be
     asynchronous.
     */
-    error::Error AccountLogout();
+    struct AccountLogoutResponse {
+        bool reconnect_required;
+    };
+    error::Result<AccountLogoutResponse> AccountLogout();
 
     /**
     Attempts to log the current user into an account. Will attempt to merge any available
@@ -445,6 +476,8 @@ public:
 protected:
     // See implementation for descriptions of non-public methods.
 
+    error::Result<std::string> AddEarnerTokenToURL(const std::string& url_string, bool query_param_only) const;
+
     nlohmann::json GetRequestMetadata(int attempt) const;
     error::Result<HTTPResult> MakeHTTPRequestWithRetry(
             const std::string& method, const std::string& path, bool include_auth_tokens,
@@ -459,7 +492,7 @@ protected:
 
     error::Result<Status> NewTracker();
 
-    error::Result<Status> RefreshState(
+    error::Result<RefreshStateResponse> RefreshState(
       const std::vector<std::string>& purchase_classes, bool allow_recursion);
 
     // If expected_type is empty, no check will be done.

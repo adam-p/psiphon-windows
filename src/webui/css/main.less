@@ -933,8 +933,8 @@ label[for="EgressRegionCombo"], label[for="EgressRegion"] {
   display: inline-block;
   .ie7-inline-block();
   text-transform: uppercase;
-  transform: skew(-10deg) rotate(-7deg);
-  transform-origin: right;
+  .transform(skew(-10deg) rotate(-7deg));
+  .transform-origin(right);
   display: table;
   margin: 1em auto 3em auto;
 
@@ -1112,17 +1112,24 @@ img.coin {
         &.label {
           // Make labels larger and give them more space (this currently is for the
           // "Starting Speed Boost" label and may be too broad).
-          padding: 1em;
-          white-space: initial;
-          font-size: 1.2em;
-          line-height: 1.1em;
+          white-space: normal;
+          padding: 0.7em;
+          font-size: 1em;
+          line-height: 1.2em;
+
+          // The success label background is darker than we'd like (and there's no harm
+          // in using the button background colour, since our corner labels are clickable).
+          &-success {
+            background-color: @btnSuccessBackground;
+          }
         }
       }
     }
 
-    .psicash-buy-speedboost, .psicash-buy-speedboost-fake {
+    .psicash-buy-speedboost {
       display: block;
       border-radius: 0;
+      padding: 4px 2px; // normal .btn styling is `4px 12px`, but that causes us to wrap text before we'd like
 
       .psicash-buy-speedboost-label {
         text-transform: uppercase;
@@ -1171,41 +1178,66 @@ img.coin {
 
 // This is the PsiCash tab content
 #psicash-pane {
+  hr {
+    // We want to tighten up the space around HRs, so the content doesn't get spread out
+    // too much and the pane doesn't require too much scrolling.
+    margin: 5px 0 10px 0;
+  }
+
   .width-limiter {
     max-width: 600px;
     margin: auto;
   }
 
   .psicash-pane__user-and-balance {
-    // This is a dirty RTL hack. Bootstrap uses "float:left" on span8, etc. in a fluid row,
-    // which results in layout _not_ being left-right reversed in RTL. If we try to globally
-    // override the BS styles, we end up breaking other layout (the Boost buttons in the
-    // pane are no longer centered, for example). So we're going to specifically target
-    // these instances to "fix", and in think about avoiding/changing our use of row-fluid
-    // in the future.
-    body[dir="rtl"] & > div {
-      float: right;
-    }
+    width: 100%;
+
+    // Put some space between the rows
+    border-collapse: separate;
+    border-spacing: 0 5px;
 
     .psicash-pane__user-and-balance__log-in-out-buttons {
+      white-space: nowrap;
       .text-right();
-
       body[dir="rtl"] & {
         .text-left();
       }
     }
-  }
 
-  .psicash-username-container {
-    font-weight: bold;
+    .psicash-pane__user-and-balance__username-container {
+      width: 100%;
+      font-weight: bold;
 
-    .psicash-username {
-      font-size: 1.5em;
+      // These need to be on the TD element in IE. This has the unfortunate effect of
+      // causing the "Create an account to protect your PsiCash" text to break-all as
+      // well, but the window shouldn't get that narrow (and hopefully the translations
+      // don't get that long).
+      -ms-word-break: break-all;
+      word-break: break-all;
+      word-break: break-word;
+
+      .psicash-pane__user-and-balance__username-container__username {
+        font-size: 1.5em;
+      }
     }
-  }
 
-  .psicash-balance-row {
-    font-size: 1.5em;
+    .psicash-pane__user-and-balance__balance {
+      font-size: 1.5em;
+
+      .psicash-balance-coin {
+        -ms-word-break: break-all;
+        word-break: break-all;
+        word-break: break-word;
+      }
+    }
+
+    .psicash-pane__user-and-balance__manage-web {
+      white-space: nowrap;
+      .text-right();
+      body[dir="rtl"] & {
+        .text-left();
+      }
+    }
   }
 
   .speed-boost-buttons {
@@ -1218,6 +1250,12 @@ img.coin {
       background-repeat: no-repeat;
       position: relative;
       .border-radius(7px);
+
+      // This width is chosen to avoid the buttons wrapping and a horizontal scroll bar appearing
+      @media (max-width: 920px) {
+        height: 125px;
+        width: 121px;
+      }
 
       &.enough-balance:hover {
         .box-shadow(0px 0px 10px 0px #6c6c6c);
@@ -1398,12 +1436,76 @@ img.coin {
     }
   }
 
-  .speed-limit .badge {
-    font-size: 20px;
+  .speed-limit {
+    .badge {
+      font-size: 20px;
+
+      img {
+        // The speed limit badge on the pane is one line rather than two, so the image should be smaller
+        height: 1.5em;
+      }
+
+      table {
+        display: inline-block;
+        .ie7-inline-block();
+      }
+    }
+  }
+
+  // We have speed limit collapsers both within the badge and outside it, with slightly different styling
+  & .badge .psicash-pane__speed-limit__collapser {
+    text-decoration: none;  // undo .btn styling
+    text-shadow: none;      // undo .btn styling
+    margin-top: 4px;
+    color: darken(@white, 10%);
+    &:hover {
+      color: @white;
+    }
+
+    body[dir="ltr"] & {
+      .pull-right();
+    }
+    body[dir="rtl"] & {
+      .pull-left();
+    }
+  }
+
+  & h3 .psicash-pane__speed-limit__collapser {
+    font-size: 14px;
+    text-decoration: none;  // undo .btn styling
+    text-shadow: none;      // undo .btn styling
+    display: inline-block\9; // This is strictly to defeat IE8's "hasLayout" behaviour. It has no negative effect on other platforms.
+
+    &.icon-question-circle, &.icon-question {
+      padding: 0; // undo .btn styling
+      border: 0;  // undo .btn styling
+    }
+  }
+
+  .psicash-pane__speed-limit__collapse {
+    // When the title and text above the badge are collapsed, we lose the top margin of
+    // the header and so the badge is too high up. So we need to add and remove a top
+    // margin when we collpase and expand.
+    // To avoid jumping around, use a transition for the top margin. But this overrides
+    // the Bootstrap .collapse transition (found in component-animations.less), so we
+    // need to copy it here as well.
+    .transition(~"height 0.35s ease, margin-top 0.35s ease, opacity 0.35s ease, border 0.35s ease");
+    &:not(.in) {
+      opacity: 0;
+      border: none;
+    }
   }
 }
 
 .speed-limit {
+  // This color is derived (lightened) from the Psiphon logo
+  @speedLimitColor: #cc664c;
+
+  #psicash-pane & {
+    #gradient > .vertical(fadeout(@speedLimitColor, 90%), fadeout(@speedLimitColor, 100%));
+    .border-radius(9px); // equal to .badge's
+  }
+
   .badge, &.badge {
     display: block;
     text-transform: uppercase;
@@ -1429,9 +1531,6 @@ img.coin {
         padding-right: 0.2em;
       }
     }
-
-    // This color is derived (lightened) from the Psiphon logo
-    @speedLimitColor: #cc664c;
 
     &.speed-slow {
       background-color: @speedLimitColor;
@@ -1459,11 +1558,11 @@ img.coin {
 
   body[dir="ltr"] & {
     right: 0;
-    left: initial;
+    left: auto;  // IE doesn't support "initial"
   }
   body[dir="rtl"] & {
     left: 0;
-    right: initial;
+    right: auto; // IE doesn't support "initial"
   }
 }
 
@@ -1510,7 +1609,6 @@ hr.dotted {
 
 .paragraph-icon {
   font-size: 2.2em;
-  margin: 5px 10px 5px 0;
   font-weight: bold;
 
   &.paragraph-icon__warning {
@@ -1528,9 +1626,11 @@ hr.dotted {
 
   body[dir="ltr"] & {
     .pull-left();
+    margin: 5px 10px 10px 0;
   }
 
   body[dir="rtl"] & {
     .pull-right();
+    margin: 5px 0 10px 10px;
   }
 }

@@ -83,7 +83,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     $('.banner img').attr('src', g_initObj.Config.Banner); // Let the C-code decide what should be opened when the banner is clicked.
 
-    $('.banner a').click(function (e) {
+    $('.banner a').on('click', function (e) {
       e.preventDefault();
       HtmlCtrlInterface_BannerClick();
     }); // Some elements besides the nav tabs switch to panes. Add handlers for that.
@@ -98,40 +98,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     // be updated when the language changes.
 
     var updateLinks = nextTickFn(function updateLinks() {
-      // For some languages we alter the "download site" links to point directly
-      // to that language. But the site has different available languages than
-      // this application does, so we don't just do it blindly.
-      var defaultLang = 'en';
-      var siteLangs = ['fa', 'zh'];
-      var currentLang = i18n.lng(); // en_US
-      //const currentHTMLJSlang = $('html').prop('lang'); // en-US // unused
-
-      var replaceLang = _.includes(siteLangs, currentLang) ? currentLang : defaultLang; // Note that we're using the function-as-replacement form for String.replace()
-      // because we don't entirely control the content of the language names, and
-      // we don't want to run into any issues with magic values:
-      // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_string_as_a_parameter
-
-      var replaceFn = function replaceFn(match, p1, p2) {
-        return p1 + '/' + replaceLang + '/' + p2;
-      }; // This link may be to the redirect meta page (/index.html) or to a language-specific
-      // page (/en/index.html). If it's to the meta page, we won't force to English, otherwise we will.
-      // First change it to the meta page if it's not already
-
-
-      var url = g_initObj.Config.InfoURL.replace('/en/', '/'); // Then force the language, but not to English
-
-      if (replaceLang !== defaultLang) {
-        // We're using the function form of
-        url = g_initObj.Config.InfoURL.replace(/^([^?#]*)\/(.*)$/, replaceFn);
-      }
-
+      // Our configured download site URLs are to the English version of the pages, but the site supports language redirects. So we'll strip out the `/en` before updating in the UI.
+      var url = g_initObj.Config.InfoURL.replace('/en/', '/');
       $('.InfoURL').attr('href', url).attr('title', url);
-      var regex = /^([^?#]*)\/en\/(.*)$/;
-      url = g_initObj.Config.NewVersionURL.replace(regex, replaceFn);
+      url = g_initObj.Config.NewVersionURL.replace('/en/', '/');
       $('.NewVersionURL').attr('href', url).attr('title', url);
-      url = g_initObj.Config.FaqURL.replace(regex, replaceFn);
+      url = g_initObj.Config.FaqURL.replace('/en/', '/');
       $('.FaqURL').attr('href', url).attr('title', url);
-      url = g_initObj.Config.DataCollectionInfoURL.replace(regex, replaceFn);
+      url = g_initObj.Config.DataCollectionInfoURL.replace('/en/', '/');
       $('.DataCollectionInfoURL').attr('href', url).attr('title', url); // No replacement on the email address
 
       $('.NewVersionEmail').attr('href', 'mailto:' + g_initObj.Config.NewVersionEmail).text(g_initObj.Config.NewVersionEmail).attr('title', g_initObj.Config.NewVersionEmail);
@@ -183,10 +157,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     $('.banner').css(g_isRTL ? 'margin-right' : 'margin-left', $('.header-nav-join').outerWidth()).css(!g_isRTL ? 'margin-right' : 'margin-left', 0);
   }
+  /**
+   * Take steps necessary to adapt to changing screen DPI (like an intial scaling other
+   * than 1.0, or when the app gets dragged between monitors with different scaling).
+   * @param {string} dpiScaling Contains a floating point number, like "1.0", "1.2", "2.5"
+   * @param {boolean} andResizeContent Indicates whether a full resize should occur (default true)
+   */
 
-  function updateDpiScaling(dpiScaling, andResizeContent
-  /*=true*/
-  ) {
+
+  function updateDpiScaling(dpiScaling) {
+    var andResizeContent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+    // NOTE: This may not get processed often enough. If, say, a `.affix`
+    // element is added programmatically to the DOM, it won't get
+    // processed until/unless a DPI change occurs.
+    if (updateDpiScaling.lastDpiScaling === dpiScaling) {
+      // We only do this processing when the scaling actually changes.
+      return;
+    }
+
+    updateDpiScaling.lastDpiScaling = dpiScaling;
     DEBUG_LOG('updateDpiScaling: ' + dpiScaling);
     g_initObj.Config.DpiScaling = dpiScaling;
 
@@ -209,7 +199,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         bottomRightTransformOrigin = g_isRTL ? rtlBottomRightTransformOrigin : ltrBottomRightTransformOrigin; // Set the overall body scaling
 
     $('html').css({
+      '-ms-transform-origin': transformOrigin,
       'transform-origin': transformOrigin,
+      '-ms-transform': 'scale(' + dpiScaling + ')',
       'transform': 'scale(' + dpiScaling + ')',
       'width': (100.0 / dpiScaling).toFixed(1) + '%',
       'height': (100.0 / dpiScaling).toFixed(1) + '%'
@@ -225,14 +217,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var scaledLeftMargin = 'calc(' + defaultLeftMargin + ' * ' + dpiScaling + ')'; // Now apply the styles.
 
       $('.modal').css({
+        '-ms-transform-origin': transformOrigin,
         'transform-origin': transformOrigin,
+        '-ms-transform': 'scale(' + dpiScaling + ')',
         'transform': 'scale(' + dpiScaling + ')',
         'margin-left': scaledLeftMargin
       });
     }
 
     $('.global-alert').css({
+      '-ms-transform-origin': bottomRightTransformOrigin,
       'transform-origin': bottomRightTransformOrigin,
+      '-ms-transform': 'scale(' + dpiScaling + ')',
       'transform': 'scale(' + dpiScaling + ')'
     }); // Elements with the `affix` class are position:fixed and need to be adjusted separately
 
@@ -244,7 +240,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).each(function () {
         var basePosition = $(this).position();
         $(this).css({
+          '-ms-transform-origin': transformOrigin,
           'transform-origin': transformOrigin,
+          '-ms-transform': 'scale(' + dpiScaling + ')',
           'transform': 'scale(' + dpiScaling + ')'
         });
 
@@ -260,6 +258,49 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
         }
       });
+    } // Media query breakpoints need to be scaled accoring to the DPI scaling. This happens
+    // automatically in the browser, but not in our app's HTML control.
+
+
+    if (Modernizr.mediaqueries) {
+      var mqRegexp = /^([^0-9]+)([0-9]+)([^0-9]+)$/;
+
+      for (var i = 0; i < document.styleSheets.length; i++) {
+        var ss = document.styleSheets[i]; // In the IE browser -- but not the app! -- the style sheets created by our data
+        // URI CSS (`data:text/css;base64`, see main.html) will cause an "access denied"
+        // exception when we try to access the `cssRules` property. So we'll test for that.
+
+        try {
+          var test = ss.cssRules.length; // eslint-disable-line
+        } catch (e) {
+          continue;
+        }
+
+        for (var j = 0; j < ss.cssRules.length; j++) {
+          var rule = ss.cssRules[j];
+
+          if (!rule.media) {
+            // Not a media query rule
+            continue;
+          } // Before modifying the media query, we need to make a backup of the
+          // original (if we haven't already).
+
+
+          if (!rule.media.mediaText__backup) {
+            rule.media.mediaText__backup = rule.media.mediaText;
+          }
+
+          var mediaTextSplit = rule.media.mediaText__backup.split(' and ');
+
+          for (var k = 0; k < mediaTextSplit.length; k++) {
+            mediaTextSplit[k] = mediaTextSplit[k].replace(mqRegexp, function (match, pre, num, post) {
+              return "".concat(pre).concat(Math.round(num * dpiScaling)).concat(post);
+            });
+          }
+
+          rule.media.mediaText = mediaTextSplit.join(' and ');
+        }
+      }
     }
 
     if (andResizeContent !== false) {
@@ -458,7 +499,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
       if ($activeItem) {
-        $('#EgressRegionCombo .btn span.flag').attr('data-i18n', $activeItem.find('a').data('i18n')).attr('class', $activeItem.find('a').attr('class')).text($activeItem.find('a').text());
+        // Most of the list items have an `a` element as an immediate child, but the "Best
+        // Performance" element has its `data-i18n` attribute on a `strong` element under
+        // the `a` element.
+        $('#EgressRegionCombo .btn span.flag').attr('data-i18n', $activeItem.find('[data-i18n]').data('i18n')).attr('class', $activeItem.find('a').attr('class')).text($activeItem.find('a').text());
       }
     }); // If the label is clicked, jump to the Egress Region settings section
 
@@ -1440,18 +1484,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   /* LANGUAGE ******************************************************************/
 
 
-  var RTL_LOCALES = ['devrtl', 'fa', 'fa_AF', 'ar', 'ur'];
   $(function () {
-    var fallbackLanguage = 'en'; // Language priority: cookie, system locale, fallback
+    var fallbackLanguage = 'en';
+    var prevLang = getCookie('language'); // Legacy formats weren't BCP 47 and had `_` or `@`, so update for backwards compatibility
 
-    var lang = getCookie('language') || g_initObj.Config && g_initObj.Config.Language || fallbackLanguage;
-    i18n.init({
-      lang: lang,
-      fallbackLng: fallbackLanguage,
-      resStore: window.PSIPHON.LOCALES
-    }, function () {
-      switchLocale(lang, true);
-    }); // Populate the list of language choices
+    if (prevLang) {
+      prevLang = getCookie('language').replace('_', '-').replace('@', '-');
+    } // Language priority: cookie, system locale, fallback
+
+
+    var lang = prevLang || g_initObj.Config && g_initObj.Config.Language || fallbackLanguage;
+    i18n.init(window.PSIPHON.LOCALES, fallbackLanguage);
+    switchLocale(lang, true); // Populate the list of language choices
 
     populateLocales();
   }); // We only want to show the success/welcome message once.
@@ -1461,36 +1505,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   var g_isRTL = false;
 
   function switchLocale(locale, initial) {
-    i18n.setLng(locale, function () {
-      // This callback does not seem to called asynchronously (probably because
-      // we're loading from an object and not a remote resource). But we want this
-      // code to run after everything else is done, so we'll force it to be async.
-      nextTick(function () {
-        // HTML+JS use locale codes of the form 'en-US', rather than
-        // Psiphon's 'en_US'.
-        $('html').attr('lang', locale.replace('_', '-'));
-        $('body').i18n(); // The content of elements will have changed, so trigger custom event that can
-        // be listened for to take additional actions.
+    i18n.setLocale(locale); // We want this code to run asynchronously, after everything else is done.
 
-        $window.trigger(LANGUAGE_CHANGE_EVENT);
+    nextTick(function () {
+      i18n.localizeUI(); // The content of elements will have changed, so trigger custom event that can
+      // be listened for to take additional actions.
 
-        if (!initial && !g_languageSuccessAlertShown) {
-          // Show (and hide) the success alert
-          g_languageSuccessAlertShown = true;
-          displayCornerAlert($('#language-success-alert'));
-        } // Remember the user's choice
+      $window.trigger(LANGUAGE_CHANGE_EVENT);
+
+      if (!initial && !g_languageSuccessAlertShown) {
+        // Show (and hide) the success alert
+        g_languageSuccessAlertShown = true;
+        displayCornerAlert($('#language-success-alert'));
+      } // Remember the user's choice
 
 
-        setCookie('language', locale);
-      });
+      setCookie('language', locale); // PsiCash may need to update numbers or moment.js
+
+      psiCashUIUpdater();
     }); //
     // Right-to-left languages need special consideration.
     //
 
-    var rtl = _.contains(RTL_LOCALES, locale);
-
-    g_isRTL = rtl;
-    $('body').attr('dir', rtl ? 'rtl' : 'ltr').css('direction', rtl ? 'rtl' : 'ltr'); // We'll use a data attribute to store classes which should only be used
+    var rtl = i18n.isRTL();
+    g_isRTL = rtl; // We'll use a data attribute to store classes which should only be used
     // for RTL and not LTR, and vice-versa.
 
     $('[data-i18n-rtl-classes]').each(function () {
@@ -1646,6 +1684,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   /**
    * The expected payload passed to HtmlCtrlInterface_PsiCashMessage when a refresh should be done.
    * @typedef {Object} PsiCashRefreshData
+   * @property {boolean} reconnect_required
    * @property {boolean} is_account
    * @property {boolean} has_tokens
    * @property {?string} account_username Will be set iff is_account is true and has_tokens is true
@@ -1655,6 +1694,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
    * @property {?string} buy_psi_url
    * @property {string} account_signup_url
    * @property {string} account_management_url
+   * @property {string} forgot_account_url
    */
 
   /**
@@ -1803,7 +1843,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   var PsiCashStore = new Datastore({
     initDone: false,
     purchaseInProgress: false,
-    uiState: null
+    uiState: null,
+    logoutExpected: false
   }, 'PsiCashStore');
   $(function psicashInit() {
     // NOTE: "refresh" will not make a server request unless we're connected. If not
@@ -1858,6 +1899,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         showNoticeModal('psicash#mustconnect-modal#title', 'psicash#mustconnect-modal#body', 'info', null, null, function () {
           switchToTab('#connection-tab');
         });
+      }
+    }); // Initialize the collapsible speed limit info (persisted in a cookie)
+
+    var $speedLimitCollapser = $('.psicash-pane__speed-limit__collapser');
+    var $speedLimitCollapserTarget = $($speedLimitCollapser.data('target'));
+    $speedLimitCollapserTarget.on('hidden', function () {
+      $speedLimitCollapser.filter('.icon-chevron-up-circle').removeClass('icon-chevron-up-circle').addClass('icon-chevron-down-circle');
+      $speedLimitCollapser.filter('.icon-question-circle.fade').addClass('in');
+      setCookie('SpeedLimitCollapsed', true);
+    }).on('shown', function () {
+      $speedLimitCollapser.filter('.icon-chevron-down-circle').addClass('icon-chevron-up-circle').removeClass('icon-chevron-down-circle');
+      $speedLimitCollapser.filter('.icon-question-circle.fade').removeClass('in');
+      setCookie('SpeedLimitCollapsed', false);
+    }); // Altering the collapsed state before the pane is shown seems to result in
+    // things not working afterwards. So we're going to wait until the first time
+    // the pane is shown to get into the correct state.
+
+    $('.nav-tabs a[href="#psicash-pane"][data-toggle="tab"]').one('shown', function () {
+      if (getCookie('SpeedLimitCollapsed')) {
+        $speedLimitCollapserTarget.collapse('hide');
       }
     });
   });
@@ -1954,72 +2015,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var oldPsiCashData = g_PsiCashData;
 
     if (psicashData) {
-      var reconnectRequired = false; // TBD below
-
       if (g_PsiCashData) {
         // For later diagnostics, log if psicashData values changed
         if (!_.isNaN(psicashData.balance) && psicashData.balance !== g_PsiCashData.balance) {
           HtmlCtrlInterface_Log('PsiCash: balance change:', psicashData.balance - g_PsiCashData.balance);
         } // TODO: Log other changes? Kind of a hassle.
-        // We might need to reconnect, based on the new data. There are two possible reasons:
-        // 1. If there are new purchases with authorizations present -- possibly due to a
-        //    new Speed Boost purchase or login purchase retrieval, then we need to
-        //    reconnect to have the authorization(s) take effect.
-        // 2. If there were authorizations active, but our tokens just disappeared
-        //    (due logout or expiry).
-        // Note that we _don't_ need to reconnect when an authorization expires,
-        // as that is handled by tunnel-core/psiphond.
 
-
-        if (psicashData.purchases) {
-          var _loop2 = function _loop2(i) {
-            var newPurchase = psicashData.purchases[i];
-
-            if (!newPurchase.authorization) {
-              return "continue";
-            }
-
-            if (!g_PsiCashData.purchases) {
-              DEBUG_LOG('psiCashUIUpdated: reconnect required due to new purchase authorization');
-              reconnectRequired = true;
-              return "break";
-            }
-
-            if (!g_PsiCashData.purchases.some(function (p) {
-              return p.id === newPurchase.id;
-            })) {
-              DEBUG_LOG('psiCashUIUpdated: reconnect required due to unmatched purchase authorization');
-              reconnectRequired = true;
-              return "break";
-            }
-          };
-
-          _loop: for (var i = 0; i < psicashData.purchases.length; i++) {
-            var _ret = _loop2(i);
-
-            switch (_ret) {
-              case "continue":
-                continue;
-
-              case "break":
-                break _loop;
-            }
-          }
-        }
-
-        if (!psicashData.has_tokens && g_PsiCashData.has_tokens && g_PsiCashData.purchases && g_PsiCashData.purchases.some(function (p) {
-          return !!p.authorization;
-        })) {
-          DEBUG_LOG('psiCashUIUpdated: reconnect required due to loss of tokens');
-          reconnectRequired = true;
-        }
       }
 
       g_PsiCashData = psicashData;
 
-      if (reconnectRequired) {
-        // We'll continue with our UI update, but we need to reconnect to apply
-        // newly-arrived purchases.
+      if (psicashData.reconnect_required) {
+        // We'll continue with our UI update, but we need to reconnect deal with a change
+        // of purchase/token state.
+        HtmlCtrlInterface_Log('PsiCash::RefreshState indicates reconnect required');
         HtmlCtrlInterface_ReconnectTunnel(
         /*suppressHomePage=*/
         true);
@@ -2064,8 +2073,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var state = PsiCashUIState.NSF_BALANCE; // DO NOT return early from this point. state must be updated in PsiCashStore.uiState.
 
     if (psicashData.purchase_prices) {
-      for (var _i = 0; _i < psicashData.purchase_prices.length; _i++) {
-        var pp = psicashData.purchase_prices[_i];
+      for (var i = 0; i < psicashData.purchase_prices.length; i++) {
+        var pp = psicashData.purchase_prices[i];
 
         if (pp['class'] === 'speed-boost' && pp.price <= psicashData.balance) {
           // We can afford at least one level of Speed Boost
@@ -2078,7 +2087,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var millisOfSpeedBoostRemaining = 0;
 
     if (psicashData.purchases) {
-      for (var _i2 = 0; _i2 < psicashData.purchases.length; _i2++) {
+      for (var _i = 0; _i < psicashData.purchases.length; _i++) {
         // There are two different contexts/ways of checking for active Speed Boost.
         // **If we are connected**, then we rely on psiphond to decide that the
         // authorization is expired, which will result in tunnel-core reconnecting and a
@@ -2091,8 +2100,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         // until the user happens to connect and refresh PsiCash state.)
         // Note: We're making no special effort to check for multiple active Speed Boosts.
         // This should not happen, per server rules.
-        if (psicashData.purchases[_i2]['class'] === 'speed-boost') {
-          var localTimeExpiry = moment(psicashData.purchases[_i2].localTimeExpiry);
+        if (psicashData.purchases[_i]['class'] === 'speed-boost') {
+          var localTimeExpiry = moment(psicashData.purchases[_i].localTimeExpiry);
 
           if (g_lastState === 'connected' || localTimeExpiry.isAfter(moment())) {
             state = PsiCashUIState.ACTIVE_BOOST;
@@ -2120,13 +2129,26 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
     if (state === PsiCashUIState.ACCOUNT_LOGGED_OUT && oldPsiCashData && oldPsiCashData.has_tokens) {
-      displayCornerAlert($('#psicash-account-tokens-expired-alert')); // Log to UI and to diagnostics
+      // Either the user just logged out manually or our tokens expired
+      if (PsiCashStore.data.logoutExpected) {
+        displayCornerAlert($('#psicash-account-logged-out-alert')); // Log to UI and to diagnostics
 
-      addLog({
-        priority: 2,
-        message: 'Account logged out; probably due to expired tokens'
-      });
-      HtmlCtrlInterface_Log('Account logged out; probably due to expired tokens');
+        addLog({
+          priority: 2,
+          message: 'PsiCash account logged out'
+        });
+        HtmlCtrlInterface_Log('PsiCash account logged out; user initiated');
+      } else {
+        displayCornerAlert($('#psicash-account-tokens-expired-alert')); // Log to UI and to diagnostics
+
+        addLog({
+          priority: 2,
+          message: 'PsiCash account logged out; probably due to expired tokens'
+        });
+        HtmlCtrlInterface_Log('PsiCash account logged out; probably due to expired tokens');
+      }
+
+      PsiCashStore.set('logoutExpected', false);
     } // Speed Boost cannot function in L2TP/IPSec mode. We want to disabled controls and
     // indicate why we're in that state.
 
@@ -2149,10 +2171,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       // Either we don't yet have a baseline, or it's above the threshold
       DEBUG_LOG('Baseline speed is high; hiding speed limit');
       $('.js-hide-if-fast').addClass('hidden');
+      $('.js-hide-if-not-fast').removeClass('hidden');
     } else {
       // The baseline is below the threshold
       DEBUG_LOG('Baseline speed is low; showing speed limit');
       $('.js-hide-if-fast').removeClass('hidden');
+      $('.js-hide-if-not-fast').addClass('hidden');
     } // When we have an active speed boost, we want this function to be called repeatedly,
     // so that the countdown timer is updated, and so the UI changes when the speed boost
     // ends. But there's no reason to do work on an interval if there's no active boost.
@@ -2194,8 +2218,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       $('.js-hide-if-logged-out-account').toggleClass('hidden', loggedOut);
       $('.js-show-if-nsf').toggleClass('hidden', state !== PsiCashUIState.NSF_BALANCE);
       $('.js-hide-if-nsf').toggleClass('hidden', state === PsiCashUIState.NSF_BALANCE);
-      $('.psicash-username-container .js-psicash-account-signup').toggleClass('hidden', !!psicashData.account_username || loggedOut);
-      $('.psicash-username-container .psicash-username').text(psicashData.account_username).toggleClass('hidden', !psicashData.account_username);
+      $('.psicash-pane__user-and-balance__username-container .js-psicash-account-signup').toggleClass('hidden', !!psicashData.account_username || loggedOut);
+      $('.psicash-pane__user-and-balance__username-container .psicash-pane__user-and-balance__username-container__username').text(psicashData.account_username).toggleClass('hidden', !psicashData.account_username);
 
       if (psicashData.buy_psi_url) {
         $('a.psicash-buy-psi').prop('href', psicashData.buy_psi_url).removeClass('hidden');
@@ -2207,10 +2231,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       $('a.js-psicash-account-signup').prop('href', psicashData.account_signup_url);
       $('a.js-psicash-account-management').prop('href', psicashData.account_management_url);
+      $('a.js-psicash-forgot-account').prop('href', psicashData.forgot_account_url);
 
       if (psicashData.purchase_prices) {
-        for (var _i3 = 0; _i3 < psicashData.purchase_prices.length; _i3++) {
-          var _pp = psicashData.purchase_prices[_i3];
+        for (var _i2 = 0; _i2 < psicashData.purchase_prices.length; _i2++) {
+          var _pp = psicashData.purchase_prices[_i2];
 
           if (_pp['class'] === 'speed-boost') {
             $(".js-psicash-sb-price[data-distinguisher=\"".concat(_pp.distinguisher, "\"]")).text(formatPsi(parseInt(_pp.price)));
@@ -2468,47 +2493,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     } // `locale` is now our starting point. Moment has case-sensitive locale matches, but
     // also has case-inconsistent locale names (e.g., it has "en-SG" in the current
     // release, although that looks to be changed in a future release). It also has
-    // exact matching, so it won't recognize "zh" even though it has "zh-cn". So we
-    // need to do some massaging and fuzzy-matching.
+    // exact matching, so it won't recognize "zh" even though it has "zh-cn". And if it
+    // gets a locale of the form "pt-Latn-BR", it will fall back to "pt" rather than "pt-BR".
+    // So we need to do some massaging and fuzzy-matching.
 
 
-    locale = locale.toLowerCase(); // Just in case we have "en_US" instead of "en-US".
+    var bestLocale = I18n.localeBestMatch(locale, moment.locales());
 
-    locale = locale.replace('_', '-'); // Moment uses "uz-latn" rather than "uz@Latn"
-
-    locale = locale.replace('@', '-');
-    var subLocale = locale.split('-')[0];
-    var exactLocaleMatch, subLocaleMatch;
-    var momentLocales = moment.locales();
-
-    for (var i = 0; i < momentLocales.length; i++) {
-      var l = momentLocales[i];
-
-      if (l.toLowerCase() === locale) {
-        exactLocaleMatch = l;
-        break;
-      } // We'll also check "sub-locales". This means that if locale is "pt-pt" then we want
-      // to match "pt", and if locale is "zh" we want to match "zh-cn".
-
-
-      if (subLocale === l) {
-        subLocaleMatch = l;
-      } // HACK: We're only going to record the first sub-locale match, because we know
-      // that "zh-cn" will come before "zh-tw", and that's what we want to match for "zh".
-      else if (!subLocaleMatch && subLocale === l.split('-')[0]) {
-          subLocaleMatch = l;
-        }
-    }
-
-    if (!exactLocaleMatch) {
-      if (!subLocaleMatch) {
-        DEBUG_WARN('missing momentjs locale:', locale, '; falling back to English');
+    if (!bestLocale || bestLocale.toLowerCase() !== locale.toLowerCase()) {
+      if (!bestLocale) {
+        DEBUG_WARN("missing momentjs locale: '".concat(locale, "'; falling back to English"));
       } else {
-        DEBUG_WARN('missing momentjs locale:', locale, '; using sublocale match:', subLocaleMatch);
+        DEBUG_WARN("missing momentjs locale: '".concat(locale, "'; using best match: '").concat(bestLocale, "'"));
       }
     }
 
-    return exactLocaleMatch || subLocaleMatch || 'en';
+    return bestLocale || 'en';
   }
   /**
    * Event handler for the "buy speed boost" button click.
@@ -2650,15 +2650,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return;
     }
 
+    switchToTab('#psicash-tab');
+
     if (!buyPsiClick.skipAccountEncouragement && !g_PsiCashData.is_account) {
       // We're showing a modal encouraging PsiCash account signup. The user can either
       // choose to launch the sign-up process, or can continue on.
-      $('#PsiCashAccountEncouragement').modal('show');
-      switchToTab('#psicash-tab');
+      $('#PsiCashAccountEncouragement').modal({
+        show: true,
+        backdrop: 'static'
+      });
       return;
     }
 
-    buyPsiClick.skipAccountEncouragement = false;
+    buyPsiClick.skipAccountEncouragement = false; // Open buy.psi.cash in an external browser
+
     window.location = $('a.psicash-buy-psi').prop('href');
   }
 
@@ -2868,27 +2873,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   /**
    * Begin the account logout flow. Should not be called if the user is not logged in.
    * @param {?Event} event
+   * @param {boolean} skipConnectedCheck If true, there will be no check of whether
+   *    the Psiphon tunnel is currently connected. Should only be set to true when this
+   *    is called via the local-only logout prompt.
    */
 
   function psicashAccountLogout(event) {
+    var skipConnectedCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
     if (event) {
       event.preventDefault();
     }
 
-    if (g_lastState !== 'connected') {
-      showNoticeModal('psicash#mustconnect-modal#title', 'psicash#mustconnect-modal#body', 'info', null, null, function () {
-        switchToTab('#connection-tab');
+    if (!skipConnectedCheck && g_lastState !== 'connected') {
+      $('#PsiCashAccountLogoutOffline').modal({
+        show: true,
+        backdrop: 'static'
       });
       return;
     }
 
     psicashUIWaitState(true, '#psicash-ui-overlay-logging-out');
+    PsiCashStore.set('logoutExpected', true);
     HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogout()).then(function (result) {
       psicashUIWaitState(false, null);
 
       if (result.refresh) {
         // The reponse supplied refresh data
         psiCashUIUpdater(result.refresh);
+      }
+
+      if (result.reconnect_required) {
+        // An authorization is active on the tunnel and needs to be removed.
+        HtmlCtrlInterface_Log('PsiCash::AccountLogout indicates reconnect required');
+        HtmlCtrlInterface_ReconnectTunnel(
+        /*suppressHomePage=*/
+        true);
       }
 
       if (result.error) {
@@ -2904,6 +2924,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }
 
   $('.js-account-logout').on('click', psicashAccountLogout);
+  /*
+  If the user attempts to log out of their PsiCash account while not having a connected
+  tunnel, they are prompted as to whether they wish to proceed with a local-only logout.
+  */
+
+  $('#PsiCashAccountLogoutOffline .js-connect-button').on('click', function (e) {
+    e.preventDefault();
+    $('#PsiCashAccountLogoutOffline').modal('hide').one('hidden', function () {
+      HtmlCtrlInterface_StartTunnel();
+      switchToTab('#connection-tab');
+    });
+  });
+  $('#PsiCashAccountLogoutOffline .js-logout-button').on('click', function (e) {
+    e.preventDefault();
+    $('#PsiCashAccountLogoutOffline').modal('hide').one('hidden', function () {
+      psicashAccountLogout(null, true);
+    });
+  });
   /**
    *
    * @param {boolean} start True if the wait state is starting, false if it should be cleared.
@@ -2957,7 +2995,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     HtmlCtrlInterface_DisallowedTraffic();
     showNoticeModal('notice#disallowed-traffic-alert-title', 'notice#disallowed-traffic-alert-body', 'info', null, null, function () {
       if (!$('#psicash-tab').hasClass('hidden')) {
-        switchToTab('#psicash-tab');
+        // We're going to switch to the PsiCash tab, and ensure that it is showing
+        // (i.e., not collapsing) the porting limiting info.
+        // Setting the cookie here is a bit of hack. If this is the first visit to the
+        // PsiCash pane, it will help prevent the speed limit from collapsing and then
+        // re-expanding (which looks dumb).
+        setCookie('SpeedLimitCollapsed', false);
+        switchToTab('#psicash-tab', function () {
+          var $speedLimitCollapser = $('.psicash-pane__speed-limit__collapser');
+          var $speedLimitCollapserTarget = $($speedLimitCollapser.data('target'));
+
+          if (!$speedLimitCollapserTarget.hasClass('in')) {
+            $speedLimitCollapserTarget.collapse('show');
+          }
+        });
       }
       /* Before we had the PsiCash pane, we would wiggle the bottom-left PsiCash block.
       We'll leave this code in for now in case we decide that we prefer it.
@@ -3033,7 +3084,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     } else {
       // Target tab not already showing. Switch to it before expanding and scrolling.
       if (callback) {
-        $tab.find('[data-toggle="tab"]').one('show', callback);
+        $tab.find('[data-toggle="tab"]').one('shown', callback);
       }
 
       $tab.find('[data-toggle="tab"]').tab('show');
@@ -3200,6 +3251,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return grossWidth - (parseFloat($elem.css('padding-right')) || 0) - (parseFloat($elem.css('padding-left')) || 0) - (parseFloat($elem.css('border-right-width')) || 0) - (parseFloat($elem.css('border-left-width')) || 0) - (parseFloat($elem.css('margin-right')) || 0) - (parseFloat($elem.css('margin-left')) || 0);
     }
   }
+  /**
+   * Gets the version of IE rendering the view.
+   * @returns {Number|boolean} Returns false if the current browser/HTML control is not
+   *                           Internet Explorer-based, otherwise returns the integer
+   *                           version of the IE that the view is based on.
+   */
+
 
   function getIEVersion() {
     // This is complicated by the fact that the MSHTML control uses a different
@@ -3709,6 +3767,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
 
     return {
+      reconnect_required: $('#debug-RefreshPsiCash-reconnectRequired')[0].checked,
       is_account: isAccount,
       account_username: accountUsername,
       has_tokens: hasTokens,
@@ -3733,7 +3792,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       purchases: hasTokens && purchase ? [purchase] : null,
       buy_psi_url: 'https://example.com/buy.psi.cash/#psicash=example',
       account_signup_url: 'https://example.com/my.psi.cash/signup?etc',
-      account_management_url: 'https://my.psi.cash/?etc'
+      account_management_url: 'https://my.psi.cash/?etc',
+      forgot_account_url: 'https://my.psi.cash/forgot?etc'
     };
   }
   /**
@@ -3778,6 +3838,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
   function testPurchaseResponse(command) {
+    if (!command.distinguisher || !command.expectedPrice || !command.transactionClass) {
+      alert('Bad command input to testPurchaseResponse: ' + JSON.stringify(command));
+    }
+
     var resp = $('#debug-PsiCashSpeedBoost-response').val();
     /** @type {PsiCashPurchaseResponse} */
 
@@ -3896,6 +3960,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     if (resp === 'error') {
       msg.payload.error = 'debug error';
     } else {
+      msg.payload.reconnect_required = $('#debug-PsiCashLogout-reconnectRequired')[0].checked;
       msg.payload.refresh = makeTestRefreshPayload(undefined, true, false, null);
     } // Pretend the request takes a while.
 
@@ -4008,6 +4073,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var args = _.isObject(jsonArgs) ? jsonArgs : JSON.parse(jsonArgs);
     nextTick(function () {
       updateDpiScaling(args.dpiScaling);
+    });
+  } // Handle UI deeplinks.
+
+
+  function HtmlCtrlInterface_Deeplink(jsonArgs) {
+    DEBUG_LOG('HtmlCtrlInterface_Deeplink called'); // Allow object as input to assist with debugging
+
+    var args = _.isObject(jsonArgs) ? jsonArgs : JSON.parse(jsonArgs);
+    nextTick(function () {
+      // NOTE: All deeplinks accepted here _must_ be listed in psiclient_ui.cpp::ALLOWED_DEEPLINKS
+      if (args.deeplink.startsWith('psiphon://psicash/buy')) {
+        switchToTab('#psicash-tab');
+
+        if (g_lastState === 'connected') {
+          buyPsiClick();
+        }
+      } else if (args.deeplink.startsWith('psiphon://psicash') || args.deeplink.startsWith('psiphon://subscribe')) {
+        switchToTab('#psicash-tab');
+      } else if (args.deeplink.startsWith('psiphon://feedback')) {
+        switchToTab('#feedback-tab');
+      } else if (args.deeplink.startsWith('psiphon://settings/')) {
+        var section = args.deeplink.substring(args.deeplink.lastIndexOf('/') + 1);
+        showSettingsSection("#settings-accordion-".concat(section));
+      } else if (args.deeplink.startsWith('psiphon://settings')) {
+        switchToTab('#settings-tab');
+      } else {
+        alert(args.deeplink);
+        HtmlCtrlInterface_Log('HtmlCtrlInterface_Deeplink: received unsupported deeplink');
+      }
     });
   }
   /**
@@ -4309,6 +4403,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   window.HtmlCtrlInterface_AddNotice = HtmlCtrlInterface_AddNotice;
   window.HtmlCtrlInterface_RefreshSettings = HtmlCtrlInterface_RefreshSettings;
   window.HtmlCtrlInterface_UpdateDpiScaling = HtmlCtrlInterface_UpdateDpiScaling;
+  window.HtmlCtrlInterface_Deeplink = HtmlCtrlInterface_Deeplink;
   window.HtmlCtrlInterface_PsiCashMessage = HtmlCtrlInterface_PsiCashMessage;
 })(window);
 //# sourceMappingURL=app.js.map

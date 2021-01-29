@@ -19,6 +19,9 @@
 
 #pragma once
 
+#include <random>
+
+
 struct StopInfo;
 
 
@@ -55,6 +58,9 @@ bool GetUniqueTempDir(tstring& o_path, bool create);
 // the filename will have that extension.
 // Returns true on success, false otherwise. Caller can check GetLastError() on failure.
 bool GetUniqueTempFilename(const tstring& extension, tstring& o_filepath);
+
+/// Retrieves the path of the current executable. Returns false on error.
+bool GetOwnExecutablePath(tstring& o_path);
 
 
 /*
@@ -104,6 +110,9 @@ bool WriteRegistryStringValue(const string& name, const wstring& value, Registry
 bool ReadRegistryStringValue(LPCSTR name, string& value);
 bool ReadRegistryStringValue(LPCSTR name, wstring& value);
 
+/// Registers a protocol handler with the given scheme for our application
+bool WriteRegistryProtocolHandler(const tstring& scheme);
+
 
 /*
  * Text Display Utilities
@@ -143,7 +152,8 @@ Json::Value LoadJSONArray(const char* jsonArrayString);
 
 DWORD GetTickCountDiff(DWORD start, DWORD end);
 
-tstring GetLocaleName();
+/// Gets the ll-Script-CC BCP 47 locale identifier
+wstring GetLocaleID();
 
 // Should be called (by psiclient) when the UI locale is set.
 // (This is to help GetDeviceRegion().)
@@ -173,6 +183,14 @@ tstring GetISO8601DatetimeString();
 
 // Makes a GUID string. Returns true on success, false otherwise.
 bool MakeGUID(tstring& o_guid);
+
+/// Randomly shuffle a vector of values.
+template <typename IteratorType>
+void ShuffleVector(IteratorType begin, IteratorType end) {
+    static std::random_device rng;
+    static std::default_random_engine urng(rng());
+    std::shuffle(begin, end, urng);
+}
 
 
 /*
