@@ -64,7 +64,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>3rdParty\psicash\Debug2015\psicash.lib;3rdParty\mctrl\Debug2015\mCtrl.lib;3rdParty\cryptopp\Debug2015\cryptlib.lib;Winhttp.lib;rasapi32.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Comctl32.lib;wininet.lib;shlwapi.lib;urlmon.lib;Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>3rdParty\psicash\Debug2015\psicash.lib;3rdParty\mctrl\Debug2015\mCtrl.lib;3rdParty\cryptopp\Debug2015\cryptlib.lib;Winhttp.lib;rasapi32.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Comctl32.lib;wininet.lib;shlwapi.lib;urlmon.lib;Version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -85,7 +85,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>3rdParty\psicash\Release2015\psicash.lib;3rdParty\mctrl\Release2015\mCtrl.lib;3rdParty\cryptopp\Release2015\cryptlib.lib;Winhttp.lib;rasapi32.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Comctl32.lib;wininet.lib;shlwapi.lib;urlmon.lib;Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>3rdParty\psicash\Release2015\psicash.lib;3rdParty\mctrl\Release2015\mCtrl.lib;3rdParty\cryptopp\Release2015\cryptlib.lib;Winhttp.lib;rasapi32.lib;ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Comctl32.lib;wininet.lib;shlwapi.lib;urlmon.lib;Version.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
     </Link>
@@ -246,12 +246,17 @@
     <ClInclude Include="diagnostic_info.h" />
     <ClInclude Include="embeddedvalues.h" />
     <ClInclude Include="dispatch_queue.h" />
+    <ClInclude Include="feedback_upload.h" />
+    <ClInclude Include="feedback_upload_worker.h" />
     <ClInclude Include="htmldlg.h" />
     <ClInclude Include="httpsrequest.h" />
     <ClInclude Include="limitsingleinstance.h" />
     <ClInclude Include="local_proxy.h" />
     <ClInclude Include="logging.h" />
     <ClInclude Include="psicashlib.h" />
+    <ClInclude Include="psiphon_tunnel_core.h" />
+    <ClInclude Include="psiphon_tunnel_core_utilities.h" />
+    <ClInclude Include="subprocess.h" />
     <ClInclude Include="wininet_network_check.h" />
     <ClInclude Include="psiclient.h" />
     <ClInclude Include="resource.h" />
@@ -314,12 +319,17 @@
     <ClCompile Include="connectionmanager.cpp" />
     <ClCompile Include="coretransport.cpp" />
     <ClCompile Include="diagnostic_info.cpp" />
+    <ClCompile Include="feedback_upload.cpp" />
+    <ClCompile Include="feedback_upload_worker.cpp" />
     <ClCompile Include="htmldlg.cpp" />
     <ClCompile Include="httpsrequest.cpp" />
     <ClCompile Include="local_proxy.cpp" />
     <ClCompile Include="logging.cpp" />
     <ClCompile Include="psicashlib.cpp" />
     <ClCompile Include="dispatch_queue.cpp" />
+    <ClCompile Include="psiphon_tunnel_core.cpp" />
+    <ClCompile Include="psiphon_tunnel_core_utilities.cpp" />
+    <ClCompile Include="subprocess.cpp" />
     <ClCompile Include="wininet_network_check.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

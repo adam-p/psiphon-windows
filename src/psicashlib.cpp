@@ -17,7 +17,7 @@ static constexpr auto USER_AGENT = "Psiphon-PsiCash-Windows";
 psicash::MakeHTTPRequestFn GetHTTPReqFn(const StopInfo& stopInfo);
 
 Lib::Lib()
-    : m_requestStopInfo(StopInfo(&GlobalStopSignal::Instance(), STOP_REASON_ALL)),
+    : m_requestStopInfo(StopInfo(&GlobalStopSignal::Instance(), STOP_REASON_ANY_STOP_TUNNEL)),
       m_requestQueue("PsiCash request queue", 1) // we specifically only want one worker, for one request at a time
 {
     m_mutex = CreateMutex(nullptr, FALSE, 0);
@@ -139,9 +139,6 @@ psicash::MakeHTTPRequestFn GetHTTPReqFn(const StopInfo& stopInfo) {
         for (auto header : params.headers) {
             headers << UTF8ToWString(header.first) << L": " << UTF8ToWString(header.second) << L"\r\n";
         }
-
-        // TEMP
-        //headers << L"X-PsiCash-Test: Timeout:11";
 
         HTTPResult result;
 
