@@ -1,3 +1,4 @@
+
 ## PsiCash
 
 ## Design
@@ -16,7 +17,7 @@ Install [Node](https://nodejs.org/). v6.x works, and v4.x will probably also wor
 ```
 $ npm install -g grunt-cli
 # In the webui directory...
-$ npm install .
+$ npm ci
 ```
 
 ## Developing
@@ -157,8 +158,6 @@ NOTE: We no longer support IE7 (because we no longer support XP or Vista). That 
 
 * ALL: `keyup` and `keydown` events are unreliable. Use `keypress` instead.
   - Related: `change` event doesn't fire for text boxes until focus is lost.
-
-* IE7: Can't use `float:right` on an element that's a child/grandchild of a `postition:absolute` element. See the comment for `#settings-accordion` in `lteIE7.css` for details.
 
 * IE8 can't cope with the babel-ization for `for (let x of arr)`. Don't use it.
 
