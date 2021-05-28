@@ -1920,7 +1920,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (getCookie('SpeedLimitCollapsed')) {
         $speedLimitCollapserTarget.collapse('hide');
       }
-    });
+    }); // Any time the speed limit badge is clicked on, we want it to expand the info collapser
+
+    $('.badge.speed-limit').on('click', switchToPsiCashTabAndExpandSpeedLimitInfo);
   });
   /**
    * Handles the message indicating that the PsiCash library failed to initialize.
@@ -2673,13 +2675,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
    * to buy PsiCash without an active account. These are handlers for its buttons.
    */
 
-  $('#PsiCashAccountEncouragement .js-submit-button').on('click', function (e) {
+  $('#PsiCashAccountEncouragement .js-submit-button').on('click', function psicashAccountEncouragementLoginClick(e) {
     e.preventDefault();
     $('#PsiCashAccountEncouragement').modal('hide').one('hidden', function () {
       psicashAccountLogin();
     });
   });
-  $('#PsiCashAccountEncouragement .js-cancel-button').on('click', function (e) {
+  $('#PsiCashAccountEncouragement .js-cancel-button').on('click', function psicashAccountEncouragementBuyClick(e) {
     e.preventDefault();
     buyPsiClick.skipAccountEncouragement = true;
     $('#PsiCashAccountEncouragement').modal('hide').one('hidden', function () {
@@ -2956,6 +2958,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     $('.psicash-ui-overlay, .psicash-block-overlay').toggleClass('hidden', !start);
   }
+
+  function switchToPsiCashTabAndExpandSpeedLimitInfo() {
+    // We're going to switch to the PsiCash tab, and ensure that it is showing
+    // (i.e., not collapsing) the porting limiting info.
+    // Setting the cookie here is a bit of hack. If this is the first visit to the
+    // PsiCash pane, it will help prevent the speed limit from collapsing and then
+    // re-expanding (which looks dumb).
+    setCookie('SpeedLimitCollapsed', false);
+    switchToTab('#psicash-tab', function () {
+      // This timeout is a dirty hack. There seems to be a bug where expanding the collapsed
+      // element too soon after the tab shows results in the element not expanding, but the
+      // state getting messed up so it can't even be done manually. In testing, too short
+      // a wait isn't sufficient, so we're going to give it a long time before we try.
+      // Let's pretend this is a feature for drawing attention to the speed limit info.
+      setTimeout(function () {
+        var $speedLimitCollapser = $('.psicash-pane__speed-limit__collapser');
+        var $speedLimitCollapserTarget = $($speedLimitCollapser.data('target'));
+
+        if (!$speedLimitCollapserTarget.hasClass('in')) {
+          $speedLimitCollapserTarget.collapse('show');
+        }
+      }, 1000);
+    });
+  }
   /**
    * Called when tunnel core indicates that there was an attempt to access a
    * port disallowed by the current traffic rules. We will show an alert to
@@ -2994,22 +3020,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     handleDisallowedTrafficNotice.alertDisallowedTraffic = false;
     HtmlCtrlInterface_DisallowedTraffic();
     showNoticeModal('notice#disallowed-traffic-alert-title', 'notice#disallowed-traffic-alert-body', 'info', null, null, function () {
-      if (!$('#psicash-tab').hasClass('hidden')) {
-        // We're going to switch to the PsiCash tab, and ensure that it is showing
-        // (i.e., not collapsing) the porting limiting info.
-        // Setting the cookie here is a bit of hack. If this is the first visit to the
-        // PsiCash pane, it will help prevent the speed limit from collapsing and then
-        // re-expanding (which looks dumb).
-        setCookie('SpeedLimitCollapsed', false);
-        switchToTab('#psicash-tab', function () {
-          var $speedLimitCollapser = $('.psicash-pane__speed-limit__collapser');
-          var $speedLimitCollapserTarget = $($speedLimitCollapser.data('target'));
-
-          if (!$speedLimitCollapserTarget.hasClass('in')) {
-            $speedLimitCollapserTarget.collapse('show');
-          }
-        });
-      }
+      switchToPsiCashTabAndExpandSpeedLimitInfo();
       /* Before we had the PsiCash pane, we would wiggle the bottom-left PsiCash block.
       We'll leave this code in for now in case we decide that we prefer it.
       if (compareIEVersion('gte', 9, true)) {
@@ -3021,7 +3032,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
       */
-
     });
   }
 
