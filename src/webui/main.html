@@ -2345,7 +2345,8 @@
               Username
             </label>
             <div class="controls">
-              <input type="text" id="AccountUsername" autocomplete="off"
+              <!-- NOTE: The maxlength attribute is supposed to count UTF-16 code _units_ (and does on modern browsers). But on IE8-11, it counts code _points_. Since there can be 2 UTF-16 code units per code point, this can be a big difference. Luckily for us, we only need to support IE, and it's the exact behaviour we want. -->
+              <input type="text" id="AccountUsername" maxlength="70" autocomplete="off"
                 autocorrect="off" autocapitalize="off" spellcheck="false" />
             </div>
           </div>
@@ -2355,8 +2356,8 @@
               Password
             </label>
             <div class="controls">
-              <input type="password" id="AccountPassword" autocomplete="off"
-                autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <input type="password" id="AccountPassword" maxlength="280" autocomplete="off"
+                     autocorrect="off" autocapitalize="off" spellcheck="false" />
             </div>
           </div>
         </fieldset>
@@ -2444,6 +2445,10 @@
       </button>
     </div>
   </div><!-- /PsiCashAccountLogoutOffline -->
+
+  <!--[if lte IE 8]>
+  <script src="vendor/json2.js?__inline=true"></script>
+  <![endif]-->
 
   <script src="node_modules/lodash-compat/index.js?__inline=true"></script>
   <script src="vendor/bootstrap-2.3.2/js/bootstrap.js?__inline=true"></script>

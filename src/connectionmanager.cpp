@@ -1113,13 +1113,13 @@ void ConnectionManager::UpdateCurrentSessionInfo(const SessionInfo& sessionInfo)
 struct FeedbackThreadData
 {
     ConnectionManager* connectionManager;
-    wstring feedbackJSON;
+    string feedbackJSON;
 } g_feedbackThreadData;
 
-void ConnectionManager::SendFeedback(LPCWSTR unicodeFeedbackJSON)
+void ConnectionManager::SendFeedback(const string& utf8FeedbackJSON)
 {
     g_feedbackThreadData.connectionManager = this;
-    g_feedbackThreadData.feedbackJSON = unicodeFeedbackJSON;
+    g_feedbackThreadData.feedbackJSON = utf8FeedbackJSON;
 
     if (!m_feedbackThread ||
         WAIT_OBJECT_0 == WaitForSingleObject(m_feedbackThread, 0))
@@ -1146,7 +1146,7 @@ DWORD WINAPI ConnectionManager::ConnectionManagerFeedbackThread(void* object)
 
     try
     {
-        if (data->connectionManager->DoSendFeedback(data->feedbackJSON.c_str()))
+        if (data->connectionManager->DoSendFeedback(data->feedbackJSON))
         {
             PostMessage(g_hWnd, WM_PSIPHON_FEEDBACK_SUCCESS, 0, 0);
         }
@@ -1164,7 +1164,7 @@ DWORD WINAPI ConnectionManager::ConnectionManagerFeedbackThread(void* object)
     return 0;
 }
 
-bool ConnectionManager::DoSendFeedback(LPCWSTR feedbackJSON)
+bool ConnectionManager::DoSendFeedback(const string& feedbackJSON)
 {
     // NOTE: no lock while waiting for network events
 
@@ -1175,10 +1175,9 @@ bool ConnectionManager::DoSendFeedback(LPCWSTR feedbackJSON)
         sessionInfo = m_currentSessionInfo;
     }
 
-    string narrowFeedbackJSON = WStringToUTF8(feedbackJSON);
     Json::Value json_entry;
     Json::Reader reader;
-    if (!reader.parse(narrowFeedbackJSON, json_entry))
+    if (!reader.parse(feedbackJSON, json_entry))
     {
         assert(0);
         return false;
