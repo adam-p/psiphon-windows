@@ -7051,6 +7051,7 @@ body[dir="rtl"] #psicash-block > div .psicash-title-balance .psicash-balance-del
 }
 #psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__log-in-out-buttons {
   white-space: nowrap;
+  vertical-align: top;
   text-align: right;
 }
 body[dir="rtl"] #psicash-pane .psicash-pane__user-and-balance .psicash-pane__user-and-balance__log-in-out-buttons {
