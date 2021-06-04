@@ -6727,7 +6727,7 @@ label[for="EgressRegion"] {
 #EgressRegion,
 #EgressRegionCombo ul,
 #EgressRegionCombo .btn {
-  width: 300px;
+  min-width: 200px;
 }
 #EgressRegion .flag,
 #EgressRegionCombo ul .flag,
