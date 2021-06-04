@@ -49,14 +49,25 @@ bool HandlePsiCashCommand(const string&);
 //==== Initialization helpers ==================================================
 
 void InitHTMLLib() {
-    /* Register mCtrl and its HTML control. */
+    // OleInitialize is necessary to make HTML control clipboard functions (via context menu) work properly
+    HRESULT hRes = OleInitialize(0);
+    if (hRes != S_OK) {
+        my_print(NOT_SENSITIVE, true, _T("%s:%d: OleInitialize failed: %d"), __TFUNCTION__, __LINE__, hRes);
+        // Carry on and hope for the best
+    }
+
+    // Register mCtrl and its HTML control.
     mc_StaticLibInitialize();
-    mcHtml_Initialize();
+    if (!mcHtml_Initialize()) {
+        my_print(NOT_SENSITIVE, true, _T("%s:%d: mcHtml_Initialize failed"), __TFUNCTION__, __LINE__);
+        // Carry on and hope for the best
+    }
 }
 
 void CleanupHTMLLib() {
     mcHtml_Terminate();
     mc_StaticLibTerminate();
+    OleUninitialize();
 }
 
 void CreateHTMLControl(HWND hWndParent, float dpiScaling) {
@@ -89,9 +100,7 @@ void CreateHTMLControl(HWND hWndParent, float dpiScaling) {
     g_hHtmlCtrl = CreateWindow(
         MC_WC_HTML,
         url.c_str(),
-        WS_CHILD | WS_VISIBLE | WS_TABSTOP |
-        MC_HS_NOCONTEXTMENU |   // don't show context menu
-        MC_HS_NOTIFYNAV,        // notify owner window on navigation attempts
+        WS_CHILD | WS_VISIBLE | WS_TABSTOP,
         0, 0, 0, 0,
         hWndParent,
         (HMENU)IDC_HTML_CTRL,
