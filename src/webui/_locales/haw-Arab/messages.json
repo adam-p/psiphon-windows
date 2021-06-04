@@ -280,7 +280,7 @@
     "description": "Title of a modal dialog shown when the PsiCash library fails to initialize. The word 'PsiCash' must not be translated or transliterated."
   },
   "psicash#login#badrequest-error-body": {
-    "message": "‮⊥ɥǝ‬ ‮ԀsıↃɐsɥ‬ ‮sǝɹʌǝɹ‬ ‮ıupıɔɐʇǝp‬ ‮ʇɥɐʇ‬ ‮ʇɥǝ‬ ‮ʅoƃıu‬ ‮ɹǝbnǝsʇ‬ ‮ʍɐs‬ ‮ıuʌɐʅıp‬. ‮Ԁʅǝɐsǝ‬ ‮ʇɹʎ‬ ‮ɐƃɐıu‬ ‮ʅɐʇǝɹ‬.",
+    "message": "‮⊥ɥǝ‬ ‮ԀsıↃɐsɥ‬ ‮sǝɹʌǝɹ‬ ‮ıupıɔɐʇǝp‬ ‮ʇɥɐʇ‬ ‮ʇɥǝ‬ ‮ʅoƃıu‬ ‮ɹǝbnǝsʇ‬ ‮ʍɐs‬ ‮ıuʌɐʅıp‬. ‮Ԁʅǝɐsǝ‬ ‮ɹǝ‬-‮ǝuʇǝɹ‬ ‮ʎonɹ‬ ‮ʅoƃıu‬ ‮ıuɟoɹɯɐʇıou‬ ‮ɐup‬ ‮ʇɹʎ‬ ‮ɐƃɐıu‬.",
     "description": "Body text of a modal dialog shown when a PsiCash account login fails due to a 'bad request' error. The word 'PsiCash' must not be translated or transliterated."
   },
   "psicash#login#catastrophic-error-body": {
@@ -376,7 +376,7 @@
     "description": "Header of a modal dialog that appears when the user tries to log out of their PsiCash account. The word 'PsiCash' must not be translated or transliterated."
   },
   "psicash#modal-psicash-logout-offline-logout-anyway-button": {
-    "message": "‮˥oƃonʇ‬ ‮ɐuʎʍɐʎ‬",
+    "message": "‮˥oƃ‬ ‮onʇ‬ ‮ɐuʎʍɐʎ‬",
     "description": "Button in the modal dialog shown to users when they attempt to log out of their PsiCash account with no active Psiphon tunnel. Clicking this button will cause a local-only logout to be performed."
   },
   "psicash#more-ellipsis": {
