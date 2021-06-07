@@ -308,7 +308,7 @@
     "description": "Title of modal dialog shown when the PsiCash account login attempt succeeds, if additional information needs to be conveyed. The word 'PsiCash' must not be translated or transliterated."
   },
   "psicash#modal-create-psicash-account-body": {
-    "message": "[Ẇḗḗ şŧřǿǿƞɠŀẏ ḗḗƞƈǿǿŭŭřȧȧɠḗḗ ẏǿǿŭŭ ŧǿǿ ḿȧȧķḗḗ ȧȧ ƤşīīƇȧȧşħ ȧȧƈƈǿǿŭŭƞŧ ƀḗḗƒǿǿřḗḗ ƀŭŭẏīīƞɠ ƤşīīƇȧȧşħ. Ħȧȧṽīīƞɠ ȧȧƞ ȧȧƈƈǿǿŭŭƞŧ ȧȧŀŀǿǿẇş ẏǿǿŭŭ ŧǿǿ şħȧȧřḗḗ ẏǿǿŭŭř ƀȧȧŀȧȧƞƈḗḗ ƀḗḗŧẇḗḗḗḗƞ ḓḗḗṽīīƈḗḗş ȧȧƞḓ ƥřǿǿŧḗḗƈŧ ẏǿǿŭŭř ƥŭŭřƈħȧȧşḗḗş.]",
+    "message": "[Ẇḗḗ şŧřǿǿƞɠŀẏ ḗḗƞƈǿǿŭŭřȧȧɠḗḗ ẏǿǿŭŭ ŧǿǿ ƈřḗḗȧȧŧḗḗ ȧȧ ƤşīīƇȧȧşħ ȧȧƈƈǿǿŭŭƞŧ ƀḗḗƒǿǿřḗḗ ƀŭŭẏīīƞɠ ƤşīīƇȧȧşħ. Ħȧȧṽīīƞɠ ȧȧƞ ȧȧƈƈǿǿŭŭƞŧ ȧȧŀŀǿǿẇş ẏǿǿŭŭ ŧǿǿ şħȧȧřḗḗ ẏǿǿŭŭř ƀȧȧŀȧȧƞƈḗḗ ƀḗḗŧẇḗḗḗḗƞ ḓḗḗṽīīƈḗḗş ȧȧƞḓ ƥřǿǿŧḗḗƈŧ ẏǿǿŭŭř ƥŭŭřƈħȧȧşḗḗş.]",
     "description": "Body of a modal dialog that appears when the user tries to buy PsiCash with real money but doens't have an account. The word 'PsiCash' must not be translated or transliterated."
   },
   "psicash#modal-create-psicash-account-continue-button": {
