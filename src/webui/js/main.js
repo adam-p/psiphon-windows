@@ -2117,6 +2117,9 @@
         $speedLimitCollapserTarget.collapse('hide');
       }
     });
+
+    // Any time the speed limit badge is clicked on, we want it to expand the info collapser
+    $('.badge.speed-limit').on('click', switchToPsiCashTabAndExpandSpeedLimitInfo);
   });
 
   /**
@@ -2945,13 +2948,13 @@
    * An encouragement to "sign up for a PsiCash account" is shown when the user attempts
    * to buy PsiCash without an active account. These are handlers for its buttons.
    */
-  $('#PsiCashAccountEncouragement .js-submit-button').on('click', (e) => {
+  $('#PsiCashAccountEncouragement .js-submit-button').on('click', function psicashAccountEncouragementLoginClick(e) {
     e.preventDefault();
     $('#PsiCashAccountEncouragement').modal('hide').one('hidden', () => {
       psicashAccountLogin();
     });
   });
-  $('#PsiCashAccountEncouragement .js-cancel-button').on('click', (e) => {
+  $('#PsiCashAccountEncouragement .js-cancel-button').on('click', function psicashAccountEncouragementBuyClick(e) {
     e.preventDefault();
     buyPsiClick.skipAccountEncouragement = true;
     $('#PsiCashAccountEncouragement').modal('hide').one('hidden', () => {
@@ -2985,7 +2988,6 @@
       psi = psi.toLocaleString(currLang);
     }
     catch (e) {
-      // Our test locales (like devltr) are not valid and will cause an exception.
       // Just fall back to English.
       psi = psi.toLocaleString('en');
     }
@@ -3271,6 +3273,29 @@
     $('.psicash-ui-overlay, .psicash-block-overlay').toggleClass('hidden', !start);
   }
 
+  function switchToPsiCashTabAndExpandSpeedLimitInfo() {
+    // We're going to switch to the PsiCash tab, and ensure that it is showing
+    // (i.e., not collapsing) the porting limiting info.
+    // Setting the cookie here is a bit of hack. If this is the first visit to the
+    // PsiCash pane, it will help prevent the speed limit from collapsing and then
+    // re-expanding (which looks dumb).
+    setCookie('SpeedLimitCollapsed', false);
+    switchToTab('#psicash-tab', () => {
+      // This timeout is a dirty hack. There seems to be a bug where expanding the collapsed
+      // element too soon after the tab shows results in the element not expanding, but the
+      // state getting messed up so it can't even be done manually. In testing, too short
+      // a wait isn't sufficient, so we're going to give it a long time before we try.
+      // Let's pretend this is a feature for drawing attention to the speed limit info.
+      setTimeout(() => {
+        const $speedLimitCollapser = $('.psicash-pane__speed-limit__collapser');
+        const $speedLimitCollapserTarget = $($speedLimitCollapser.data('target'));
+        if (!$speedLimitCollapserTarget.hasClass('in')) {
+          $speedLimitCollapserTarget.collapse('show');
+        }
+      }, 1000);
+    });
+  }
+
   /**
    * Called when tunnel core indicates that there was an attempt to access a
    * port disallowed by the current traffic rules. We will show an alert to
@@ -3313,21 +3338,7 @@
       'notice#disallowed-traffic-alert-body',
       'info',
       null, null, () => {
-        if (!$('#psicash-tab').hasClass('hidden')) {
-          // We're going to switch to the PsiCash tab, and ensure that it is showing
-          // (i.e., not collapsing) the porting limiting info.
-          // Setting the cookie here is a bit of hack. If this is the first visit to the
-          // PsiCash pane, it will help prevent the speed limit from collapsing and then
-          // re-expanding (which looks dumb).
-          setCookie('SpeedLimitCollapsed', false);
-          switchToTab('#psicash-tab', () => {
-            const $speedLimitCollapser = $('.psicash-pane__speed-limit__collapser');
-            const $speedLimitCollapserTarget = $($speedLimitCollapser.data('target'));
-            if (!$speedLimitCollapserTarget.hasClass('in')) {
-              $speedLimitCollapserTarget.collapse('show');
-            }
-          });
-        }
+        switchToPsiCashTabAndExpandSpeedLimitInfo();
 
         /* Before we had the PsiCash pane, we would wiggle the bottom-left PsiCash block.
         We'll leave this code in for now in case we decide that we prefer it.
@@ -3849,18 +3860,6 @@
     return base64.encode(Math.random());
   }
 
-  /**
-   * Splits the given URL into components that can be accessed with `result.hash`, etc.
-   * @param {string} url
-   * @returns {HTMLAnchorElement}
-   */ /* unused
-  function urlComponents(url) {
-    const parser = document.createElement('a');
-    parser.href = url;
-    return parser;
-  }*/
-
-
   /* DEBUGGING *****************************************************************/
 
   // Some functionality to help us debug (and demo) in browser.
@@ -4301,6 +4300,27 @@
 
   const PSIPHON_LINK_PREFIX = 'psi:';
 
+  /**
+   * Send a command payload to the C backend.
+   * In browser mode, it just logs.
+   * @param {string} action The action that the backend should take.
+   * @param {?any} arg The optional string or object that should be appended to the URL.
+   */
+   function commandAppOperation(action, arg=null) {
+    if (_.isObject(arg)) {
+      arg = JSON.stringify(arg);
+    }
+
+    if (IS_BROWSER) {
+      const appURL = `${PSIPHON_LINK_PREFIX}${action}${arg !== null ? '?'+arg : ''}`;
+      console.log(appURL);
+    }
+    else {
+      const appURL = `${PSIPHON_LINK_PREFIX}${action}${arg !== null ? '?'+base64.encode(unescape(encodeURIComponent(arg))) : ''}`;
+      window.location = appURL;
+    }
+  }
+
   /* Calls from C code to JS code. */
 
   // Add new status message.
@@ -4510,13 +4530,7 @@
   // Let the C code know that the UI is ready.
   function HtmlCtrlInterface_AppReady() {
     nextTick(function() {
-      var appURL = PSIPHON_LINK_PREFIX + 'ready';
-      if (IS_BROWSER) {
-        console.log(appURL);
-      }
-      else {
-        window.location = appURL;
-      }
+      commandAppOperation('ready');
 
       $window.trigger(UI_READY_EVENT);
     });
@@ -4543,13 +4557,7 @@
 
     function sendStringTableItem(itemObj) {
       nextTick(function() {
-        var appURL = PSIPHON_LINK_PREFIX + 'stringtable?' + encodeURIComponent(JSON.stringify(itemObj));
-        if (IS_BROWSER) {
-          console.log(decodeURIComponent(appURL));
-        }
-        else {
-          window.location = appURL;
-        }
+        commandAppOperation('stringtable', itemObj);
       });
     }
   }
@@ -4560,13 +4568,7 @@
   function HtmlCtrlInterface_Log() {
     const msg = Array.prototype.slice.call(arguments).join(' ');
     nextTick(function() {
-      var appURL = PSIPHON_LINK_PREFIX + 'log?' + encodeURIComponent(msg);
-      if (IS_BROWSER) {
-        console.log(decodeURIComponent(appURL));
-      }
-      else {
-        window.location = appURL;
-      }
+      commandAppOperation('log', msg);
     });
   }
 
@@ -4577,13 +4579,7 @@
       return;
     }
     nextTick(function() {
-      var appURL = PSIPHON_LINK_PREFIX + 'start';
-      if (IS_BROWSER) {
-        console.log(appURL);
-      }
-      else {
-        window.location = appURL;
-      }
+      commandAppOperation('start');
     });
   }
 
@@ -4594,31 +4590,20 @@
       return;
     }
     nextTick(function() {
-      var appURL = PSIPHON_LINK_PREFIX + 'stop';
-      if (IS_BROWSER) {
-        console.log(appURL);
-      }
-      else {
-        window.location = appURL;
-      }
+      commandAppOperation('stop');
     });
   }
 
   // The tunnel should be reconnected (if connected or connecting).
   function HtmlCtrlInterface_ReconnectTunnel(suppressHomePage) {
-    var appURL = PSIPHON_LINK_PREFIX + 'reconnect?suppress=' + (suppressHomePage ? '1' : '0');
-
     // Prevent duplicate state change attempts
     if (g_lastState === 'stopping' || g_lastState === 'disconnected') {
       return;
     }
     nextTick(function() {
+      commandAppOperation('reconnect', `suppress=${suppressHomePage ? '1' : '0'}`);
       if (IS_BROWSER) {
         alert('Tunnel reconnected requested');
-        console.log(appURL);
-      }
-      else {
-        window.location = appURL;
       }
     });
   }
@@ -4626,10 +4611,8 @@
   // Settings should be saved.
   function HtmlCtrlInterface_SaveSettings(settingsJSON) {
     nextTick(function() {
-      var appURL = PSIPHON_LINK_PREFIX + 'savesettings?' + encodeURIComponent(settingsJSON);
+      commandAppOperation('savesettings', settingsJSON);
       if (IS_BROWSER) {
-        console.log(decodeURIComponent(appURL));
-
         // DEBUG: Make it appear to behave like a real client
         _.delay(HtmlCtrlInterface_RefreshSettings, 100, JSON.stringify({
           settings: JSON.parse(settingsJSON),
@@ -4637,48 +4620,29 @@
           reconnectRequired: g_lastState === 'connected' || g_lastState === 'starting'
         }));
       }
-      else {
-        window.location = appURL;
-      }
     });
   }
 
   // Feedback should be sent.
   function HtmlCtrlInterface_SendFeedback(feedbackJSON) {
     nextTick(function() {
-      var appURL = PSIPHON_LINK_PREFIX + 'sendfeedback?' + encodeURIComponent(feedbackJSON);
-      if (IS_BROWSER) {
-        console.log(decodeURIComponent(appURL));
-      }
-      else {
-        window.location = appURL;
-      }
+      commandAppOperation('sendfeedback', feedbackJSON);
     });
   }
 
   // Cookies (i.e., UI settings) should be saved.
   function HtmlCtrlInterface_SetCookies(cookiesJSON) {
     nextTick(function() {
-      var appURL = PSIPHON_LINK_PREFIX + 'setcookies?' + encodeURIComponent(cookiesJSON);
-      if (IS_BROWSER) {
-        console.log(decodeURIComponent(appURL));
-      }
-      else {
-        window.location = appURL;
-      }
+      commandAppOperation('setcookies', cookiesJSON);
     });
   }
 
   // Banner was clicked.
   function HtmlCtrlInterface_BannerClick() {
     nextTick(function() {
-      var appURL = PSIPHON_LINK_PREFIX + 'bannerclick';
+      commandAppOperation('bannerclick');
       if (IS_BROWSER) {
-        console.log(decodeURIComponent(appURL));
         alert('Call from JS to C to launch banner URL');
-      }
-      else {
-        window.location = appURL;
       }
     });
   }
@@ -4689,13 +4653,9 @@
    */
   function HtmlCtrlInterface_DisallowedTraffic() {
     nextTick(function() {
-      var appURL = PSIPHON_LINK_PREFIX + 'disallowedtraffic';
+      commandAppOperation('disallowedtraffic');
       if (IS_BROWSER) {
-        console.log(decodeURIComponent(appURL));
         alert('Call from JS to C in response to disallowed traffic');
-      }
-      else {
-        window.location = appURL;
       }
     });
   }
@@ -4715,16 +4675,13 @@
    * @returns {Promise}
    */
   function HtmlCtrlInterface_PsiCashCommand(command) {
-    let commandJSON = JSON.stringify(command);
-
     let promise = new Promise((resolve) => {
       g_PsiCashCommandIDToResolver[command.id] = resolve;
 
       nextTick(function() {
-        let appURL = PSIPHON_LINK_PREFIX + 'psicash?' + encodeURIComponent(commandJSON);
+        commandAppOperation('psicash', command);
 
         if (IS_BROWSER) {
-          console.log(decodeURIComponent(appURL));
           const commandToTestResponse = {
             [PsiCashCommandEnum.REFRESH]: testRefreshResponse,
             [PsiCashCommandEnum.PURCHASE]: testPurchaseResponse,
@@ -4732,9 +4689,6 @@
             [PsiCashCommandEnum.LOGOUT]: testAccountLogoutResponse
           };
           commandToTestResponse[command.command](command);
-        }
-        else {
-          window.location = appURL;
         }
       });
     });

@@ -714,7 +714,8 @@
                   <div class="psicash-pane__speed-limit__collapse collapse in">
                     <h3>
                       <span data-i18n="psicash#pane-speed-port-limits-head">Speed and Port Limits</span>
-                      <button class="psicash-pane__speed-limit__collapser pull-right js-hide-if-not-fast btn btn-link icon icon-chevron-up-circle"
+                      <button class="psicash-pane__speed-limit__collapser js-hide-if-not-fast btn btn-link icon icon-chevron-up-circle"
+                            data-i18n-ltr-classes="pull-right" data-i18n-rtl-classes="pull-left"
                             data-toggle="collapse" data-target=".psicash-pane__speed-limit__collapse"></button>
                     </h3>
 
@@ -2344,7 +2345,8 @@
               Username
             </label>
             <div class="controls">
-              <input type="text" id="AccountUsername" autocomplete="off"
+              <!-- NOTE: The maxlength attribute is supposed to count UTF-16 code _units_ (and does on modern browsers). But on IE8-11, it counts code _points_. Since there can be 2 UTF-16 code units per code point, this can be a big difference. Luckily for us, we only need to support IE, and it's the exact behaviour we want. -->
+              <input type="text" id="AccountUsername" maxlength="7000" autocomplete="off"
                 autocorrect="off" autocapitalize="off" spellcheck="false" />
             </div>
           </div>
@@ -2354,8 +2356,8 @@
               Password
             </label>
             <div class="controls">
-              <input type="password" id="AccountPassword" autocomplete="off"
-                autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <input type="password" id="AccountPassword" maxlength="28000" autocomplete="off"
+                     autocorrect="off" autocapitalize="off" spellcheck="false" />
             </div>
           </div>
         </fieldset>
@@ -2393,7 +2395,7 @@
     </div>
     <div class="modal-body">
       <p data-i18n="psicash#modal-create-psicash-account-body">
-        We strongly encourage you to make a PsiCash account. Having an account allows you to share your balance between devices and protect your purchases.
+        We strongly encourage you to create a PsiCash account. Having an account allows you to share your balance between devices and protect your purchases.
       </p>
     </div>
     <div class="modal-footer">
@@ -2433,7 +2435,7 @@
       </button>
       <button type="button" class="btn btn-warning js-logout-button">
         <span data-i18n="psicash#modal-psicash-logout-offline-logout-anyway-button">
-          Logout anyway
+          Log out anyway
         </span>
       </button>
       <button type="button" class="btn js-cancel-button" data-dismiss="modal">
@@ -2443,6 +2445,10 @@
       </button>
     </div>
   </div><!-- /PsiCashAccountLogoutOffline -->
+
+  <!--[if lte IE 8]>
+  <script src="vendor/json2.js?__inline=true"></script>
+  <![endif]-->
 
   <script src="node_modules/lodash-compat/index.js?__inline=true"></script>
   <script src="vendor/bootstrap-2.3.2/js/bootstrap.js?__inline=true"></script>

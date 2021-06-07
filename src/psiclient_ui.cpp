@@ -49,14 +49,25 @@ bool HandlePsiCashCommand(const string&);
 //==== Initialization helpers ==================================================
 
 void InitHTMLLib() {
-    /* Register mCtrl and its HTML control. */
+    // OleInitialize is necessary to make HTML control clipboard functions (via context menu) work properly
+    HRESULT hRes = OleInitialize(0);
+    if (hRes != S_OK) {
+        my_print(NOT_SENSITIVE, true, _T("%s:%d: OleInitialize failed: %d"), __TFUNCTION__, __LINE__, hRes);
+        // Carry on and hope for the best
+    }
+
+    // Register mCtrl and its HTML control.
     mc_StaticLibInitialize();
-    mcHtml_Initialize();
+    if (!mcHtml_Initialize()) {
+        my_print(NOT_SENSITIVE, true, _T("%s:%d: mcHtml_Initialize failed"), __TFUNCTION__, __LINE__);
+        // Carry on and hope for the best
+    }
 }
 
 void CleanupHTMLLib() {
     mcHtml_Terminate();
     mc_StaticLibTerminate();
+    OleUninitialize();
 }
 
 void CreateHTMLControl(HWND hWndParent, float dpiScaling) {
@@ -89,9 +100,7 @@ void CreateHTMLControl(HWND hWndParent, float dpiScaling) {
     g_hHtmlCtrl = CreateWindow(
         MC_WC_HTML,
         url.c_str(),
-        WS_CHILD | WS_VISIBLE | WS_TABSTOP |
-        MC_HS_NOCONTEXTMENU |   // don't show context menu
-        MC_HS_NOTIFYNAV,        // notify owner window on navigation attempts
+        WS_CHILD | WS_VISIBLE | WS_TABSTOP,
         0, 0, 0, 0,
         hWndParent,
         (HMENU)IDC_HTML_CTRL,
@@ -622,15 +631,24 @@ static void HtmlUI_BeforeNavigate(MC_NMHTMLURL* nmHtmlUrl)
     PostMessage(g_hWnd, WM_PSIPHON_HTMLUI_BEFORENAVIGATE, (WPARAM)buf, 0);
 }
 
+// Helper for HtmlUI_BeforeNavigateHandler
+static string uiURLParams(const wstring& url, size_t prefixLen) {
+    if (url.length() <= prefixLen) {
+        return "";
+    }
+    return Base64Decode(WStringToUTF8(url).substr(prefixLen));
+}
+
 // HtmlUI_BeforeNavigateHandler intercepts all navigation attempts in the HTML control.
 // It is also this mechanism that is used for the HTML control to communicate
 // with the back-end code (the code you're looking at now).
 #define PSIPHON_LINK_PREFIX     _T("psi:")
-static void HtmlUI_BeforeNavigateHandler(LPCTSTR url)
+static void HtmlUI_BeforeNavigateHandler(LPCTSTR _url)
 {
-    // NOTE: Do NOT early-return from this. Use `goto done;`
+    // NOTE: DO NOT log the URL directly -- it may contain the PsiCash password
 
-    // NOTE: Incoming query parameters will be URI-encoded
+    wstring url = UrlDecode(_url);
+    delete[] _url;
 
     const LPCTSTR appReady = PSIPHON_LINK_PREFIX _T("ready");
     const LPCTSTR appStringTable = PSIPHON_LINK_PREFIX _T("stringtable?");
@@ -652,7 +670,7 @@ static void HtmlUI_BeforeNavigateHandler(LPCTSTR url)
     const size_t psicashCommandLen = _tcslen(psicashCommand);
     const LPCTSTR disallowedTraffic = PSIPHON_LINK_PREFIX _T("disallowedtraffic");
 
-    if (_tcscmp(url, appReady) == 0)
+    if (url == appReady)
     {
         my_print(NOT_SENSITIVE, true, _T("%s: Ready requested"), __TFUNCTION__);
         g_htmlUiReady = true;
@@ -665,71 +683,40 @@ static void HtmlUI_BeforeNavigateHandler(LPCTSTR url)
             g_queuedDeeplink.clear();
         }
     }
-    else if (_tcsncmp(url, appStringTable, appStringTableLen) == 0
-        && _tcslen(url) > appStringTableLen)
+    else if (url.find(appStringTable) == 0 && url.length() > appStringTableLen)
     {
         my_print(NOT_SENSITIVE, true, _T("%s: String table addition requested"), __TFUNCTION__);
 
-        tstring urlDecoded = UrlDecode(url);
-        if (urlDecoded.length() < appStringTableLen + 1)
-        {
-            goto done;
-        }
-
-        // This is already UTF-8 encoded, we just need to narrow it into a string.
-        string stringJSON(WStringToNarrow(urlDecoded).c_str() + appStringTableLen);
-
+        string stringJSON = uiURLParams(url, appStringTableLen);
         AddStringTableEntry(stringJSON);
     }
-    else if (_tcsncmp(url, appLogCommand, appLogCommandLen) == 0
-        && _tcslen(url) > appLogCommandLen)
+    else if (url.find(appLogCommand) == 0 && url.length() > appLogCommandLen)
     {
-        tstring urlDecoded = UrlDecode(url);
-        if (urlDecoded.length() < appLogCommandLen + 1)
-        {
-            my_print(NOT_SENSITIVE, true, _T("%s: Log command too short"), __TFUNCTION__);
-            goto done;
-        }
-
-        my_print(NOT_SENSITIVE, true, _T("UILog: %s"), urlDecoded.c_str() + appLogCommandLen);
+        string log = uiURLParams(url, appLogCommandLen);
+        my_print(NOT_SENSITIVE, true, _T("UILog: %S"), log.c_str());
     }
-    else if (_tcscmp(url, appStart) == 0)
+    else if (url == appStart)
     {
         my_print(NOT_SENSITIVE, true, _T("%s: Start requested"), __TFUNCTION__);
         g_connectionManager.Start();
     }
-    else if (_tcscmp(url, appStop) == 0)
+    else if (url == appStop)
     {
         my_print(NOT_SENSITIVE, true, _T("%s: Stop requested"), __TFUNCTION__);
         g_connectionManager.Stop(STOP_REASON_USER_DISCONNECT);
     }
-    else if (_tcsncmp(url, appReconnect, appReconnectLen) == 0
-        && _tcslen(url) > appReconnectLen)
+    else if (url.find(appReconnect) == 0 && url.length() > appReconnectLen)
     {
         my_print(NOT_SENSITIVE, true, _T("%s: Reconnect requested"), __TFUNCTION__);
 
-        tstring urlDecoded = UrlDecode(url);
-        if (urlDecoded.length() < appReconnectLen + 1)
-        {
-            goto done;
-        }
-
-        // We only need to check the last character, as it's of the form ?suppress=1
-        bool suppressHomePage = *(urlDecoded.end()-1) == _T('1');
-        g_connectionManager.Reconnect(suppressHomePage);
+        string params = uiURLParams(url, appReconnectLen);
+        g_connectionManager.Reconnect(params == "suppress=1");
     }
-    else if (_tcsncmp(url, appSaveSettings, appSaveSettingsLen) == 0
-        && _tcslen(url) > appSaveSettingsLen)
+    else if (url.find(appSaveSettings) == 0 && url.length() > appSaveSettingsLen)
     {
         my_print(NOT_SENSITIVE, true, _T("%s: Save settings requested"), __TFUNCTION__);
 
-        tstring urlDecoded = UrlDecode(url);
-        if (urlDecoded.length() < appSaveSettingsLen + 1)
-        {
-            goto done;
-        }
-
-        string stringJSON(WStringToNarrow(urlDecoded).c_str() + appSaveSettingsLen);
+        string stringJSON = uiURLParams(url, appSaveSettingsLen);
         bool reconnectRequired = false;
         bool success = Settings::FromJson(stringJSON, reconnectRequired);
 
@@ -758,37 +745,22 @@ static void HtmlUI_BeforeNavigateHandler(LPCTSTR url)
             g_connectionManager.Reconnect(false);
         }
     }
-    else if (_tcsncmp(url, appSendFeedback, appSendFeedbackLen) == 0
-        && _tcslen(url) > appSendFeedbackLen)
+    else if (url.find(appSendFeedback) == 0 && url.length() > appSendFeedbackLen)
     {
         my_print(NOT_SENSITIVE, true, _T("%s: Send feedback requested"), __TFUNCTION__);
-        tstring urlDecoded = UrlDecode(url);
-        if (urlDecoded.length() < appSendFeedbackLen + 1)
-        {
-            goto done;
-        }
-
         my_print(NOT_SENSITIVE, false, _T("Sending feedback..."));
 
-        // We will receive UTF-8 encoded data from the JS, so we'll widen it
-        // before sending it on.
-        wstring unicodeJSON = WidenUTF8(urlDecoded.c_str() + appSendFeedbackLen);
-        g_connectionManager.SendFeedback(unicodeJSON.c_str());
+        string feedbackJSON = uiURLParams(url, appSendFeedbackLen);
+        g_connectionManager.SendFeedback(feedbackJSON.c_str());
     }
-    else if (_tcsncmp(url, appSetCookies, appSetCookiesLen) == 0
-        && _tcslen(url) > appSetCookiesLen)
+    else if (url.find(appSetCookies) == 0 && url.length() > appSetCookiesLen)
     {
         my_print(NOT_SENSITIVE, true, _T("%s: Set cookies requested"), __TFUNCTION__);
-        tstring urlDecoded = UrlDecode(url);
-        if (urlDecoded.length() < appSetCookiesLen + 1)
-        {
-            goto done;
-        }
 
-        string stringJSON(WStringToNarrow(urlDecoded).c_str() + appSetCookiesLen);
+        string stringJSON = uiURLParams(url, appSetCookiesLen);
         Settings::SetCookies(stringJSON);
     }
-    else if (_tcscmp(url, appBannerClick) == 0)
+    else if (url == appBannerClick)
     {
         my_print(NOT_SENSITIVE, true, _T("%s: Banner clicked"), __TFUNCTION__);
         // If connected, open sponsor home pages, or info link if
@@ -802,28 +774,17 @@ static void HtmlUI_BeforeNavigateHandler(LPCTSTR url)
             OpenBrowser(INFO_LINK_URL);
         }
     }
-    else if (_tcsncmp(url, psicashCommand, psicashCommandLen) == 0
-        && _tcslen(url) > psicashCommandLen)
+    else if (url.find(psicashCommand) == 0 && url.length() > psicashCommandLen)
     {
-        my_print(NOT_SENSITIVE, true, _T("%s: PsiCash command requested: %s"), __TFUNCTION__, url);
+        my_print(NOT_SENSITIVE, true, _T("%s: PsiCash command requested"), __TFUNCTION__);
 
-        tstring urlDecoded = UrlDecode(url);
-        if (urlDecoded.length() < psicashCommandLen + 1)
-        {
-            my_print(NOT_SENSITIVE, true, _T("%s: PsiCash command too short"), __TFUNCTION__);
-            goto done;
-        }
-
-        // This is already UTF-8 encoded, we just need to narrow it into a string.
-        string stringJSON(WStringToNarrow(urlDecoded).c_str() + psicashCommandLen);
-
+        string stringJSON = uiURLParams(url, psicashCommandLen);
         if (!HandlePsiCashCommand(stringJSON))
         {
             my_print(NOT_SENSITIVE, true, _T("%s: HandlePsiCashCommand failed"), __TFUNCTION__);
-            goto done;
         }
     }
-    else if (_tcscmp(url, disallowedTraffic) == 0)
+    else if (url == disallowedTraffic)
     {
         // We got a disallowed-traffic alert. Foreground and show systray notification.
 
@@ -846,9 +807,6 @@ static void HtmlUI_BeforeNavigateHandler(LPCTSTR url)
 
         my_print(NOT_SENSITIVE, true, _T("%s: external URL opened and copied to clipboard"), __TFUNCTION__);
     }
-
-done:
-    delete[] url;
 }
 
 //==== Exported functions ========================================================

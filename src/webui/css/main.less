@@ -761,8 +761,7 @@ label[for="EgressRegionCombo"], label[for="EgressRegion"] {
 }
 
 #EgressRegion, #EgressRegionCombo ul, #EgressRegionCombo .btn {
-  @egressRegionWidth: 300px;
-  width: @egressRegionWidth;
+  min-width: 200px;
 
   .flag {
     display: block;
@@ -1198,6 +1197,7 @@ img.coin {
 
     .psicash-pane__user-and-balance__log-in-out-buttons {
       white-space: nowrap;
+      vertical-align: top;
       .text-right();
       body[dir="rtl"] & {
         .text-left();

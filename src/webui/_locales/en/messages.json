@@ -792,7 +792,7 @@
     "description": "Header of a modal dialog that appears when the user tries to buy PsiCash with real money but doens't have an account. The word 'PsiCash' must not be translated or transliterated."
   },
   "psicash#modal-create-psicash-account-body": {
-    "message": "We strongly encourage you to make a PsiCash account before buying PsiCash. Having an account allows you to share your balance between devices and protect your purchases.",
+    "message": "We strongly encourage you to create a PsiCash account before buying PsiCash. Having an account allows you to share your balance between devices and protect your purchases.",
     "description": "Body of a modal dialog that appears when the user tries to buy PsiCash with real money but doens't have an account. The word 'PsiCash' must not be translated or transliterated."
   },
   "psicash#modal-create-psicash-account-create-button": {
@@ -816,7 +816,7 @@
     "description": "Button in the modal dialog shown to users when they attempt to log out of their PsiCash account with no active Psiphon tunnel. Clicking this button will abort the logout attempt and being connecting to a Psiphon server."
   },
   "psicash#modal-psicash-logout-offline-logout-anyway-button": {
-    "message": "Logout anyway",
+    "message": "Log out anyway",
     "description": "Button in the modal dialog shown to users when they attempt to log out of their PsiCash account with no active Psiphon tunnel. Clicking this button will cause a local-only logout to be performed."
   },
   "psicash#modal-psicash-logout-offline-cancel-button": {
@@ -920,7 +920,7 @@
     "description": "Body text of a modal dialog shown when a PsiCash account login fails due to a server error. The word 'PsiCash' must not be translated or transliterated."
   },
   "psicash#login#badrequest-error-body": {
-    "message": "The PsiCash server indicated that the login request was invalid. Please try again later.",
+    "message": "The PsiCash server indicated that the login request was invalid. Please re-enter your login information and try again.",
     "description": "Body text of a modal dialog shown when a PsiCash account login fails due to a 'bad request' error. The word 'PsiCash' must not be translated or transliterated."
   },
   "psicash#login#success-modal-title": {

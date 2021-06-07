@@ -1,0 +1,974 @@
+{
+  "about#client-version": {
+    "message": "‮Ԁsıdɥou‬ ‮ɟoɹ‬ ‮Ｍıupoʍs‬ ‮ɔʅıǝuʇ‬ ‮ʌǝɹsıou‬:",
+    "description": "Footer on the 'About' page indicating the client version number. This text is the prefix to the actual number. Like: 'Psiphon for Windows client version: 88'. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "about#description": {
+    "message": "‮Ԁsıdɥou‬ ‮ıs‬ ‮ɐ‬ <strong>‮ɔǝusoɹsɥıd‬ ‮ɔıɹɔnɯʌǝuʇıou‬ ‮ʇooʅ‬</strong> — ‮ıʇ‬ ‮ıs‬ ‮pǝsıƃuǝp‬ ‮ʇo‬ ‮ƃıʌǝ‬ ‮ɐɔɔǝss‬ ‮ʇo‬ ‮ʇɥǝ‬ ‮odǝu‬ ‮Iuʇǝɹuǝʇ‬, ‮dɐsʇ‬ ‮ɔǝusoɹs‬ ‮ɐup‬ ‮ɟıɹǝʍɐʅʅs‬. ‮Iʇ‬ ‮ıs‬ <strong>‮odǝu‬ ‮sonɹɔǝ‬</strong> ‮ɐup‬ ‮pǝʌǝʅodǝp‬ ‮ıu‬ ‮⊥oɹouʇo‬, ‮Ↄɐuɐpɐ‬.",
+    "description": "Paragraph on the 'About' page telling users generally what Psiphon is. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "about#get-by-email": {
+    "message": "<strong>‮Iɟ‬ ‮ʇɥǝ‬ ‮ʍǝqsıʇǝ‬ ‮ıs‬ ‮ıuɐɔɔǝssıqʅǝ‬</strong>, ‮ʎon‬ ‮ɔɐu‬ ‮ƃǝʇ‬ ‮ɐ‬ ‮uǝʍ‬ ‮ʌǝɹsıou‬ ‮oɟ‬ ‮Ԁsıdɥou‬ ‮qʎ‬ ‮sǝupıuƃ‬ ‮ɐu‬ ‮ǝɯɐıʅ‬ ‮ʇo‬:",
+    "description": "Paragraph on the 'About' page telling users that they can also get a new version of Psiphon via email. The text in this resource is then followed by an email address. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "about#visit-download-site": {
+    "message": "‮Ԁʅǝɐsǝ‬ ‮ʌısıʇ‬ ‮ʇɥǝ‬ ‮ʍǝqsıʇǝ‬ ‮ʇo‬ <strong><a class=\"NewVersionURL\" href=\"#\">‮poʍuʅoɐp‬ ‮ɐ‬ ‮uǝʍ‬ ‮ʌǝɹsıou‬</a></strong> ‮oɹ‬ ‮ʇo‬ <strong><a class=\"InfoURL\" href=\"#\">‮ƃǝʇ‬ ‮ɥǝʅd‬ ‮ɐup‬ ‮ıuɟoɹɯɐʇıou‬</a></strong>. ‮Ԁsıdɥou‬ ‮ıs‬ ‮ɐʌɐıʅɐqʅǝ‬ ‮ɟoɹ‬ ‮∀upɹoıp‬ ‮ɐup‬ ‮Ｍıupoʍs‬.",
+    "description": "Paragraph on the 'About' page telling users what web page to go to get a new version of Psiphon or more info about it. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "about#wordart-tag": {
+    "message": "‮Ԑǝʎoup‬ ‮Ԑoɹpǝɹs‬",
+    "description": "The application/product/tool tagline/slogan/motto part of the fancy title at the top of the 'About' page. 'Beyond Borders' is the slogan that is also used on the Psiphon website -- it is meant to suggest that Psiphon can help users to get to the internet beyond the border (firewall) of the country they live in. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "appbackend#disallowed-traffic-notification-body": {
+    "message": "‮∀ɔʇıʌɐʇǝ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬ ‮ʇo‬ ‮nuʅoɔʞ‬ ‮ʇɥǝ‬ ‮ɟnʅʅ‬ ‮doʇǝuʇıɐʅ‬ ‮oɟ‬ ‮ʎonɹ‬ ‮Ԁsıdɥou‬ ‮ǝxdǝɹıǝuɔǝ‬.",
+    "description": "Appears in the notification area balloon when Psiphon disallows some non-web internet traffic. The user needs to purchase Speed Boost in order to full app compatibilty and more speed. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "appbackend#disallowed-traffic-notification-title": {
+    "message": "‮∀dds‬ ‮uoʇ‬ ‮ʍoɹʞıuƃ‬?",
+    "description": "Appears in the notification area balloon when Psiphon disallows some non-web internet traffic. The user needs to purchase Speed Boost in order to full app compatibilty and more speed."
+  },
+  "appbackend#minimized-to-systray-body": {
+    "message": "‮Ↄʅıɔʞ‬ ‮ʇɥǝ‬ ‮ıɔou‬ ‮ʇo‬ ‮ɹǝsʇoɹǝ‬ ‮ʇɥǝ‬ ‮ɐddʅıɔɐʇıou‬",
+    "description": "Appears in the notification area balloon when Psiphon has been minimized to the Windows' notification area (aka 'system tray' aka 'systray', the area of the taskbar with the clock, battery indicator, and other icons)."
+  },
+  "appbackend#minimized-to-systray-title": {
+    "message": "‮Ԁsıdɥou‬ ‮ɥɐs‬ ‮qǝǝu‬ ‮ɯıuıɯızǝp‬ ‮ʇo‬ ‮ʇɥǝ‬ ‮uoʇıɟıɔɐʇıou‬ ‮ɐɹǝɐ‬",
+    "description": "Appears in the notification area balloon when Psiphon has been minimized to the Windows' notification area (aka 'system tray' aka 'systray', the area of the taskbar with the clock, battery indicator, and other icons). The word 'Psiphon' must not be translated or transliterated."
+  },
+  "appbackend#os-unsupported": {
+    "message": "‮Ԁsıdɥou‬ ‮uo‬ ‮ʅouƃǝɹ‬ ‮snddoɹʇs‬ ‮Ｍıupoʍs‬ ‮XԀ‬ ‮oɹ‬ ‮Ʌısʇɐ‬.\n‮Ԁʅǝɐsǝ‬ ‮ʌısıʇ‬ ‮onɹ‬ ‮ʍǝqsıʇǝ‬ ‮ɟoɹ‬ ‮ɯoɹǝ‬ ‮ıuɟoɹɯɐʇıou‬.",
+    "description": "Appears in a message box when Psiphon is run on an unsuppoted version of Windows. Is followed by a URL."
+  },
+  "appbackend#state-connected-body": {
+    "message": "‮Ǝxdʅoɹǝ‬ ‮qǝʎoup‬ ‮ʎonɹ‬ ‮qoɹpǝɹs‬!",
+    "description": "Appears in the notification area balloon when Psiphon is currently connected to a server. Specifically, it appears when the connection has just completed. This is intended to be a reference to the 'Psiphon: Beyond Borders' tag line. Note for right-to-left languages: You should not use an exclamation mark, as it won't be displayed correct if shown on a left-to-right operating system."
+  },
+  "appbackend#state-connected-reminder-body": {
+    "message": "‮Ӽǝǝd‬ ‮Ԁsıdɥou‬ ‮ɟɹǝǝ‬. ‮Ↄʅıɔʞ‬ ‮ɥǝɹǝ‬ ‮ʇo‬ ‮ʌısıʇ‬ ‮onɹ‬ ‮sdousoɹ‬ ‮dɐƃǝs‬!",
+    "description": "Appears in the notification area balloon periodically while Psiphon is connected to a server. This is intended to encourage the user to visit the sponsor's landing page. Note for right-to-left languages: You should not use an exclamation mark, as it won't be displayed correct if shown on a left-to-right operating system. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "appbackend#state-connected-reminder-body-2": {
+    "message": "‮Ӽǝǝd‬ ‮Ԁsıdɥou‬ ‮ɟɹǝǝ‬ ‮qʎ‬ ‮ʌısıʇıuƃ‬ ‮onɹ‬ ‮sdousoɹ‬ ‮dɐƃǝs‬!",
+    "description": "Appears in the notification area balloon periodically while Psiphon is connected to a server. This is intended to encourage the user to visit the sponsor's landing page. Note for right-to-left languages: You should not use an exclamation mark, as it won't be displayed correct if shown on a left-to-right operating system. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "appbackend#state-connected-reminder-title": {
+    "message": "‮Ԁsıdɥou‬ ‮ıs‬ ‮ʞǝǝdıuƃ‬ ‮ʎon‬ ‮ɔouuǝɔʇǝp‬",
+    "description": "Appears in the notification area balloon periodically while Psiphon is connected to a server. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "appbackend#state-connected-title": {
+    "message": "‮Ԁsıdɥou‬ ‮ıs‬ ‮ɔouuǝɔʇǝp‬",
+    "description": "Appears in the notification area balloon when Psiphon is currently connected to a server. Specifically, it appears when the connection has just completed. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "appbackend#state-starting-body": {
+    "message": "‮Ԁʅǝɐsǝ‬ ‮ʍɐıʇ‬…",
+    "description": "Appears in the notification area balloon when Psiphon is in the process of connecting to a server. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "appbackend#state-starting-title": {
+    "message": "‮Ԁsıdɥou‬ ‮ıs‬ ‮ɔouuǝɔʇıuƃ‬",
+    "description": "Appears in the notification area balloon when Psiphon is in the process of connecting to a server. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "appbackend#state-stopped-title": {
+    "message": "‮Ԁsıdɥou‬ ‮ıs‬ ‮pısɔouuǝɔʇǝp‬",
+    "description": "Appears in the notification area balloon when Psiphon is disconnected (or has lost its connection, or has been disconnected). The word 'Psiphon' must not be translated or transliterated."
+  },
+  "banner#long-connecting": {
+    "message": "<strong>‮Oɥ‬ ‮uo‬!</strong> ‮ʎon‬ ‮sǝǝɯ‬ ‮ʇo‬ ‮qǝ‬ ‮ɥɐʌıuƃ‬ ‮ʇɹonqʅǝ‬ ‮ɔouuǝɔʇıuƃ‬!<br>\n‮poʍuʅoɐp‬ ‮ʇɥǝ‬ ‮ʅɐʇǝsʇ‬ ‮ʌǝɹsıou‬ ‮oɟ‬ ‮Ԁsıdɥou‬ ‮ɟɹoɯ‬ ‮ʇɥǝ‬ <a class=\"NewVersionURL\" href=\"#\">‮poʍuʅoɐp‬ ‮sıʇǝ‬</a>\n‮oɹ‬ ‮qʎ‬ ‮sǝupıuƃ‬ ‮ɐu‬ ‮ǝɯɐıʅ‬ ‮ʇo‬ <a class=\"NewVersionEmail\" href=\"#\"></a>",
+    "description": "Message that appears when Psiphon is having trouble connecting. Often such connection problems can be fixed by downloading a new version. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "banner#sponsored-by": {
+    "message": "‮Sdousoɹǝp‬ ‮qʎ‬",
+    "description": "Text appears above the sponsor banner image. So it kind of reads 'Sponsored by BBC' (for example)."
+  },
+  "connection#connect-btn": {
+    "message": "‮Ↄouuǝɔʇ‬",
+    "description": "Text on the big connection button telling the user that if they click it, Psiphon will start trying to connect to the network. This is shown to the user while Psiphon is disconnected."
+  },
+  "connection#connected-msg": {
+    "message": "‮Ԁsıdɥou‬ ‮ıs‬ <span class=\"state-word\">‮ɔouuǝɔʇǝp‬</span>",
+    "description": "Message in the big connection status box telling the user that Psiphon is currently connected to the network. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "connection#disconnect-btn": {
+    "message": "‮pısɔouuǝɔʇ‬",
+    "description": "Text on the big connection button telling the user that if they click it, they will be disconnected from the network. This is shown when the user is currently connected."
+  },
+  "connection#egress-region-combo-label": {
+    "message": "‮Sǝʅǝɔʇ‬ ‮sǝɹʌǝɹ‬ ‮ɹǝƃıou‬",
+    "description": "The label for the 'Psiphon Server Region' combo box control located on the connection tab."
+  },
+  "connection#starting-msg": {
+    "message": "‮Ԁsıdɥou‬ ‮ıs‬ <span class=\"state-word\">‮ɔouuǝɔʇıuƃ‬</span>…",
+    "description": "Message in the big connection status box telling the user that Psiphon is currently trying to connect to the network. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "connection#stop-btn": {
+    "message": "‮Sʇod‬",
+    "description": "Text on the big connection button telling the user that if they click it, they will stop trying to connect to the network. This is shown to the user when they are trying to connect."
+  },
+  "connection#stopped-msg": {
+    "message": "‮Ԁsıdɥou‬ ‮ıs‬ <span class=\"state-word\">‮pısɔouuǝɔʇǝp‬</span>",
+    "description": "Message in the big connection status box telling the user that Psiphon is currently not connected to the network. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "connection#stopping-msg": {
+    "message": "‮Ԁsıdɥou‬ ‮ıs‬ <span class=\"state-word\">‮pısɔouuǝɔʇıuƃ‬</span>…",
+    "description": "Message in the big connection status box telling the user that Psiphon is currently trying to disconnect from the network. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "connection#wait-btn": {
+    "message": "‮Ԁʅǝɐsǝ‬ ‮ʍɐıʇ‬…",
+    "description": "Text on the big connection button telling the user to wait while Psiphon tries to disconnect from the network. When this message is shown, the button is disabled."
+  },
+  "feedback#diagnostic_check": {
+    "message": "‮∩dʅoɐp‬ ‮pıɐƃuosʇıɔ‬ ‮pɐʇɐ‬. ‮Ԁʅǝɐsǝ‬ ‮uoʇǝ‬ ‮ʇɥɐʇ‬ ‮ʇɥıs‬ ‮pıɐƃuosʇıɔ‬ ‮pɐʇɐ‬ ‮poǝs‬ ‮uoʇ‬ ‮ıpǝuʇıɟʎ‬ ‮ʎon‬, ‮ɐup‬ ‮ıʇ‬ ‮ʍıʅʅ‬ ‮ɥǝʅd‬ ‮ns‬ ‮ʇo‬ ‮ʞǝǝd‬ ‮Ԁsıdɥou‬ ‮ɹnuuıuƃ‬ ‮sɯooʇɥʅʎ‬. <a class=\"DataCollectionInfoURL\" href=\"#\">‮Ↄʅıɔʞ‬ ‮ɥǝɹǝ‬ ‮ʇo‬ ‮sǝǝ‬ ‮ʍɥɐʇ‬ ‮pɐʇɐ‬ ‮ʍǝ‬ ‮ɔoʅʅǝɔʇ‬.</a>",
+    "description": "Checkbox text. If it is checked, diagnostic information about Psiphon's status will be sent along with the feedback to Psiphon Inc. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "feedback#smiley_happy": {
+    "message": "‮Ԁsıdɥou‬ ‮ɔouuǝɔʇs‬ ‮ɐup‬ ‮dǝɹɟoɹɯs‬ ‮ʇɥǝ‬ ‮ʍɐʎ‬ ‮I‬ ‮ʍɐuʇ‬ ‮ıʇ‬ ‮ʇo‬.",
+    "description": "The text below the 'happy face' feedback choice. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "feedback#smiley_sad": {
+    "message": "‮Ԁsıdɥou‬ ‮oɟʇǝu‬ ‮ɟɐıʅs‬ ‮ʇo‬ ‮ɔouuǝɔʇ‬ ‮oɹ‬ ‮poǝsu‬'‮ʇ‬ ‮dǝɹɟoɹɯ‬ ‮ʍǝʅʅ‬ ‮ǝuonƃɥ‬.",
+    "description": "The text below the 'sad face' feedback choice. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "feedback#submit_button": {
+    "message": "‮Snqɯıʇ‬",
+    "description": "Submit button text. If the user clicks it, their feedback will be sent to Psiphon Inc."
+  },
+  "feedback#success-message": {
+    "message": "<strong>‮⊥ɥɐuʞ‬ ‮ʎon‬!</strong> ‮ʎonɹ‬ ‮ɟǝǝpqɐɔʞ‬ ‮ɥɐs‬ ‮qǝǝu‬ ‮sǝuʇ‬.",
+    "description": "Message shown to user after their feedback has been sent successufully"
+  },
+  "feedback#text_feedback_bottom_para": {
+    "message": "‮Iɟ‬ ‮ʇɥǝ‬ ‮ɐqoʌǝ‬ ‮ɟoɹɯ‬ ‮ıs‬ ‮uoʇ‬ ‮ʍoɹʞıuƃ‬, ‮oɹ‬ ‮ʎon‬ ‮ʍonʅp‬ ‮ʅıʞǝ‬ ‮ʇo‬ ‮sǝup‬ ‮sɔɹǝǝusɥoʇs‬, ‮dʅǝɐsǝ‬ ‮ǝɯɐıʅ‬ ‮ns‬ ‮ɐʇ‬ <a id=\"FeedbackEmailAddress\" href=\"mailto:feedback@psiphon.ca\">‮ɟǝǝpqɐɔʞ‬@‮dsıdɥou‬.‮ɔɐ‬</a>.",
+    "description": "Message showing the user an email they can use to contact Psiphon Inc."
+  },
+  "feedback#text_feedback_email_prompt": {
+    "message": "‮Iɟ‬ ‮ʎon‬ ‮ʍonʅp‬ ‮ʅıʞǝ‬ ‮ns‬ ‮ʇo‬ ‮ɹǝsdoup‬ ‮ʇo‬ ‮ʎon‬, ‮dʅǝɐsǝ‬ ‮ǝuʇǝɹ‬ ‮ʎonɹ‬ ‮ǝɯɐıʅ‬ ‮ɐppɹǝss‬:",
+    "description": "Label for a text field where the user can provide an email address to Psiphon Inc. along with their feedback."
+  },
+  "feedback#text_feedback_prompt": {
+    "message": "‮Ԁʅǝɐsǝ‬ ‮ǝuʇǝɹ‬ ‮ʎonɹ‬ ‮ɔoɯɯǝuʇs‬ ‮ɥǝɹǝ‬:",
+    "description": "Label for a text box where the user can provide a feedback message to Psiphon Inc."
+  },
+  "feedback#top_content_title": {
+    "message": "‮פıʌǝ‬ ‮∩s‬ ‮ʎonɹ‬ ‮ɟǝǝpqɐɔʞ‬",
+    "description": "Title for the Feedback page"
+  },
+  "feedback#top_para_2": {
+    "message": "‮Wɐuʎ‬ ‮dɹoqʅǝɯs‬ ‮ɔɐu‬ ‮qǝ‬ ‮ɟıxǝp‬ ‮qʎ‬ ‮poʍuʅoɐpıuƃ‬ ‮ʇɥǝ‬ ‮ʅɐʇǝsʇ‬ ‮ʌǝɹsıou‬. ‮ʎon‬ ‮ɔɐu‬ <a class=\"NewVersionURL\" href=\"#\">‮poʍuʅoɐp‬ ‮ʇɥǝ‬ ‮ʅɐʇǝsʇ‬ ‮ʌǝɹsıou‬ ‮qʎ‬ ‮ɔʅıɔʞıuƃ‬ ‮ɥǝɹǝ‬</a>, ‮oɹ‬ ‮ʎon‬ ‮ɔɐu‬ ‮sǝup‬ ‮ɐu‬ ‮ǝɯɐıʅ‬ ‮ʇo‬ <a class=\"NewVersionEmail\" href=\"#\"></a>.",
+    "description": "Text telling the user that downloading a new version of Psiphon may be beneficial, and how to get a new version."
+  },
+  "feedback#top_para_3": {
+    "message": "‮ʎon‬ ‮ɔɐu‬ ‮ɐʅso‬ ‮ɟıup‬ ‮soʅnʇıous‬ ‮ʇo‬ ‮ɯɐuʎ‬ ‮ɔoɯɯou‬ ‮dɹoqʅǝɯs‬ ‮ıu‬ ‮onɹ‬ <a class=\"FaqURL\" href=\"#\">‮ɟɹǝbnǝuʇʅʎ‬ ‮∀sʞǝp‬ ‮Ònǝsʇıous‬</a>.",
+    "description": "Text telling the user how to get to the Psiphon FAQ."
+  },
+  "general#modal-close-button": {
+    "message": "‮Ↄʅosǝ‬",
+    "description": "Text in the button that dismisses a modal dialog. It is often the only button (no 'OK' or 'Cancel', etc.)."
+  },
+  "general#notice-modal-tech-preamble": {
+    "message": "‮Hǝɹǝ‬ ‮ıs‬ ‮ʇɥǝ‬ ‮ʇǝɔɥuıɔɐʅ‬ ‮ǝɹɹoɹ‬ ‮ıuɟo‬:",
+    "description": "Preamble before the technical message relating to the error being shown. This is generated within the code and may not be very user-friendly (but it may be necessary for the user to figure out what's wrong)."
+  },
+  "language#success-message": {
+    "message": "<strong>‮Hǝʅʅo‬!</strong> ‮Ｍǝʅɔoɯǝ‬ ‮ʇo‬ ‮Ԁsıdɥou‬.",
+    "description": "A welcome message shown to the user when they first switch to the correct UI language. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "logs#placeholder": {
+    "message": "‮No‬ ‮ʅoƃs‬ ‮ʎǝʇ‬",
+    "description": "Placeholder text shown when there are not yet any log messages to show. This message is removed when the first log message is added."
+  },
+  "logs#show-debug-label": {
+    "message": "‮Sɥoʍ‬ ‮pǝqnƃ‬ ‮ʅoƃs‬",
+    "description": "Label on a checkbox. If the user checks it, debug log messages will be shown to the user."
+  },
+  "nav#about": {
+    "message": "‮∀qonʇ‬",
+    "description": "Text on the tab that, if the user clicks on it, switches to the 'About' view. In that view the user can see info about the app, info about Psiphon Inc., and click links for more information."
+  },
+  "nav#connection#connected": {
+    "message": "‮Ↄouuǝɔʇǝp‬",
+    "description": "Text on the tab that, if the user clicks on it, switches to the 'Connection' view, that has the connect button. This particular text is shown when Psiphon is connected."
+  },
+  "nav#connection#starting": {
+    "message": "‮Ↄouuǝɔʇıuƃ‬",
+    "description": "Text on the tab that, if the user clicks on it, switches to the 'Connection' view, that has the connect button. This particular text is shown when Psiphon is connecting."
+  },
+  "nav#connection#stopped": {
+    "message": "‮pısɔouuǝɔʇǝp‬",
+    "description": "Text on the tab that, if the user clicks on it, switches to the 'Connection' view, that has the connect button. This particular text is shown when Psiphon is disconnected."
+  },
+  "nav#connection#stopping": {
+    "message": "‮pısɔouuǝɔʇıuƃ‬",
+    "description": "Text on the tab that, if the user clicks on it, switches to the 'Connection' view, that has the connect button. This particular text is shown when Psiphon is disconnecting."
+  },
+  "nav#feedback": {
+    "message": "‮ɟǝǝpqɐɔʞ‬",
+    "description": "Text on the tab that, if the user clicks on it, switches to the 'Feeback' view. In that view the user can send feedback about their experience to Psiphon."
+  },
+  "nav#logs": {
+    "message": "‮˥oƃs‬",
+    "description": "Text on the tab that, if the user clicks on it, switches to the 'Logs' view. In that view the user can see the status messages that Psiphon produces as it connects, disconnects, etc."
+  },
+  "nav#settings": {
+    "message": "‮Sǝʇʇıuƃs‬",
+    "description": "Text on the tab that, if the user clicks on it, switches to the 'Settings' view. In that view the user can change the settings/options that change how Psiphon works."
+  },
+  "notice#disallowed-traffic-alert-body": {
+    "message": "<p>‮∀dds‬ ‮uoʇ‬ ‮ʍoɹʞıuƃ‬?</p>\n<p>‮Soɯǝ‬ ‮ıuʇǝɹuǝʇ‬ ‮ʇɹɐɟɟıɔ‬ ‮ıs‬ ‮uoʇ‬ ‮snddoɹʇǝp‬ ‮ʍıʇɥonʇ‬ ‮ɐu‬ ‮ɐɔʇıʌǝ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬. ‮∀ɔʇıʌɐʇǝ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬ ‮ʍıʇɥ‬ ‮ԀsıↃɐsɥ‬ ‮ʇo‬ ‮nuʅoɔʞ‬ ‮ʇɥǝ‬ ‮ɟnʅʅ‬ ‮doʇǝuʇıɐʅ‬ ‮oɟ‬ ‮ʎonɹ‬ ‮Ԁsıdɥou‬ ‮ǝxdǝɹıǝuɔǝ‬.</p>",
+    "description": "Body text of modal error message shown to user when Psiphon disallows some non-web internet traffic. The user needs to purchase Speed Boost in order to full app compatibilty and more speed. The words 'Psiphon' and 'PsiCash' must not be translated or transliterated. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "notice#disallowed-traffic-alert-title": {
+    "message": "‮∩dƃɹɐpǝ‬ ‮ʎonɹ‬ ‮Ԁsıdɥou‬ ‮ɔouuǝɔʇıou‬",
+    "description": "Title of modal error message shown to user when Psiphon disallows some non-web internet traffic. The user will be told to 'upgrade' their connection with Speed Boost (giving more speed and app compatibility). The word 'Psiphon' must not be translated or transliterated."
+  },
+  "notice#systemproxysettings-setproxy-error-body": {
+    "message": "<p>‮Ԁsıdɥou‬ ‮ɟɐıʅǝp‬ ‮ʇo‬ ‮sǝʇ‬ ‮ʇɥǝ‬ ‮sʎsʇǝɯ‬’‮s‬ ‮dɹoxʎ‬ ‮sǝʇʇıuƃs‬.</p>\n<p>‮⊥ɥıs‬ ‮ɯıƃɥʇ‬ ‮qǝ‬ ‮pnǝ‬ ‮ʇo‬ ‮ɐ‬ ‮ɔouɟʅıɔʇ‬ ‮ʍıʇɥ‬ ‮ʎonɹ‬ ‮ɐuʇıʌıɹns‬ ‮soɟʇʍɐɹǝ‬. ‮ʎon‬ ‮ɯıƃɥʇ‬ ‮uǝǝp‬ ‮ʇo‬ ‮ɯɐunɐʅʅʎ‬ ‮ɔouɟıƃnɹǝ‬ ‮ʎonɹ‬ ‮ɐddʅıɔɐʇıou‬ ‮oɹ‬ ‮sʎsʇǝɯ‬ ‮dɹoxʎ‬ ‮sǝʇʇıuƃs‬ ‮ʇo‬ ‮nsǝ‬ ‮ʇɥǝ‬ ‮ʅoɔɐʅ‬ ‮Ԁsıdɥou‬ ‮dɹoxıǝs‬.</p>",
+    "description": "Body text of modal error message shown to user when Psiphon fails to set the user's system proxy settings. This means that Psiphon was able to connect, but was unable to configure the system to actually use Psiphon. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "notice#systemproxysettings-setproxy-error-title": {
+    "message": "‮Sʎsʇǝɯ‬ ‮Ԁɹoxʎ‬ ‮Ǝɹɹoɹ‬",
+    "description": "Title of modal error message shown to user when Psiphon fails to set the user's system proxy settings. This means that Psiphon was able to connect, but was unable to configure the system to actually use Psiphon."
+  },
+  "notice#systemproxysettings-setproxy-warning-template": {
+    "message": "‮Ԁsıdɥou‬ ‮ɟɐıʅǝp‬ ‮ʇo‬ ‮sǝʇ‬ ‮ʇɥǝ‬ ‮sʎsʇǝɯ‬’‮s‬ ‮dɹoxʎ‬ ‮sǝʇʇıuƃs‬ ‮ɟoɹ‬ ‮ʇɥǝ‬ ‮Iuʇǝɹuǝʇ‬ ‮ɔouuǝɔʇıou‬ ‮uɐɯǝp‬ “<%- data %>”. ‮⊥ɥıs‬ ‮ɯıƃɥʇ‬ ‮qǝ‬ ‮pnǝ‬ ‮ʇo‬ ‮ɐ‬ ‮ɔouɟʅıɔʇ‬ ‮ʍıʇɥ‬ ‮ʎonɹ‬ ‮ɐuʇıʌıɹns‬ ‮soɟʇʍɐɹǝ‬. ‮ʎon‬ ‮ɯıƃɥʇ‬ ‮uǝǝp‬ ‮ʇo‬ ‮ɯɐunɐʅʅʎ‬ ‮ɔouɟıƃnɹǝ‬ ‮ʎonɹ‬ ‮ɐddʅıɔɐʇıou‬ ‮oɹ‬ ‮sʎsʇǝɯ‬ ‮dɹoxʎ‬ ‮sǝʇʇıuƃs‬ ‮ʇo‬ ‮nsǝ‬ ‮ʇɥǝ‬ ‮ʅoɔɐʅ‬ ‮Ԁsıdɥou‬ ‮dɹoxıǝs‬.",
+    "description": "'<%- data %>' is a placeholder and must not be modified. Log message emitted when Psiphon can't fully configure the system to use Psiphon. It may or may not be a fatal state, and may or may not need human intervention. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "positive-value-indicator": {
+    "message": "+%d",
+    "description": "This is used to indicate when a numeric value is positive -- like '+500'. This will show when a number is going to be increased by another number. '%d' is a placeholder for an integer for decimal value."
+  },
+  "psicash#1-day": {
+    "message": "1 ‮pɐʎ‬",
+    "description": "Label on a button. Clicking this button will buy 1 day (24 hours) of Speed Boost."
+  },
+  "psicash#1-hour": {
+    "message": "1 ‮ɥonɹ‬",
+    "description": "Label on a button. Clicking this button will buy 1 hour of Speed Boost."
+  },
+  "psicash#1-month": {
+    "message": "1 ‮ɯouʇɥ‬",
+    "description": "Label on a button. Clicking this button will buy 1 month (31 days) of Speed Boost."
+  },
+  "psicash#1-week": {
+    "message": "1 ‮ʍǝǝʞ‬",
+    "description": "Label on a button. Clicking this button will buy 1 week (7 days) of Speed Boost."
+  },
+  "psicash#alert#buyspeedboost-purchase-complete": {
+    "message": "‮Sdǝǝp‬ ‮Ԑoosʇ‬ ‮sʇɐɹʇǝp‬!",
+    "description": "A non-modal alert shown when a new Speed Boost has been activated. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "psicash#alert#logged-out": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮ɐɔɔonuʇ‬ ‮ʅoƃonʇ‬ ‮ɔoɯdʅǝʇǝ‬.",
+    "description": "An alert shown when the user logs out of their PsiCash account. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#alert#tokens-expired": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮ʅoƃıu‬ ‮ǝxdıɹǝp‬. ‮Ԁʅǝɐsǝ‬ ‮ʅoƃ‬ ‮qɐɔʞ‬ ‮ıu‬.",
+    "description": "An alert shown when the user's PsiCash account tokens expire. This is a normal occurrence (once per year), and the user needs to log into their PsiCash account again to continue to use it. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#corner-logged-out": {
+    "message": "‮ʎon‬ ‮ɐɹǝ‬ ‮ʅoƃƃǝp‬ ‮onʇ‬ ‮oɟ‬ ‮ԀsıↃɐsɥ‬",
+    "description": "Message shown to the user when they have a PsiCash account, but they are logged out. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#init-error-body-recovered": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮ɟɐıʅǝp‬ ‮ʇo‬ ‮ıuıʇıɐʅızǝ‬. ‮⊥ɥıs‬ ‮ıs‬ ‮dɹoqɐqʅʎ‬ ‮pnǝ‬ ‮ʇo‬ ‮ɐ‬ ‮ɟıʅǝ‬ ‮sʎsʇǝɯ‬ ‮dɹoqʅǝɯ‬, ‮snɔɥ‬ ‮ɐs‬ ‮qǝıuƃ‬ ‮onʇ‬ ‮oɟ‬ ‮pısʞ‬ ‮sdɐɔǝ‬. ‮ʎonɹ‬ ‮qɐʅɐuɔǝ‬ ‮ɐup‬ ‮oʇɥǝɹ‬ ‮sʇɐʇǝ‬ ‮ɥɐʌǝ‬ ‮qǝǝu‬ ‮ɹǝsǝʇ‬.",
+    "description": "Body text of a modal dialog shown when the PsiCash library fails to initialize. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#init-error-body-unrecovered": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮ɟɐıʅǝp‬ ‮ʇo‬ ‮ıuıʇıɐʅızǝ‬. ‮⊥ɥıs‬ ‮ıs‬ ‮dɹoqɐqʅʎ‬ ‮pnǝ‬ ‮ʇo‬ ‮ɐ‬ ‮ɟıʅǝ‬ ‮sʎsʇǝɯ‬ ‮dɹoqʅǝɯ‬, ‮snɔɥ‬ ‮ɐs‬ ‮qǝıuƃ‬ ‮onʇ‬ ‮oɟ‬ ‮pısʞ‬ ‮sdɐɔǝ‬. ‮ʎonɹ‬ ‮qɐʅɐuɔǝ‬ ‮ɐup‬ ‮oʇɥǝɹ‬ ‮sʇɐʇǝ‬ ‮ɥɐʌǝ‬ ‮qǝǝu‬ ‮ʅosʇ‬. ‮ԀsıↃɐsɥ‬ ‮ʍıʅʅ‬ ‮uoʇ‬ ‮qǝ‬ ‮nsɐqʅǝ‬. ‮ʎon‬ ‮ɔɐu‬ ‮ʇɹʎ‬ ‮ɹǝsʇɐɹʇıuƃ‬ ‮ʇɥǝ‬ ‮ɐddʅıɔɐʇıou‬ ‮ʇo‬ ‮ɹǝɔoʌǝɹ‬ ‮ɟɹoɯ‬ ‮ʇɥǝ‬ ‮dɹoqʅǝɯ‬.",
+    "description": "Body text of a modal dialog shown when the PsiCash library fails to initialize. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#init-error-title": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮ıuıʇıɐʅızɐʇıou‬ ‮ǝɹɹoɹ‬",
+    "description": "Title of a modal dialog shown when the PsiCash library fails to initialize. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#login#badrequest-error-body": {
+    "message": "‮⊥ɥǝ‬ ‮ԀsıↃɐsɥ‬ ‮sǝɹʌǝɹ‬ ‮ıupıɔɐʇǝp‬ ‮ʇɥɐʇ‬ ‮ʇɥǝ‬ ‮ʅoƃıu‬ ‮ɹǝbnǝsʇ‬ ‮ʍɐs‬ ‮ıuʌɐʅıp‬. ‮Ԁʅǝɐsǝ‬ ‮ɹǝ‬-‮ǝuʇǝɹ‬ ‮ʎonɹ‬ ‮ʅoƃıu‬ ‮ıuɟoɹɯɐʇıou‬ ‮ɐup‬ ‮ʇɹʎ‬ ‮ɐƃɐıu‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash account login fails due to a 'bad request' error. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#login#catastrophic-error-body": {
+    "message": "‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮ʅoƃıu‬ ‮ɐʇʇǝɯdʇ‬ ‮ɟɐıʅǝp‬ ‮nuǝxdǝɔʇǝpʅʎ‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash login fails without a specific reason. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#login#failure-modal-title": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮˥oƃıu‬ ‮ɟɐıʅǝp‬",
+    "description": "Title of modal dialog shown when the PsiCash account login attempt fails for some reason. Text within the modal will explain why. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#login#invalid-credentials-body": {
+    "message": "‮⊥ɥǝ‬ ‮nsǝɹuɐɯǝ‬ ‮oɹ‬ ‮dɐssʍoɹp‬ ‮ǝuʇǝɹǝp‬ ‮ʍɐs‬ ‮ıuɔoɹɹǝɔʇ‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash login fails due to bad username or password."
+  },
+  "psicash#login#last-tracker-merge-body": {
+    "message": "‮ʎon‬ ‮ɐɹǝ‬ ‮ʅoƃƃǝp‬ ‮ıuʇo‬ ‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮ɐɔɔonuʇ‬. ‮⊥ɥǝ‬ ‮dɹǝǝxısʇıuƃ‬ ‮qɐʅɐuɔǝ‬ ‮ɟɹoɯ‬ ‮ʇɥıs‬ ‮pǝʌıɔǝ‬ ‮ɥɐs‬ ‮qǝǝu‬ ‮ʇɹɐusɟǝɹɹǝp‬ ‮ıuʇo‬ ‮ʎonɹ‬ ‮ɐɔɔonuʇ‬, ‮qnʇ‬ ‮ʇɥıs‬ ‮ıs‬ ‮ʇɥǝ‬ ‮ʅɐsʇ‬ ‮ʇıɯǝ‬ ‮ɐ‬ ‮qɐʅɐuɔǝ‬ ‮ɯǝɹƃǝ‬ ‮ʍıʅʅ‬ ‮oɔɔnɹ‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash login succeeds. There is a fixed number of times that a user can merge a pre-account balance into a PsiCash account. This message indicates that the user has hit that limit and the merge that occurred is the last one allowed. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#login#server-error-body": {
+    "message": "‮⊥ɥǝ‬ ‮ԀsıↃɐsɥ‬ ‮sǝɹʌǝɹ‬ ‮ɹǝsdoupǝp‬ ‮ʍıʇɥ‬ ‮ɐu‬ ‮ǝɹɹoɹ‬ ‮ʍɥıʅǝ‬ ‮ʇɹʎıuƃ‬ ‮ʇo‬ ‮ʅoƃ‬ ‮ʎon‬ ‮ıu‬. ‮Ԁʅǝɐsǝ‬ ‮ʇɹʎ‬ ‮ɐƃɐıu‬ ‮ʅɐʇǝɹ‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash account login fails due to a server error. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#login#success-modal-title": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮˥oƃıu‬ ‮Snɔɔǝss‬",
+    "description": "Title of modal dialog shown when the PsiCash account login attempt succeeds, if additional information needs to be conveyed. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#modal-create-psicash-account-body": {
+    "message": "‮Ｍǝ‬ ‮sʇɹouƃʅʎ‬ ‮ǝuɔonɹɐƃǝ‬ ‮ʎon‬ ‮ʇo‬ ‮ɔɹǝɐʇǝ‬ ‮ɐ‬ ‮ԀsıↃɐsɥ‬ ‮ɐɔɔonuʇ‬ ‮qǝɟoɹǝ‬ ‮qnʎıuƃ‬ ‮ԀsıↃɐsɥ‬. ‮Hɐʌıuƃ‬ ‮ɐu‬ ‮ɐɔɔonuʇ‬ ‮ɐʅʅoʍs‬ ‮ʎon‬ ‮ʇo‬ ‮sɥɐɹǝ‬ ‮ʎonɹ‬ ‮qɐʅɐuɔǝ‬ ‮qǝʇʍǝǝu‬ ‮pǝʌıɔǝs‬ ‮ɐup‬ ‮dɹoʇǝɔʇ‬ ‮ʎonɹ‬ ‮dnɹɔɥɐsǝs‬.",
+    "description": "Body of a modal dialog that appears when the user tries to buy PsiCash with real money but doens't have an account. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#modal-create-psicash-account-continue-button": {
+    "message": "‮Ↄouʇıunǝ‬ ‮ʍıʇɥonʇ‬ ‮ɐɔɔonuʇ‬",
+    "description": "Button in the modal dialog encouraging users to create an account when they attempt to buy PsiCash with real money without one. If they click this button, they will continue on to the PsiCash store."
+  },
+  "psicash#modal-create-psicash-account-create-button": {
+    "message": "‮Ↄɹǝɐʇǝ‬ ‮oɹ‬ ‮ʅoƃ‬ ‮ıuʇo‬ ‮ɐɔɔonuʇ‬",
+    "description": "Button in the modal dialog encouraging users to create an account when they attempt to buy PsiCash with real money without one. If they click this button, they will be taken to a screen where they can create an account or log into an existing one."
+  },
+  "psicash#modal-create-psicash-account-header": {
+    "message": "‮Ↄɹǝɐʇǝ‬ ‮ɐ‬ ‮ԀsıↃɐsɥ‬ ‮∀ɔɔonuʇ‬",
+    "description": "Header of a modal dialog that appears when the user tries to buy PsiCash with real money but doens't have an account. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#modal-login-body": {
+    "message": "<a class=\"js-psicash-account-signup\" href=\"#\">‮Ↄɹǝɐʇǝ‬ ‮ɐ‬ ‮uǝʍ‬ ‮ɐɔɔonuʇ‬</a> ‮oɹ‬ ‮ʅoƃ‬ ‮ıu‬ ‮qǝʅoʍ‬.",
+    "description": "Body of modal dialog in which the user can log in to an existing account or click a link to create a new one."
+  },
+  "psicash#modal-login-cancel-button": {
+    "message": "‮Ↄɐuɔǝʅ‬",
+    "description": "Text on the cancel button in the PsiCash account login modal dialog."
+  },
+  "psicash#modal-login-forgot-passwork-link": {
+    "message": "‮ɟoɹƃoʇ‬ ‮ʎonɹ‬ ‮nsǝɹuɐɯǝ‬ ‮oɹ‬ ‮dɐssʍoɹp‬?",
+    "description": "Link for text in the PsiCash account login modal dialog. Clicking it will bring the user to a page where they can recover their account."
+  },
+  "psicash#modal-login-header": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮∀ɔɔonuʇ‬",
+    "description": "Header of modal dialog in which the user can log in to an existing account or click a link to create a new one. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#modal-login-password-field": {
+    "message": "‮Ԁɐssʍoɹp‬",
+    "description": "Label for a password field in the PsiCash account login modal dialog."
+  },
+  "psicash#modal-login-submit-button": {
+    "message": "‮Snqɯıʇ‬",
+    "description": "Text on the submit button in the PsiCash account login modal dialog."
+  },
+  "psicash#modal-login-username-field": {
+    "message": "‮∩sǝɹuɐɯǝ‬",
+    "description": "Label for a username field in the PsiCash account login modal dialog."
+  },
+  "psicash#modal-logout-error-body": {
+    "message": "‮ʎon‬ ‮ʅoƃonʇ‬ ‮ɐʇʇǝɯdʇ‬ ‮ɟɐıʅǝp‬ ‮nuǝxdǝɔʇǝpʅʎ‬. ‮Ԁʅǝɐsǝ‬ ‮ʇɹʎ‬ ‮ɹǝsʇɐɹʇıuƃ‬ ‮ʇɥǝ‬ ‮ɐddʅıɔɐʇıou‬. ‮Iɟ‬ ‮ʇɥɐʇ‬ ‮poǝsu‬'‮ʇ‬ ‮ʍoɹʞ‬, ‮ʎon‬ ‮ʍıʅʅ‬ ‮uǝǝp‬ ‮ʇo‬ <a href=\"https://psiphon3.com/faq.html#clear-windows-data\">‮ɔʅǝɐɹ‬ ‮ʎonɹ‬ ‮ʅoɔɐʅ‬ ‮sʇoɹɐƃǝ‬</a>.",
+    "description": "Body of modal dialog shown when the user attempts to log out of their PsiCash account and an unexpected error occurs. Please don't modify the link URL."
+  },
+  "psicash#modal-logout-header": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮∀ɔɔonuʇ‬ ‮˥oƃonʇ‬",
+    "description": "Header of modal dialog shown when the user attempts to log out of their PsiCash account and a message results. 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#modal-psicash-logout-offline-body": {
+    "message": "‮Ԑǝıuƃ‬ ‮ɔouuǝɔʇǝp‬ ‮ʇo‬ ‮ʇɥǝ‬ ‮Ԁsıdɥou‬ ‮uǝʇʍoɹʞ‬ ‮ǝuɐqʅǝs‬ ‮ɐ‬ ‮ɯoɹǝ‬ ‮sǝɔnɹǝ‬ ‮ԀsıↃɐsɥ‬ ‮ʅoƃonʇ‬. ‮Ｍonʅp‬ ‮ʎon‬ ‮ʅıʞǝ‬ ‮ʇo‬ ‮ɔouuǝɔʇ‬ ‮qǝɟoɹǝ‬ ‮ʅoƃƃıuƃ‬ ‮onʇ‬?",
+    "description": "Body of a modal dialog that appears when the user tries to log out of thier PsiCash account while not currently connected to the Psiphon network. We don't allow PsiCash network requests when not connected, so only an inferior localy-only logout is available. 'Psiphon' must not be translated/transliterated. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#modal-psicash-logout-offline-cancel-button": {
+    "message": "‮Ↄɐuɔǝʅ‬",
+    "description": "Button in the modal dialog shown to users when they attempt to log out of their PsiCash account with no active Psiphon tunnel. Clicking this button will cancel the attempt."
+  },
+  "psicash#modal-psicash-logout-offline-connect-button": {
+    "message": "‮Ↄouuǝɔʇ‬",
+    "description": "Button in the modal dialog shown to users when they attempt to log out of their PsiCash account with no active Psiphon tunnel. Clicking this button will abort the logout attempt and being connecting to a Psiphon server."
+  },
+  "psicash#modal-psicash-logout-offline-header": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮∀ɔɔonuʇ‬ ‮˥oƃonʇ‬",
+    "description": "Header of a modal dialog that appears when the user tries to log out of their PsiCash account. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#modal-psicash-logout-offline-logout-anyway-button": {
+    "message": "‮˥oƃ‬ ‮onʇ‬ ‮ɐuʎʍɐʎ‬",
+    "description": "Button in the modal dialog shown to users when they attempt to log out of their PsiCash account with no active Psiphon tunnel. Clicking this button will cause a local-only logout to be performed."
+  },
+  "psicash#more-ellipsis": {
+    "message": "‮Woɹǝ‬…",
+    "description": "Label for a button that leads to more Speed Boost purchase choices. The translation can be like 'More options' or 'More choices' or 'See more'. Only use an ellipsis if it makes sense in your language."
+  },
+  "psicash#mustconnect-modal#body": {
+    "message": "‮Iu‬ ‮oɹpǝɹ‬ ‮ʇo‬ ‮nsǝ‬ ‮ԀsıↃɐsɥ‬, ‮ʎon‬ ‮ɯnsʇ‬ ‮qǝ‬ ‮ɔouuǝɔʇǝp‬ ‮ʇo‬ ‮ʇɥǝ‬ ‮Ԁsıdɥou‬ ‮uǝʇʍoɹʞ‬.",
+    "description": "Body text of a modal dialog shown when the user tries to use (spend, buy, etc.) PsiCash, if they not currently connected. 'Use' here means buy, spend, or otherwise interact with. 'Psiphon' must not be translated/transliterated. 'PsiCash' must not be translated/transliterated."
+  },
+  "psicash#mustconnect-modal#title": {
+    "message": "‮Ԁsıdɥou‬ ‮Ↄouuǝɔʇıou‬ ‮ᴚǝbnıɹǝp‬",
+    "description": "Title text of a modal dialog shown when the user tries to use (spend, buy, etc.) PsiCash, if they not currently connected. 'Psiphon' must not be translated/transliterated."
+  },
+  "psicash#overlay-logging-in": {
+    "message": "‮˥oƃƃıuƃ‬ ‮ıu‬…",
+    "description": "Text on a screen shown while the user's log-in request is in progress."
+  },
+  "psicash#overlay-logging-out": {
+    "message": "‮˥oƃƃıuƃ‬ ‮onʇ‬…",
+    "description": "Text on a screen shown while the user's log-out request is in progress."
+  },
+  "psicash#pane-balance-header": {
+    "message": "‮Ԑɐʅɐuɔǝ‬:",
+    "description": "Text before showing the user's PsiCash balance. So it will appear like: 'Balance: Ⓟ100'."
+  },
+  "psicash#pane-create-account": {
+    "message": "‮Ↄɹǝɐʇǝ‬ ‮ɐu‬ ‮ɐɔɔonuʇ‬ ‮ʇo‬ ‮dɹoʇǝɔʇ‬ ‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬!",
+    "description": "Text for a link displayed when the user does not have a PsiCash account. This is an strong suggestion, hence the exclamation point -- use whatever makes sense in your language. It encourages them to make one. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#pane-create-account-plea": {
+    "message": "‮Ↄɹǝɐʇıuƃ‬ ‮ɐ‬ ‮ԀsıↃɐsɥ‬ ‮ɐɔɔonuʇ‬ ‮ʍıʅʅ‬ ‮ɥǝʅd‬ ‮dɹǝsǝɹʌǝ‬ ‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮ıɟ‬ ‮ʎon‬ ‮ɔʅǝɐɹ‬ ‮ʇɥǝ‬ ‮ɐdd‬'‮s‬ ‮sʇoɹɐƃǝ‬ ‮oɹ‬ ‮nsǝ‬ ‮Ԁsıdɥou‬ ‮ou‬ ‮ɐuoʇɥǝɹ‬ ‮pǝʌıɔǝ‬. <a href=\"https://psiphon.ca/faq.html#psicash-account\">‮˥ǝɐɹu‬ ‮ɯoɹǝ‬.</a>",
+    "description": "Text shown below the PsiCash balance when the user does not have a PsiCash account. 'Learn more' is a link to an FAQ entry explaining the benefits of creating an account. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#pane-create-new-account": {
+    "message": "‮Ↄɹǝɐʇǝ‬ ‮ɐ‬ ‮Nǝʍ‬ ‮∀ɔɔonuʇ‬",
+    "description": "Text on button that user can click to create a new account (opens an external web page)."
+  },
+  "psicash#pane-l2tp-incompatible": {
+    "message": "‮Sdǝǝp‬ ‮Ԑoosʇ‬ ‮ɔɐuuoʇ‬ ‮qǝ‬ ‮nsǝp‬ ‮ʍɥıʅǝ‬ ‮Ԁsıdɥou‬ ‮ıs‬ ‮ɔouuǝɔʇǝp‬ ‮ıu‬ <a href=\"#\">‮˥‬2‮⊥Ԁ‬/‮IԀSǝɔ‬ ‮ʇɹɐusdoɹʇ‬ ‮ɯopǝ‬</a>.",
+    "description": "A message shown when L2TP/IPSec mode is enabled in Psiphon. Speed Boost cannot be used in this mode."
+  },
+  "psicash#pane-log-in": {
+    "message": "‮˥oƃ‬ ‮Iu‬!",
+    "description": "Text on a button that will lead the user to log into their PsiCash account. This is an strong suggestion, hence the exclamation point -- use whatever makes sense in your language."
+  },
+  "psicash#pane-log-out": {
+    "message": "‮˥oƃ‬ ‮Onʇ‬",
+    "description": "Text on a button that will log the user out of their PsiCash account."
+  },
+  "psicash#pane-manage-web": {
+    "message": "‮Wɐuɐƃǝ‬ ‮ou‬ ‮ʇɥǝ‬ ‮ʍǝq‬",
+    "description": "Text for a link to a web site where users can manage their PsiCash account."
+  },
+  "psicash#pane-must-log-in": {
+    "message": "‮ʎon‬ ‮ɯnsʇ‬ ‮ʅoƃ‬ ‮ıu‬ ‮ʇo‬ ‮nsǝ‬ ‮ԀsıↃɐsɥ‬.",
+    "description": "Message shown when the user was logged in with an account and then logged out. It's telling the user that they have to log in again. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#pane-need-more-psicash-body": {
+    "message": "‮Iu‬ ‮oɹpǝɹ‬ ‮ɐɔʇıʌɐʇǝ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬, ‮ʎon‬ ‮uǝǝp‬ ‮ʇo‬ ‮qnʎ‬ ‮ɯoɹǝ‬ ‮ԀsıↃɐsɥ‬.",
+    "description": "Body of a section telling the user that they don't have enough PsiCash to buy any Speed Boost and need to buy more. The word 'PsiCash' must not be translated or transliterated. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "psicash#pane-need-more-psicash-header": {
+    "message": "‮ʎon‬ ‮uǝǝp‬ ‮ɯoɹǝ‬ ‮ԀsıↃɐsɥ‬!",
+    "description": "Header for a section telling the user that they don't have enough PsiCash to buy any Speed Boost and need to buy more. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#pane-need-psicash-visit-store": {
+    "message": "‮Nǝǝp‬ ‮ԀsıↃɐsɥ‬? ‮Ʌısıʇ‬ ‮onɹ‬ ‮sʇoɹǝ‬ ‮ʇo‬ ‮qnʎ‬ ‮ɯoɹǝ‬!",
+    "description": "Text encouraging the user to buy PsiCash (with real money). The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#pane-speed-boost-cta": {
+    "message": "‮∩uʅǝɐsɥ‬ ‮ʇɥǝ‬ ‮ɟnʅʅ‬ ‮doʇǝuʇıɐʅ‬ ‮oɟ‬ ‮Ԁsıdɥou‬ ‮ʍıʇɥ‬ ‮Sdǝǝp‬&nbsp;‮Ԑoosʇ‬!",
+    "description": "Text encouraging the user to purchase Speed Boost. 'Unleash' can translated to something like 'unlock', 'release', 'enable', 'amplify', or generally 'make a lot better'. 'Psiphon' must not be translated/transliterated. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "psicash#pane-speed-port-limits-body": {
+    "message": "‮Ｍıʇɥonʇ‬ ‮ɐɔʇıʌǝ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬, ‮ʎonɹ‬ ‮sdǝǝp‬ ‮ıs‬ ‮ʅıɯıʇǝp‬ ‮ɐup‬ ‮soɯǝ‬ ‮ıuʇǝɹuǝʇ‬ ‮ʇɹɐɟɟıɔ‬ ‮ıs‬ ‮uoʇ‬ ‮snddoɹʇǝp‬. ‮∀ɔʇıʌɐʇǝ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬ ‮ʍıʇɥ‬ ‮ԀsıↃɐsɥ‬ ‮ʇo‬ ‮nuʅoɔʞ‬ ‮ʇɥǝ‬ ‮ɟnʅʅ‬ ‮doʇǝuʇıɐʅ‬ ‮oɟ‬ ‮ʎonɹ‬ ‮Ԁsıdɥou‬ ‮ǝxdǝɹıǝuɔǝ‬.",
+    "description": "Body of an information section explaining that there are port and speed restrictions when the user doesn't have Speed Boost active. The word 'PsiCash' must not be translated or transliterated. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "psicash#pane-speed-port-limits-head": {
+    "message": "‮Sdǝǝp‬ ‮ɐup‬ ‮Ԁoɹʇ‬ ‮˥ıɯıʇs‬",
+    "description": "Heading for an information section explaining that there are port and speed restrictions when the user doesn't have Speed Boost active."
+  },
+  "psicash#psiphon-speed": {
+    "message": "‮Ԁsıdɥou‬<br>‮Sdǝǝp‬",
+    "description": "Text on a badge next to an image or gauge that will indicate 'fast' or 'slow'. This is the current Psiphon tunnel speed limit. Speed Boost is required in order to get the fastest speed. The word 'Psiphon' must not be translated or transliterated. The word 'Psiphon' can be dropped if necessary to get a meaning like 'speed limit'. This text must be kept narrow and short -- only two or three lines of one or two words each. Use hard breaks (like <br>) to separate lines (perhaps with hyphens), and soft break indicators (like &shy; or <wbr> or &#8203;) to indicate were long words can be broken."
+  },
+  "psicash#psiphon-speed-nobreak": {
+    "message": "‮Ԁsıdɥou‬ ‮Sdǝǝp‬",
+    "description": "Text on a badge next to an image or gauge that will indicate 'fast' or 'slow'. This is the current Psiphon tunnel speed limit. Speed Boost is required in order to get the fastest speed. The word 'Psiphon' must not be translated or transliterated. The word 'Psiphon' can be dropped if necessary to get a meaning like 'speed limit'. This text must be kept short."
+  },
+  "psicash#transaction-ExistingTransaction-body": {
+    "message": "‮ʎon‬ ‮ɥɐʌǝ‬ ‮ɐu‬ ‮ǝxısʇıuƃ‬ ‮ԀsıↃɐsɥ‬ ‮dnɹɔɥɐsǝ‬ ‮oɟ‬ ‮ʇɥıs‬ ‮ʇʎdǝ‬. ‮∀uoʇɥǝɹ‬ ‮dnɹɔɥɐsǝ‬ ‮oɟ‬ ‮ʇɥıs‬ ‮ʇʎdǝ‬ ‮ıs‬ ‮uoʇ‬ ‮ɐʅʅoʍǝp‬ ‮nuʇıʅ‬ ‮ʇɥǝ‬ ‮dɹǝʌıons‬ ‮ouǝ‬ ‮ǝxdıɹǝs‬. ‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮sʇɐʇǝ‬ ‮ʍıʅʅ‬ ‮qǝ‬ ‮ɹǝɟɹǝsɥǝp‬ ‮uoʍ‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-ExistingTransaction-title": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮dnɹɔɥɐsǝ‬ ‮ɐʅɹǝɐpʎ‬ ‮ǝxısʇs‬",
+    "description": "Title of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-InsufficientBalance-body": {
+    "message": "‮ʎon‬ ‮po‬ ‮uoʇ‬ ‮ɥɐʌǝ‬ ‮snɟɟıɔıǝuʇ‬ ‮ԀsıↃɐsɥ‬ ‮qɐʅɐuɔǝ‬ ‮ɟoɹ‬ ‮ʇɥıs‬ ‮dnɹɔɥɐsǝ‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The user doesn't have enough PsiCash to make the attempted purchase. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-InsufficientBalance-title": {
+    "message": "‮Iusnɟɟıɔıǝuʇ‬ ‮ԀsıↃɐsɥ‬ ‮qɐʅɐuɔǝ‬",
+    "description": "Title of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The user doesn't have enough PsiCash to make the attempted purchase. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-InvalidTokens-body-account": {
+    "message": "‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮ʇoʞǝus‬ ‮ɥɐʌǝ‬ ‮ǝxdıɹǝp‬. ‮˥oƃ‬ ‮ıuʇo‬ ‮ʎonɹ‬ ‮ɐɔɔonuʇ‬ ‮ɐup‬ ‮ʇɹʎ‬ ‮ɐƃɐıu‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-InvalidTokens-body-tracker": {
+    "message": "‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮ʇoʞǝus‬ ‮ɐɹǝ‬ ‮ıuʌɐʅıp‬. ‮⊥ɹʎ‬ ‮ɹǝsʇɐɹʇıuƃ‬ ‮ʇɥǝ‬ ‮ɐddʅıɔɐʇıou‬. ‮Iɟ‬ ‮ʇɥɐʇ‬ ‮poǝsu‬'‮ʇ‬ ‮ʍoɹʞ‬, ‮ʎon‬ ‮ʍıʅʅ‬ ‮uǝǝp‬ ‮ʇo‬ <a href=\"https://psiphon3.com/faq.html#clear-windows-data\">‮ɔʅǝɐɹ‬ ‮ʎonɹ‬ ‮ʅoɔɐʅ‬ ‮sʇoɹɐƃǝ‬</a>.",
+    "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-InvalidTokens-title": {
+    "message": "‮Iuʌɐʅıp‬ ‮ԀsıↃɐsɥ‬ ‮ʇoʞǝus‬",
+    "description": "Title of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-ServerError-body": {
+    "message": "‮⊥ɥǝ‬ ‮ԀsıↃɐsɥ‬ ‮sǝɹʌǝɹ‬ ‮ɹǝsdoupǝp‬ ‮ʍıʇɥ‬ ‮ɐu‬ ‮ǝɹɹoɹ‬ ‮ʍɥıʅǝ‬ ‮ʇɹʎıuƃ‬ ‮ʇo‬ ‮ɯɐʞǝ‬ ‮ʇɥǝ‬ ‮dnɹɔɥɐsǝ‬. ‮Ԁʅǝɐsǝ‬ ‮ɹǝʇɹʎ‬ ‮ʎonɹ‬ ‮dnɹɔɥɐsǝ‬ ‮ʅɐʇǝɹ‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-ServerError-title": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮sǝɹʌǝɹ‬ ‮ǝɹɹoɹ‬",
+    "description": "Title of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-TransactionAmountMismatch-body": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮dnɹɔɥɐsǝ‬ ‮dɹıɔǝs‬ ‮ɐɹǝ‬ ‮onʇ‬-‮oɟ‬-‮pɐʇǝ‬. ‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮sʇɐʇǝ‬ ‮ʍıʅʅ‬ ‮qǝ‬ ‮ɹǝɟɹǝsɥǝp‬ ‮uoʍ‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-TransactionAmountMismatch-title": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮dnɹɔɥɐsǝ‬ ‮dɹıɔǝ‬ ‮ɯısɯɐʇɔɥ‬",
+    "description": "Title of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-TransactionTypeNotFound-body": {
+    "message": "‮⊥ɥǝ‬ ‮dɹopnɔʇ‬ ‮ʎon‬ ‮ɐɹǝ‬ ‮ʇɹʎıuƃ‬ ‮ʇo‬ ‮qnʎ‬ ‮uo‬ ‮ʅouƃǝɹ‬ ‮ǝxısʇs‬. ‮ʎon‬ ‮ɯɐʎ‬ ‮uǝǝp‬ ‮ʇo‬ ‮ndpɐʇǝ‬ ‮oɹ‬ ‮ɹǝıusʇɐʅʅ‬ ‮ʇɥǝ‬ ‮ɐddʅıɔɐʇıou‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-TransactionTypeNotFound-title": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮dnɹɔɥɐsǝ‬ ‮ʇʎdǝ‬ ‮uoʇ‬ ‮ɟonup‬",
+    "description": "Title of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-error-body": {
+    "message": "‮ʎonɹ‬ ‮ԀsıↃɐsɥ‬ ‮ʇɹɐusɐɔʇıou‬ ‮ɐʇʇǝɯdʇ‬ ‮ɟɐıʅǝp‬ ‮nuǝxdǝɔʇǝpʅʎ‬.",
+    "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#transaction-error-title": {
+    "message": "‮ԀsıↃɐsɥ‬ ‮ʇɹɐusɐɔʇıou‬ ‮ǝɹɹoɹ‬",
+    "description": "Title of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#ui-buyingboost-buttontext": {
+    "message": "‮Sʇɐɹʇıuƃ‬ ‮Sdǝǝp‬&nbsp;‮Ԑoosʇ‬!",
+    "description": "Label for a disabled button. The user has clicked the button in order to buy an hour of Speed Boost, and now the purchase is completing and Speed Boost is activating. You may use `&nbsp;`, `<br>`, `<wbr>`, `&shy;`, etc. to control word wrap. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "psicash#ui-buymorepsi": {
+    "message": "‮Ԑnʎ‬ ‮ɯoɹǝ‬ ‮ԀsıↃɐsɥ‬",
+    "description": "Label for a button/link that opens a store web page were users can spend money to buy PsiCash. At this point, the user already has some PsiCash, but may wish to buy more. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#ui-buypsi": {
+    "message": "‮Ԑnʎ‬ ‮ԀsıↃɐsɥ‬",
+    "description": "Label for a button/link that opens a store web page were users can spend money to buy PsiCash. At this point, the user has no PsiCash at all. The word 'PsiCash' must not be translated or transliterated."
+  },
+  "psicash#ui-nsfbalance-buttontext": {
+    "message": "‮Nǝǝpǝp‬ ‮ɟoɹ‬ ‮Sdǝǝp‬&nbsp;‮Ԑoosʇ‬",
+    "description": "Label on a disabled button, followed by a value in PsiCash indicating how much it costs to buy an hour of Speed Boost. When the user has enough PsiCash, the button will be enabled and the text will change. You may use `&nbsp;`, `<br>`, `<wbr>`, `&shy;`, etc. to control word wrap. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "psicash#ui-speedboost-active": {
+    "message": "‮Sdǝǝp‬&nbsp;‮Ԑoosʇ‬ ‮ɐɔʇıʌǝ‬ ‮ɟoɹ‬ %s",
+    "description": "When the user has Speed Boost active, this shows them how much time they have remaining. '%s' is like 'an hour' or '30 minutes' (localized). This text will be shown on a narrow button that should have at most 3 lines. You may use `&nbsp;`, `<br>`, `<wbr>`, `&shy;`, etc. to control word wrap. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "psicash#ui-speedboost-button": {
+    "message": "‮Sdǝǝp‬ ‮Ԑoosʇ‬",
+    "description": "Label on a button. The text is followed by a value in PsiCash indicating how much it costs to buy an hour of Speed Boost. Clicking the button will buy Speed Boost. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "settings#apply-button": {
+    "message": "‮∀ddʅʎ‬ ‮Ↄɥɐuƃǝs‬",
+    "description": "Text on the button that applies (saves and makes active) the changes that the user has made to their settings. It is only enabled when changes have been made. The text is effectively an abbreviation of 'Apply the changes you have made to your settings'."
+  },
+  "settings#applying-message": {
+    "message": "‮ᴚǝɔouuǝɔʇıuƃ‬ ‮ʇo‬ ‮ɐddʅʎ‬ ‮ʎonɹ‬ ‮sǝʇʇıuƃs‬.",
+    "description": "Pop-up message shown to users after they have changed their settings and a reconnection is happening to apply the new settings."
+  },
+  "settings#disable-timeouts#enable-label": {
+    "message": "‮pısɐqʅǝ‬ ‮ʇıɯǝonʇs‬ ‮ɟoɹ‬ ‮sʅoʍ‬ ‮uǝʇʍoɹʞs‬",
+    "description": "The label on the checkbox that enables 'Disable Timeouts' mode."
+  },
+  "settings#disable-timeouts#heading": {
+    "message": "‮pısɐqʅǝ‬ ‮⊥ıɯǝonʇs‬ ‮ɟoɹ‬ ‮Sʅoʍ‬ ‮Nǝʇʍoɹʞs‬",
+    "description": "Settings section heading. If the user clicks this, the 'Disable Timeouts for Slow Networks' section will expand and can be edited. If 'disable timeouts' is enabled, network timeouts between the Psiphon client and server will be disabled."
+  },
+  "settings#disable-timeouts#help-text": {
+    "message": "‮Iɟ‬ ‮ǝuɐqʅǝp‬, ‮ɔoɯɯnuıɔɐʇıou‬ ‮ʍıʇɥ‬ ‮ʇɥǝ‬ ‮Ԁsıdɥou‬ ‮sǝɹʌǝɹ‬ ‮ʍıʅʅ‬ ‮uoʇ‬ ‮ʇıɯǝ‬ ‮onʇ‬.",
+    "description": "Text explaining to the user what the 'Disable Timeouts' setting does if enabled. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#disable-timeouts#reason": {
+    "message": "‮Ｍɥǝu‬ ‮ǝuɐqʅıuƃ‬ ‮ʇɥıs‬ ‮ɟoɹ‬ ‮ɐ‬ ‮ʌǝɹʎ‬ ‮sʅoʍ‬ ‮uǝʇʍoɹʞ‬ ‮ɔouuǝɔʇıou‬, ‮ʎon‬ ‮ɐɹǝ‬ ‮ʅǝss‬ ‮ʅıʞǝʅʎ‬ ‮ʇo‬ ‮ǝxdǝɹıǝuɔǝ‬ ‮nuǝxdǝɔʇǝp‬ ‮pısɔouuǝɔʇıous‬.",
+    "description": "Help text in the 'Disable Timeouts' settings section explaining to the user why they might want to modify (enable) the setting."
+  },
+  "settings#disallowed-traffic-alert#disable-label": {
+    "message": "‮pısɐqʅǝ‬ ‮pısɐʅʅoʍǝp‬ ‮ʇɹɐɟɟıɔ‬ ‮ɐʅǝɹʇs‬",
+    "description": "The label on the checkbox that disables the 'Disallowed Traffic Alert'."
+  },
+  "settings#disallowed-traffic-alert#heading": {
+    "message": "‮pısɐʅʅoʍǝp‬ ‮⊥ɹɐɟɟıɔ‬ ‮∀ʅǝɹʇ‬",
+    "description": "Settings section heading. In this section the user can choose to enable or disable alerts telling the user when app traffic has been disallowed and they need to get Speed Boost."
+  },
+  "settings#disallowed-traffic-alert#help-text": {
+    "message": "‮Soɯǝ‬ ‮ʇʎdǝs‬ ‮oɟ‬ ‮ıuʇǝɹuǝʇ‬ ‮ʇɹɐɟɟıɔ‬ ‮ɐɹǝ‬ ‮uoʇ‬ ‮snddoɹʇǝp‬ ‮ʍıʇɥonʇ‬ ‮ɐu‬ ‮ɐɔʇıʌǝ‬ ‮Sdǝǝp‬ ‮Ԑoosʇ‬. ‮Ｍɥǝu‬ ‮snɔɥ‬ ‮ʇɹɐɟɟıɔ‬ ‮ıs‬ ‮pısɐʅʅoʍǝp‬, ‮ɐu‬ ‮ɐʅǝɹʇ‬ ‮ıs‬ ‮sɥoʍu‬. (‮ᴚǝ‬-‮ǝuɐqʅıuƃ‬ ‮ʍıʅʅ‬ ‮ɹǝbnıɹǝ‬ ‮ɐ‬ ‮ɹǝɔouuǝɔʇıou‬.)",
+    "description": "Text explaining to the user what the 'Disallowed Traffic Alert' setting does if enabled. 'Speed Boost' is a reward that can be purchased with PsiCash credit. It provides unlimited network connection speed through Psiphon. Other words that can be used to help with translation are: 'turbo' (like cars), 'accelerate', 'warp speed', 'blast off', or anything that indicates a fast or unrestricted speed."
+  },
+  "settings#egress-region#default": {
+    "message": "‮Ↄɥoosıuƃ‬ ‮ʇɥǝ‬ ‮pǝɟɐnʅʇ‬ <strong>“‮Ԑǝsʇ‬ ‮Ԁǝɹɟoɹɯɐuɔǝ‬”</strong> ‮odʇıou‬ ‮ɐʅʅoʍs‬ ‮Ԁsıdɥou‬ ‮ʇo‬ ‮ɐnʇoɯɐʇıɔɐʅʅʎ‬ ‮ɔɥoosǝ‬ ‮ɐ‬ ‮sǝɹʌǝɹ‬, ‮ʍɥıɔɥ‬ ‮ʍıʅʅ‬ ‮ƃǝuǝɹɐʅʅʎ‬ ‮ɹǝsnʅʇ‬ ‮ıu‬ ‮ʇɥǝ‬ ‮qǝsʇ‬ ‮uǝʇʍoɹʞ‬ ‮ɔouuǝɔʇıou‬.",
+    "description": "Help text below the 'Psiphon Server Region' combo box. It explains to the user what the default (and best) option is. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#egress-region#description": {
+    "message": "‮Ԁsıdɥou‬ ‮ɥɐs‬ ‮sǝɹʌǝɹs‬ ‮ıu‬ ‮ɯɐuʎ‬ ‮pıɟɟǝɹǝuʇ‬ ‮ɔonuʇɹıǝs‬ ‮ɐup‬ ‮ɹǝƃıous‬. ‮∩sıuƃ‬ ‮ɐ‬ ‮Ԁsıdɥou‬ ‮sǝɹʌǝɹ‬ ‮ıu‬ ‮ɐ‬ ‮ɹǝƃıou‬ ‮ɔʅosǝ‬ ‮ʇo‬ ‮ʎonɹ‬ ‮ɥoɯǝ‬ ‮ɔonuʇɹʎ‬ ‮ʍıʅʅ‬ ‮ƃǝuǝɹɐʅʅʎ‬ ‮dɹoʌıpǝ‬ ‮ɐ‬ ‮qǝʇʇǝɹ‬ ‮uǝʇʍoɹʞ‬ ‮ɔouuǝɔʇıou‬, ‮qnʇ‬ ‮ʎon‬ ‮ɯɐʎ‬ ‮ʍısɥ‬ ‮ʇo‬ ‮ɐɔɔǝss‬ ‮ʍǝqsıʇǝs‬ ‮ɐup‬ ‮sǝɹʌıɔǝs‬ ‮ʅıʞǝ‬ ‮ʎon‬ ‮ɐɹǝ‬ ‮ʌıɹʇnɐʅʅʎ‬ ‮ıu‬ ‮ɐ‬ ‮sdǝɔıɟıɔ‬ ‮ɔonuʇɹʎ‬ ‮oɹ‬ ‮ɹǝƃıou‬.",
+    "description": "Help text in the 'Psiphon Server Region' settings section explaining what the option is and why the user may want to override the default ('best') setting value. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#egress-region#error-modal-body-http": {
+    "message": "‮ʎon‬ ‮ɥɐʌǝ‬ ‮ɔouɟıƃnɹǝp‬ ‮Ԁsıdɥou‬ ‮ʇo‬ ‮nsǝ‬ ‮ɐ‬ ‮sǝɹʌǝɹ‬ ‮ıu‬ ‮ɐ‬ ‮sdǝɔıɟıɔ‬ ‮ɹǝƃıou‬.<br>\n‮Hoʍǝʌǝɹ‬, ‮ʇɥɐʇ‬ ‮ɹǝƃıou‬ ‮ıs‬ ‮uo‬ ‮ʅouƃǝɹ‬ ‮ɐʌɐıʅɐqʅǝ‬.<br>\n‮ʎon‬ ‮ɯnsʇ‬ ‮ɔɥoosǝ‬ ‮ɐ‬ ‮uǝʍ‬ ‮ɹǝƃıou‬ ‮oɹ‬ ‮ɔɥɐuƃǝ‬ ‮ʇo‬ ‮ʇɥǝ‬ ‮pǝɟɐnʅʇ‬ “‮Ԑǝsʇ‬ ‮Ԁǝɹɟoɹɯɐuɔǝ‬” ‮ɔɥoıɔǝ‬.",
+    "description": "Descriptive body text of the error modal dialog shown when it is detected that the user has an invalid 'Psiphon Server Region' currently configured. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#egress-region#error-modal-title": {
+    "message": "‮Sǝɹʌǝɹ‬ ‮ᴚǝƃıou‬ ‮∩uɐʌɐıʅɐqʅǝ‬",
+    "description": "Title text of the error modal dialog shown when it is detected that the user has an invalid 'Psiphon Server Region' currently configured."
+  },
+  "settings#egress-region#heading": {
+    "message": "‮Ԁsıdɥou‬ ‮Sǝɹʌǝɹ‬ ‮ᴚǝƃıou‬",
+    "description": "Settings section heading. In this section the user can choose to use a Psiphon server in a specific country/region (or the default, which is just to choose the best/fastest region). The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#egress-region#invalid-error-msg": {
+    "message": "‮Ↄɥoosǝ‬ ‮ɐ‬ ‮ʌɐʅıp‬ ‮Ԁsıdɥou‬ ‮sǝɹʌǝɹ‬ ‮ɹǝƃıou‬.",
+    "description": "Error message that is visible when the 'Psiphon Server Region' setting is invalid or not yet set. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#egress-region#select-ae": {
+    "message": "‮∩uıʇǝp‬ ‮∀ɹɐq‬ ‮Ǝɯıɹɐʇǝs‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in United Arab Emirates will be used."
+  },
+  "settings#egress-region#select-ar": {
+    "message": "‮∀ɹƃǝuʇıuɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Argentina will be used."
+  },
+  "settings#egress-region#select-at": {
+    "message": "‮∀nsʇɹıɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Austria will be used."
+  },
+  "settings#egress-region#select-au": {
+    "message": "‮∀nsʇɹɐʅıɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Australia will be used."
+  },
+  "settings#egress-region#select-be": {
+    "message": "‮Ԑǝʅƃınɯ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Belgium will be used."
+  },
+  "settings#egress-region#select-best-performance": {
+    "message": "‮Ԑǝsʇ‬ ‮Ԁǝɹɟoɹɯɐuɔǝ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. This is the default option and indicates that Psiphon will use a server in the best/fastest region."
+  },
+  "settings#egress-region#select-bg": {
+    "message": "‮Ԑnʅƃɐɹıɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Bulgaria will be used."
+  },
+  "settings#egress-region#select-br": {
+    "message": "‮Ԑɹɐzıʅ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Brazil will be used."
+  },
+  "settings#egress-region#select-ca": {
+    "message": "‮Ↄɐuɐpɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in the Canada will be used."
+  },
+  "settings#egress-region#select-ch": {
+    "message": "‮Sʍıʇzǝɹʅɐup‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Switzerland will be used."
+  },
+  "settings#egress-region#select-cl": {
+    "message": "‮Ↄɥıʅǝ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Chile will be used."
+  },
+  "settings#egress-region#select-cz": {
+    "message": "‮Ↄzǝɔɥ‬ ‮ᴚǝdnqʅıɔ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Czech Republic will be used."
+  },
+  "settings#egress-region#select-de": {
+    "message": "‮פǝɹɯɐuʎ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Germany will be used."
+  },
+  "settings#egress-region#select-dk": {
+    "message": "‮pǝuɯɐɹʞ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Denmark will be used."
+  },
+  "settings#egress-region#select-es": {
+    "message": "‮Sdɐıu‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Spain will be used."
+  },
+  "settings#egress-region#select-fi": {
+    "message": "‮ɟıuʅɐup‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Finland will be used."
+  },
+  "settings#egress-region#select-fr": {
+    "message": "‮ɟɹɐuɔǝ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in France will be used."
+  },
+  "settings#egress-region#select-gb": {
+    "message": "‮∩uıʇǝp‬ ‮Ӽıuƃpoɯ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in the UK will be used."
+  },
+  "settings#egress-region#select-hk": {
+    "message": "‮Houƃ‬ ‮Ӽouƃ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Hong Kong will be used."
+  },
+  "settings#egress-region#select-hu": {
+    "message": "‮Hnuƃɐɹʎ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Hungary will be used."
+  },
+  "settings#egress-region#select-ie": {
+    "message": "‮Iɹǝʅɐup‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Ireland will be used."
+  },
+  "settings#egress-region#select-in": {
+    "message": "‮Iupıɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in India will be used."
+  },
+  "settings#egress-region#select-is": {
+    "message": "‮Iɔǝʅɐup‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Iceland will be used."
+  },
+  "settings#egress-region#select-it": {
+    "message": "‮Iʇɐʅʎ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Italy will be used."
+  },
+  "settings#egress-region#select-jp": {
+    "message": "‮ſɐdɐu‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Japan will be used."
+  },
+  "settings#egress-region#select-ke": {
+    "message": "‮Ӽǝuʎɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Kenya will be used."
+  },
+  "settings#egress-region#select-kr": {
+    "message": "‮Ӽoɹǝɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Korea will be used."
+  },
+  "settings#egress-region#select-mx": {
+    "message": "‮Wǝxıɔo‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Mexico will be used."
+  },
+  "settings#egress-region#select-nl": {
+    "message": "‮Nǝʇɥǝɹʅɐups‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in the Netherlands will be used."
+  },
+  "settings#egress-region#select-no": {
+    "message": "‮Noɹʍɐʎ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Norway will be used."
+  },
+  "settings#egress-region#select-pl": {
+    "message": "‮Ԁoʅɐup‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Sweden will be used."
+  },
+  "settings#egress-region#select-ro": {
+    "message": "‮ᴚoɯɐuıɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Romania will be used."
+  },
+  "settings#egress-region#select-rs": {
+    "message": "‮Sǝɹqıɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Serbia will be used."
+  },
+  "settings#egress-region#select-se": {
+    "message": "‮Sʍǝpǝu‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Sweden will be used."
+  },
+  "settings#egress-region#select-sg": {
+    "message": "‮Sıuƃɐdoɹǝ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Singapore will be used."
+  },
+  "settings#egress-region#select-sk": {
+    "message": "‮Sʅoʌɐʞıɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Slovakia will be used."
+  },
+  "settings#egress-region#select-tw": {
+    "message": "‮⊥ɐıʍɐu‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in Taiwan will be used."
+  },
+  "settings#egress-region#select-us": {
+    "message": "‮∩uıʇǝp‬ ‮Sʇɐʇǝs‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in the United States will be used."
+  },
+  "settings#egress-region#select-za": {
+    "message": "‮Sonʇɥ‬ ‮∀ɟɹıɔɐ‬",
+    "description": "One of the choices in the 'Psiphon Server Region' combo box. If selected, a Psiphon server in South Africa will be used."
+  },
+  "settings#error-alert": {
+    "message": "<strong>‮Ǝɹɹoɹ‬!</strong> ‮Ԁʅǝɐsǝ‬ ‮ɟıx‬ ‮ıuɔoɹɹǝɔʇ‬ ‮ʌɐʅnǝs‬ ‮qǝɟoɹǝ‬ ‮dɹoɔǝǝpıuƃ‬.",
+    "description": "This alert is shown to the user if they enter incorrect values into one or more of the settings fields."
+  },
+  "settings#error-modal#body": {
+    "message": "‮⊥ɥǝɹǝ‬ ‮ɐɹǝ‬ ‮ǝɹɹoɹs‬ ‮ıu‬ ‮ʎonɹ‬ ‮sǝʇʇıuƃs‬ ‮ʌɐʅnǝs‬. ‮Ԁʅǝɐsǝ‬ ‮ɔoɹɹǝɔʇ‬ ‮ʇɥǝɯ‬ ‮qǝɟoɹǝ‬ ‮dɹoɔǝǝpıuƃ‬.",
+    "description": "This modal dialog box is shown when the user tries to save their settings, but there is an error in the values they have entered. This body is the title of the modal box."
+  },
+  "settings#error-modal#title": {
+    "message": "‮Sǝʇʇıuƃs‬ ‮Ǝɹɹoɹ‬",
+    "description": "This modal dialog box is shown when the user tries to save their settings, but there is an error in the values they have entered. This string is the title of the modal box."
+  },
+  "settings#expose-local-proxies-to-lan#enable-label": {
+    "message": "‮∀ʅʅoʍ‬ ‮oʇɥǝɹ‬ ‮pǝʌıɔǝs‬ ‮ou‬ ‮ʎonɹ‬ ‮uǝʇʍoɹʞ‬ ‮ʇo‬ ‮nsǝ‬ ‮ʇɥǝ‬ ‮ʅoɔɐʅ‬ ‮Ԁsıdɥou‬ ‮dɹoxıǝs‬",
+    "description": "Label for the setting to allow other devices on the network to use the local Psiphon proxies."
+  },
+  "settings#expose-local-proxies-to-lan#help-text": {
+    "message": "‮Iɟ‬ ‮ʎon‬ ‮ɥɐʌǝ‬ ‮oʇɥǝɹ‬ ‮pǝʌıɔǝs‬ ‮ou‬ ‮ʎonɹ‬ ‮uǝʇʍoɹʞ‬, ‮snɔɥ‬ ‮ɐs‬ ‮ɐ‬ ‮sɯɐɹʇ‬ ‮⊥Ʌ‬ ‮oɹ‬ ‮ƃɐɯıuƃ‬ ‮ɔousoʅǝ‬, ‮ʎon‬ ‮ɔɐu‬ ‮ɐʅʅoʍ‬ ‮ʇɥǝɯ‬ ‮ʇo‬ ‮nsǝ‬ ‮ʇɥǝsǝ‬ ‮H⊥⊥Ԁ‬ ‮ɐup‬ ‮SOↃӼS‬ ‮dɹoxıǝs‬ ‮ʍɥıʅǝ‬ ‮Ԁsıdɥou‬ ‮ıs‬ ‮ɔouuǝɔʇǝp‬.",
+    "description": "Help text explaining the setting to allow other devices on the network to use the local Psiphon proxies. Smart TV refers to televisions that have Internet connectivity and apps that access Internet services."
+  },
+  "settings#expose-local-proxies-to-lan#hint": {
+    "message": "<strong>‮HIN⊥‬:</strong> ‮ʎon‬ ‮sɥonʅp‬ ‮sdǝɔıɟʎ‬ ‮ɐʇ‬ ‮ʅǝɐsʇ‬ ‮ouǝ‬ ‮oɟ‬ ‮ʇɥǝ‬ ‮doɹʇ‬ ‮unɯqǝɹs‬ ‮ɐqoʌǝ‬ ‮ıu‬ ‮oɹpǝɹ‬ ‮ʇo‬ ‮nsǝ‬ ‮ʇɥıs‬ ‮ɟǝɐʇnɹǝ‬. ‮⊥ɥǝ‬ ‮ɐppɹǝssǝs‬ ‮oɟ‬ ‮ʇɥǝ‬ ‮ʅoɔɐʅ‬ ‮dɹoxıǝs‬ ‮ʍıʅʅ‬ ‮qǝ‬ ‮pısdʅɐʎǝp‬ ‮ıu‬ ‮ʇɥǝ‬ ‮ʅoƃs‬.",
+    "description": "Helpful hint suggesting to set port numbers for the local Psiphon proxies when using the setting to allow other devices on the network to use the local Psiphon proxies."
+  },
+  "settings#local-proxy-ports#error-modal-body-http": {
+    "message": "<p>\n‮ʎon‬ ‮ɥɐʌǝ‬ ‮ɔouɟıƃnɹǝp‬ ‮Ԁsıdɥou‬ ‮ʇo‬ ‮nsǝ‬ ‮ɐ‬ ‮sdǝɔıɟıɔ‬ ‮ʅoɔɐʅ‬ ‮doɹʇ‬ ‮ɟoɹ‬ ‮ıʇs‬ ‮H⊥⊥Ԁ‬ ‮dɹoxʎ‬.<br>\n‮Hoʍǝʌǝɹ‬, ‮ʇɥɐʇ‬ ‮doɹʇ‬ ‮ɐddǝɐɹs‬ ‮ʇo‬ ‮qǝ‬ ‮ɐʅɹǝɐpʎ‬ ‮ıu‬ ‮nsǝ‬ ‮ɐup‬ ‮so‬ ‮Ԁsıdɥou‬ ‮ɔɐuuoʇ‬ ‮nsǝ‬ ‮ıʇ‬.\n</p>\n<p>\n‮Ԁʅǝɐsǝ‬ ‮ɔɥɐuƃǝ‬ ‮ʇɥǝ‬ ‮ɔouɟıƃnɹǝp‬ ‮H⊥⊥Ԁ‬ ‮dɹoxʎ‬ ‮doɹʇ‬ ‮ʌɐʅnǝ‬ ‮ɐup‬ ‮ʇɹʎ‬ ‮ɐƃɐıu‬. ‮Ｍǝ‬ ‮ɹǝɔoɯɯǝupǝp‬ ‮ʇɥɐʇ‬ ‮ʎon‬ ‮ɔʅǝɐɹ‬ ‮ʇɥǝ‬ ‮ʌɐʅnǝ‬ ‮so‬ ‮ʇɥɐʇ‬ ‮Ԁsıdɥou‬ ‮ɔɐu‬ ‮ɐnʇoɯɐʇıɔɐʅʅʎ‬ ‮dıɔʞ‬ ‮ɐu‬ ‮ɐʌɐıʅɐqʅǝ‬ ‮doɹʇ‬.\n</p>",
+    "description": "Main text in the 'Local Proxy Port Conflict' dialog box. This is shown when the conflict is with the HTTP proxy port, rather than the SOCKS proxy port. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#local-proxy-ports#error-modal-body-socks": {
+    "message": "<p>\n‮ʎon‬ ‮ɥɐʌǝ‬ ‮ɔouɟıƃnɹǝp‬ ‮Ԁsıdɥou‬ ‮ʇo‬ ‮nsǝ‬ ‮ɐ‬ ‮sdǝɔıɟıɔ‬ ‮ʅoɔɐʅ‬ ‮doɹʇ‬ ‮ɟoɹ‬ ‮ıʇs‬ ‮SOↃӼS‬ ‮dɹoxʎ‬.<br>\n‮Hoʍǝʌǝɹ‬, ‮ʇɥɐʇ‬ ‮doɹʇ‬ ‮ɐddǝɐɹs‬ ‮ʇo‬ ‮qǝ‬ ‮ɐʅɹǝɐpʎ‬ ‮ıu‬ ‮nsǝ‬ ‮ɐup‬ ‮so‬ ‮Ԁsıdɥou‬ ‮ɔɐuuoʇ‬ ‮nsǝ‬ ‮ıʇ‬.\n</p>\n<p>\n‮Ԁʅǝɐsǝ‬ ‮ɔɥɐuƃǝ‬ ‮ʇɥǝ‬ ‮ɔouɟıƃnɹǝp‬ ‮SOↃӼS‬ ‮dɹoxʎ‬ ‮doɹʇ‬ ‮ʌɐʅnǝ‬ ‮ɐup‬ ‮ʇɹʎ‬ ‮ɐƃɐıu‬. ‮Ｍǝ‬ ‮ɹǝɔoɯɯǝupǝp‬ ‮ʇɥɐʇ‬ ‮ʎon‬ ‮ɔʅǝɐɹ‬ ‮ʇɥǝ‬ ‮ʌɐʅnǝ‬ ‮so‬ ‮ʇɥɐʇ‬ ‮Ԁsıdɥou‬ ‮ɔɐu‬ ‮ɐnʇoɯɐʇıɔɐʅʅʎ‬ ‮dıɔʞ‬ ‮ɐu‬ ‮ɐʌɐıʅɐqʅǝ‬ ‮doɹʇ‬.\n</p>",
+    "description": "Main text in the 'Local Proxy Port Conflict' dialog box. This is shown when the conflict is with the SOCKS proxy port, rather than the HTTP proxy port. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#local-proxy-ports#error-modal-title": {
+    "message": "‮˥oɔɐʅ‬ ‮Ԁɹoxʎ‬ ‮Ԁoɹʇ‬ ‮Ↄouɟʅıɔʇ‬",
+    "description": "Title of the message box showing the error message when it is detected that the user has chosen a local proxy port (either HTTP or SOCKS) that is already in use and therefore can't be used by Psiphon."
+  },
+  "settings#local-proxy-ports#heading": {
+    "message": "‮˥oɔɐʅ‬ ‮Ԁɹoxʎ‬ ‮Ԁoɹʇs‬",
+    "description": "Settings section heading. In this section the user can specify what network ports the local Psiphon processes should use (Psiphon uses two such ports). For most people, this should be set to automatic."
+  },
+  "settings#local-proxy-ports#http-label": {
+    "message": "‮H⊥⊥Ԁ‬/‮H⊥⊥ԀS‬",
+    "description": "Label for the text box where the user will enter their desired local port for the Psiphon HTTP/HTTPS process. The full term for this would be 'Desired HTTP and HTTPS local proxy port', but is shortened."
+  },
+  "settings#local-proxy-ports#leave-blank": {
+    "message": "‮˥ǝɐʌǝ‬ <strong>‮qʅɐuʞ‬</strong> ‮ɟoɹ‬ ‮ɐnʇoɯɐʇıɔ‬ ‮doɹʇ‬ ‮sǝʅǝɔʇıou‬ (‮ɹǝɔoɯɯǝupǝp‬).",
+    "description": "Help text that appears above the 'Local Proxy Ports' settings. 'blank' is the default and best value, and is bolded."
+  },
+  "settings#local-proxy-ports#reason": {
+    "message": "‮Iɟ‬ ‮ʎon‬ ‮nsǝ‬ ‮ʇooʅs‬ ‮ou‬ ‮ʎonɹ‬ ‮ɔoɯdnʇǝɹ‬ ‮ʇɥɐʇ‬ ‮ɹǝbnıɹǝ‬ ‮ɯɐunɐʅ‬ ‮ɔouɟıƃnɹɐʇıou‬ ‮ʇo‬ ‮ʍoɹʞ‬ ‮ʍıʇɥ‬ ‮Ԁsıdɥou‬, ‮ʎon‬ ‮ʍıʅʅ‬ ‮ʍɐuʇ‬ ‮Ԁsıdɥou‬ ‮ʇo‬ ‮ɔousısʇǝuʇʅʎ‬ ‮nsǝ‬ ‮ʇɥǝ‬ ‮sɐɯǝ‬ ‮ʅoɔɐʅ‬ ‮doɹʇ‬ ‮unɯqǝɹs‬. ‮Iɟ‬ ‮ʎon‬ ‮pou‬’‮ʇ‬ ‮ɥɐʌǝ‬ ‮ɐ‬ ‮ɹǝɐsou‬ ‮ʇo‬ ‮sdǝɔıɟʎ‬ ‮doɹʇ‬ ‮unɯqǝɹs‬, ‮ʎon‬ ‮sɥonʅp‬ ‮ɐʅʅoʍ‬ ‮Ԁsıdɥou‬ ‮ʇo‬ ‮ɔɥoosǝ‬ ‮ʇɥǝɯ‬ ‮ɐnʇoɯɐʇıɔɐʅʅʎ‬ ‮ʇo‬ ‮ɥǝʅd‬ ‮ɐʌoıp‬ ‮ɔouɟʅıɔʇs‬.",
+    "description": "Help text in the 'Local Proxy Ports' settings area. This explains to the user why they might want to override the default (automatic) settings values. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#local-proxy-ports#socks-label": {
+    "message": "‮SOↃӼS‬",
+    "description": "Label for the text box where the user will enter their desired local port for the Psiphon SOCKS process. The full term for this would be 'Desired SOCKS local proxy port', but is shortened. 'SOCKS' is a proxy protocol. Any user for whom this setting is useful will know what that means."
+  },
+  "settings#local-proxy-ports#unique-error-msg": {
+    "message": "‮˥oɔɐʅ‬ ‮doɹʇs‬ ‮ɯnsʇ‬ ‮qǝ‬ ‮pısʇıuɔʇ‬ ‮ɟɹoɯ‬ ‮ǝɐɔɥ‬ ‮oʇɥǝɹ‬.",
+    "description": "Error message that shows if the HTTP local proxy port and SOCKS local proxy port are set to a value and are the same as each other. The local ports must be different from each other. Or one or both of the fields can be empty, which means 'automatic selection'."
+  },
+  "settings#port-value-error-msg": {
+    "message": "‮Wnsʇ‬ ‮qǝ‬ ‮qǝʇʍǝǝu‬ 1 ‮ɐup‬ 65535.",
+    "description": "Error text that appears when the user enters an invalid network port number. As indicated, a valid port number must be a number between 1 and 65535, inclusive. This text is not visible until an invalid value is entered."
+  },
+  "settings#reset-button": {
+    "message": "‮ᴚǝsǝʇ‬ ‮ʇo‬ ‮pǝɟɐnʅʇ‬",
+    "description": "Text on the button that resets the Psiphon settings values to default. This will typically be pressed if the user has configured something incorrectly and needs to get back to the default state."
+  },
+  "settings#saved-message": {
+    "message": "‮Sǝʇʇıuƃs‬ ‮sɐʌǝp‬.",
+    "description": "Pop-up message shown to users after they have changed their settings (but they aren't currently connected, so there's no reconnect or further action)."
+  },
+  "settings#split-tunnel#enable-label": {
+    "message": "‮pou‬'‮ʇ‬ ‮dɹoxʎ‬ ‮ʍǝqsıʇǝs‬ ‮ʍıʇɥıu‬ ‮ʎonɹ‬ ‮ɔonuʇɹʎ‬",
+    "description": "The label on the checkbox that enables 'Split Tunnel'."
+  },
+  "settings#split-tunnel#heading": {
+    "message": "‮Sdʅıʇ‬ ‮⊥nuuǝʅ‬",
+    "description": "Settings section heading. If the user clicks this, the 'Split Tunnel' section will expand and can be edited. If 'split tunnel' is enabled, if the user is trying to get to a website in his/her own country, they will connect to it directly, instead of through Psiphon."
+  },
+  "settings#split-tunnel#help-text": {
+    "message": "‮Iɟ‬ ‮ǝuɐqʅǝp‬, ‮ɹǝbnǝsʇs‬ ‮ɯɐpǝ‬ ‮ʇo‬ ‮sǝɹʌǝɹs‬ ‮ʍıʇɥıu‬ ‮ʎonɹ‬ ‮ɥoɯǝ‬ ‮ɔonuʇɹʎ‬ ‮ʍıʅʅ‬ ‮uoʇ‬ ‮qǝ‬ ‮ʇnuuǝʅǝp‬ ‮ʇɥɹonƃɥ‬ ‮Ԁsıdɥou‬.",
+    "description": "Text explaining to the user what the 'Split Tunnel' setting does if enabled. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#split-tunnel#reason": {
+    "message": "‮Ｍǝqsıʇǝs‬ ‮ʍıʇɥıu‬ ‮ʎonɹ‬ ‮ɥoɯǝ‬ ‮ɔonuʇɹʎ‬ ‮ɐɹǝ‬ ‮ƃǝuǝɹɐʅʅʎ‬ ‮uoʇ‬ ‮qʅoɔʞǝp‬, ‮so‬ ‮ǝuɐqʅıuƃ‬ ‮ʇɥıs‬ ‮odʇıou‬ ‮ʍıʅʅ‬ ‮ƃıʌǝ‬ ‮ʎon‬ ‮ɟɐsʇǝɹ‬ ‮ɐɔɔǝss‬ ‮ʇo‬ ‮ʇɥosǝ‬ ‮sıʇǝs‬ ‮ɐup‬ ‮ɔɐu‬ ‮soɯǝʇıɯǝs‬ ‮ɹǝpnɔǝ‬ ‮ISԀ‬ ‮pɐʇɐ‬ ‮nsɐƃǝ‬ ‮ɔosʇs‬.",
+    "description": "Help text in the 'Split Tunnel' settings section explaining to the user why they might want to modify (enable) the setting."
+  },
+  "settings#systray-minimize#enable-label": {
+    "message": "‮Wıuıɯızǝ‬ ‮ʇo‬ ‮ʇɥǝ‬ ‮uoʇıɟıɔɐʇıou‬ ‮ɐɹǝɐ‬ (‮sʎsʇǝɯ‬ ‮ʇɹɐʎ‬)",
+    "description": "The label on the checkbox that enables 'Minimize to Notification Area (System Tray)'."
+  },
+  "settings#systray-minimize#heading": {
+    "message": "‮Wıuıɯızǝ‬ ‮ʇo‬ ‮Noʇıɟıɔɐʇıou‬ ‮∀ɹǝɐ‬ (‮Sʎsʇǝɯ‬ ‮⊥ɹɐʎ‬)",
+    "description": "Settings section heading. In this section the user can choose to enable or disable the ability for the Psiphon application window to be hidden as a notification area icon when minimized. 'Notification area' is the official term for the icons located near the clock on the Windows taskbar, but it's also often called the 'system tray' or 'systray' -- use whatever is most common in your language, and be verbose if necessary."
+  },
+  "settings#systray-minimize#help-text": {
+    "message": "‮Iɟ‬ ‮ǝuɐqʅǝp‬, ‮ʍɥǝu‬ ‮ɯıuıɯızǝp‬ ‮ʇɥǝ‬ ‮Ԁsıdɥou‬ ‮ɐddʅıɔɐʇıou‬ ‮ʍıupoʍ‬ ‮ʍıʅʅ‬ ‮ɥıpǝ‬ ‮ıu‬ ‮ʇɥǝ‬ ‮uoʇıɟıɔɐʇıou‬ ‮ɐɹǝɐ‬ (‮ɐʅso‬ ‮ʞuoʍu‬ ‮ɐs‬ ‮ʇɥǝ‬ “‮sʎsʇǝɯ‬ ‮ʇɹɐʎ‬” ‮oɹ‬ “‮sʎsʇɹɐʎ‬”, ‮ʅoɔɐʇǝp‬ ‮uǝɐɹ‬ ‮ʇɥǝ‬ ‮ɔʅoɔʞ‬ ‮ou‬ ‮ʎonɹ‬ ‮Ｍıupoʍs‬ ‮ʇɐsʞ‬ ‮qɐɹ‬).",
+    "description": "Text explaining to the user what the 'Minimize to Notification Area (System Tray)' setting does if enabled. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#systray-minimize#reason": {
+    "message": "‮Wıuıɯızıuƃ‬ ‮Ԁsıdɥou‬ ‮ʇo‬ ‮ʇɥǝ‬ ‮uoʇıɟıɔɐʇıou‬ ‮ɐɹǝɐ‬ (“‮sʎsʇǝɯ‬ ‮ʇɹɐʎ‬”) ‮ɟɹǝǝs‬ ‮nd‬ ‮sdɐɔǝ‬ ‮ou‬ ‮ʎonɹ‬ ‮ʇɐsʞ‬ ‮qɐɹ‬. ‮⊥ɥıs‬ ‮ıs‬ ‮ǝsdǝɔıɐʅʅʎ‬ ‮ɥǝʅdɟnʅ‬ ‮ıɟ‬ ‮ʎon‬ ‮oɟʇǝu‬ ‮ɹnu‬ ‮Ԁsıdɥou‬ ‮ɟoɹ‬ ‮ʅouƃ‬ ‮dǝɹıops‬ ‮oɟ‬ ‮ʇıɯǝ‬.",
+    "description": "Help text in the 'Minimize to Systray' settings section explaining to the user why they might want to enable it. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#transport-mode#check-label": {
+    "message": "‮∩sǝ‬ ‮˥‬2‮⊥Ԁ‬/‮IԀSǝɔ‬ ‮ɯopǝ‬",
+    "description": "Label for the checkbox that allows the user to indicate that they want to use the non-default network transport mode. This mode is generally inferior for circumvention and not recommended. 'L2TP/IPSec' is the technical name for a type of virtual private network and should probably not be translated."
+  },
+  "settings#transport-mode#heading": {
+    "message": "‮⊥ɹɐusdoɹʇ‬ ‮Wopǝ‬",
+    "description": "Settings section heading. In this section the user can choose to use an alternative connection and data transfer method -- also known as 'transport'."
+  },
+  "settings#transport-mode#help-text": {
+    "message": "‮∩sǝs‬ ‮Ｍıupoʍs‬ ‮˥‬2‮⊥Ԁ‬/‮IԀSǝɔ‬ ‮ʌıɹʇnɐʅ‬ ‮uǝʇʍoɹʞıuƃ‬. ‮⊥ɥıs‬ ‮ɯopǝ‬ ‮ʍıʅʅ‬ ‮ʇnuuǝʅ‬ ‮ɐʅʅ‬ ‮oɟ‬ ‮ʎonɹ‬ ‮ɐdds‬, ‮qnʇ‬ ‮ıʇ‬ ‮poǝsu‬’‮ʇ‬ ‮dɹoʌıpǝ‬ ‮oqɟnsɔɐʇıou‬ ‮ɐup‬ ‮so‬ ‮poǝs‬ ‮uoʇ‬ ‮ɥɐʌǝ‬ ‮sʇɹouƃ‬ ‮ɔǝusoɹsɥıd‬ ‮ɔıɹɔnɯʌǝuʇıou‬ ‮ɔɐdɐqıʅıʇıǝs‬. ‮Iʇ‬ ‮ıs‬ <strong>‮uoʇ‬ ‮ɹǝɔoɯɯǝupǝp‬</strong> ‮ɟoɹ‬ ‮qʎdɐssıuƃ‬ ‮ɯosʇ‬ ‮ɟıɹǝʍɐʅʅs‬.",
+    "description": "Help text for the 'Use L2TP/IPSec mode' transport selection checkbox. It gives some technical details and indicates that this mode is not recommended."
+  },
+  "settings#unapplied-changes-prompt#apply-button": {
+    "message": "‮∀ddʅʎ‬",
+    "description": "Text on a button of the modal dialog box that appears when the user has modified their changes, but has not applied the changes before trying to navigate to another tab. At that time the user is propmted with the choice to apply or discard the changes. This button will apply the changes -- that is, save the changes and make them immediately take effect. Should be read like the verb in 'Apply your changes'."
+  },
+  "settings#unapplied-changes-prompt#body": {
+    "message": "‮ʎon‬ ‮ɥɐʌǝ‬ ‮ɯɐpǝ‬ ‮ɔɥɐuƃǝs‬ ‮ʇo‬ ‮ʎonɹ‬ ‮sǝʇʇıuƃs‬, ‮qnʇ‬ ‮ʎon‬ ‮ɥɐʌǝ‬ ‮uoʇ‬ ‮ɐddʅıǝp‬ ‮ʇɥǝ‬ ‮ɔɥɐuƃǝs‬.<br><br>‮po‬ ‮ʎon‬ ‮ʍısɥ‬ ‮ʇo‬ ‮ɐddʅʎ‬ ‮ʎonɹ‬ ‮ɔɥɐuƃǝs‬ ‮uoʍ‬ ‮oɹ‬ ‮pısɔɐɹp‬ ‮ʇɥǝɯ‬?",
+    "description": "Body text of the modal dialog box that appears when the user has modified their changes, but has not applied the changes before trying to navigate to another tab. At that time the user is propmted with the choice to apply or discard the changes."
+  },
+  "settings#unapplied-changes-prompt#discard-button": {
+    "message": "‮pısɔɐɹp‬",
+    "description": "Text on a button of the modal dialog box that appears when the user has modified their changes, but has not applied the changes before trying to navigate to another tab. At that time the user is propmted with the choice to apply or discard the changes. This button will discard the changes -- that is, throw away the changes to the settings the user has made since viewing the settings tab.  Should be read like the verb in 'Discard your changes'."
+  },
+  "settings#unapplied-changes-prompt#title": {
+    "message": "‮Sǝʇʇıuƃs‬ ‮Ↄɥɐuƃǝp‬",
+    "description": "Title of the modal dialog box that appears when the user has modified their changes, but has not applied the changes before trying to navigate to another tab. At that time the user is propmted with the choice to apply or discard the changes."
+  },
+  "settings#upstream-proxy#by-default": {
+    "message": "‮Iɟ‬ ‮ʎonɹ‬ ‮ɔoɯdnʇǝɹ‬ ‮ɐʅɹǝɐpʎ‬ ‮ɥɐs‬ ‮ɐ‬ ‮dɹoxʎ‬ ‮ɔouɟıƃnɹǝp‬, ‮qʎ‬ ‮pǝɟɐnʅʇ‬ ‮Ԁsıdɥou‬ ‮ʍıʅʅ‬ ‮nsǝ‬ ‮ʇɥɐʇ‬ ‮dɹoxʎ‬ ‮ʍɥǝu‬ ‮ǝsʇɐqʅısɥıuƃ‬ ‮ɐ‬ ‮ʇnuuǝʅ‬. ‮ʎon‬ ‮ɔɐu‬ ‮oʌǝɹɹıpǝ‬ ‮ʇɥɐʇ‬ ‮qǝɥɐʌıoɹ‬ ‮qʎ‬ ‮sdǝɔıɟʎıuƃ‬ ‮ɐ‬ ‮dɹoxʎ‬ ‮ʇo‬ ‮nsǝ‬, ‮oɹ‬ ‮qʎ‬ ‮sdǝɔıɟʎıuƃ‬ ‮ʇɥɐʇ‬ ‮uo‬ ‮snɔɥ‬ “‮ndsʇɹǝɐɯ‬ ‮dɹoxʎ‬” ‮sɥonʅp‬ ‮qǝ‬ ‮nsǝp‬.",
+    "description": "Help text indicating the default (and best) configuration and behavior for the 'Upstream Proxy' setting. It also indicates what will happen if the setting is overridden or disabled. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#upstream-proxy#domain-label": {
+    "message": "‮poɯɐıu‬",
+    "description": "Label for the text box where the user can set the domain for the 'upstream proxy'."
+  },
+  "settings#upstream-proxy#error-modal-body-configured": {
+    "message": "‮ʎon‬ ‮ɥɐʌǝ‬ ‮ɔouɟıƃnɹǝp‬ ‮Ԁsıdɥou‬ ‮ʇo‬ ‮nsǝ‬ ‮ɐu‬ “‮ndsʇɹǝɐɯ‬ ‮dɹoxʎ‬”.<br>\n‮Hoʍǝʌǝɹ‬, ‮ʍǝ‬ ‮sǝǝɯ‬ ‮ʇo‬ ‮qǝ‬ ‮nuɐqʅǝ‬ ‮ʇo‬ ‮ɔouuǝɔʇ‬ ‮ʇo‬ ‮ɐ‬ ‮Ԁsıdɥou‬ ‮sǝɹʌǝɹ‬ ‮ʇɥɹonƃɥ‬ ‮ʇɥɐʇ‬ ‮dɹoxʎ‬.<br>\n‮Ԁʅǝɐsǝ‬ ‮ɟıx‬ ‮ʇɥǝ‬ ‮sǝʇʇıuƃs‬ ‮ɐup‬ ‮ʇɹʎ‬ ‮ɐƃɐıu‬.",
+    "description": "Main text in the 'Upstream Proxy Error' dialog box. This is shown when the user has directly altered these settings, and those settings are (probably) erroneous. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#upstream-proxy#error-modal-body-default": {
+    "message": "‮Ԁsıdɥou‬ ‮ıs‬ ‮ɔnɹɹǝuʇʅʎ‬ ‮ɔouɟıƃnɹǝp‬ ‮ʇo‬ ‮nsǝ‬ ‮ʎonɹ‬ ‮sʎsʇǝɯ‬ ‮dɹoxʎ‬ ‮ɐs‬ ‮ıʇs‬ “‮ndsʇɹǝɐɯ‬ ‮dɹoxʎ‬”.<br>\n‮Hoʍǝʌǝɹ‬, ‮ʍǝ‬ ‮sǝǝɯ‬ ‮ʇo‬ ‮qǝ‬ ‮nuɐqʅǝ‬ ‮ʇo‬ ‮ɔouuǝɔʇ‬ ‮ʇo‬ ‮ɐ‬ ‮Ԁsıdɥou‬ ‮sǝɹʌǝɹ‬ ‮ʇɥɹonƃɥ‬ ‮ʇɥɐʇ‬ ‮dɹoxʎ‬.<br>\n‮Ԁʅǝɐsǝ‬ ‮ǝuɐqʅǝ‬ “‮pou‬'‮ʇ‬ ‮nsǝ‬ ‮ndsʇɹǝɐɯ‬ ‮dɹoxʎ‬” ‮ɐup‬ ‮ʇɹʎ‬ ‮ɐƃɐıu‬.",
+    "description": "Main text in the 'Upstream Proxy Error' dialog box. This is shown when the user has not directly altered these settings (yet), but the default is causing a problem. The word 'Psiphon' must not be translated or transliterated."
+  },
+  "settings#upstream-proxy#error-modal-title": {
+    "message": "‮∩dsʇɹǝɐɯ‬ ‮Ԁɹoxʎ‬ ‮Ǝɹɹoɹ‬",
+    "description": "Title of the message box showing the error message when a problem is detected with the user's 'upstream proxy settings'."
+  },
+  "settings#upstream-proxy#heading": {
+    "message": "‮∩dsʇɹǝɐɯ‬ ‮Ԁɹoxʎ‬",
+    "description": "Settings section heading. In this section the user can specify network information to use an 'upstream proxy', which is a separate proxy that Psiphon will connect through to get to its own server. This is most often used by people in school or work networks that force them to connect out to the Internet through a particular server. This setting can also disable automatic upstream proxy use."
+  },
+  "settings#upstream-proxy#hostname-label": {
+    "message": "‮Hosʇuɐɯǝ‬",
+    "description": "Label for the text box where the user can set the hostname for the 'upstream proxy'. 'Hostname' means approximately the same thing as 'server network name or identifier'."
+  },
+  "settings#upstream-proxy#password-label": {
+    "message": "‮Ԁɐssʍoɹp‬",
+    "description": "Label for the text box where the user can set the password for the 'upstream proxy'."
+  },
+  "settings#upstream-proxy#port-label": {
+    "message": "‮Ԁoɹʇ‬",
+    "description": "Label for the text box where the user can set the network port number for the 'upstream proxy' that they would like to use."
+  },
+  "settings#upstream-proxy#proxy-reqs": {
+    "message": "‮Ouʅʎ‬ ‮H⊥⊥Ԁ‬ ‮dɹoxıǝs‬ ‮ʇɥɐʇ‬ ‮snddoɹʇ‬ ‮H⊥⊥ԀS‬ ‮ɐɹǝ‬ ‮ɐʅʅoʍǝp‬.",
+    "description": "Help text beside the upstream proxy settings indicating what type of upstream proxies can by used by Psiphon (different proxies are of different types and have different capabilities, and Psiphon has certain requirements)."
+  },
+  "settings#upstream-proxy#reason": {
+    "message": "‮∩dsʇɹǝɐɯ‬ ‮dɹoxıǝs‬ ‮ɐɹǝ‬ ‮soɯǝʇıɯǝs‬ ‮ɹǝbnıɹǝp‬ ‮qʎ‬ ‮sɔɥooʅs‬, ‮nuıʌǝɹsıʇıǝs‬, ‮oɹ‬ ‮qnsıuǝssǝs‬. ‮Iɟ‬ ‮ʎonɹ‬ ‮uǝʇʍoɹʞ‬ ‮dɹoʌıpǝɹ‬ ‮ɥɐs‬ ‮ƃıʌǝu‬ ‮ʎon‬ ‮ndsʇɹǝɐɯ‬ ‮dɹoxʎ‬ ‮sǝʇʇıuƃs‬, ‮ʇɥǝu‬ ‮ɯɐunɐʅʅʎ‬ ‮sǝʇʇıuƃ‬ ‮ʇɥǝɯ‬ ‮ɥǝɹǝ‬ ‮ɯɐʎ‬ ‮qǝ‬ ‮ɹǝbnıɹǝp‬ ‮ʇo‬ ‮ɔouuǝɔʇ‬.",
+    "description": "Help text describing why the user might need to modify the upstream proxy settings in order to successfully connect to the Psiphon server."
+  },
+  "settings#upstream-proxy#set-hostname-error-msg": {
+    "message": "‮ʎon‬ ‮ɯnsʇ‬ ‮dɹoʌıpǝ‬ ‮ɐ‬ ‮Hosʇuɐɯǝ‬, ‮oɹ‬ ‮ʅǝɐʌǝ‬ ‮ɐʅʅ‬ ‮∩dsʇɹǝɐɯ‬ ‮Ԁɹoxʎ‬ ‮ɟıǝʅps‬ ‮qʅɐuʞ‬ ‮ɟoɹ‬ ‮ɐnʇoɯɐʇıɔ‬ ‮sǝʅǝɔʇıou‬.",
+    "description": "Error message that is shown if the user enters a value for one of the other upstream proxy fields but not for 'hostname', which is required. Alternatively, the user can leave all fields blank to allow the automatic behaviour."
+  },
+  "settings#upstream-proxy#set-username-error-msg": {
+    "message": "‮ʎon‬ ‮ɯnsʇ‬ ‮dɹoʌıpǝ‬ ‮ɐ‬ ‮∩sǝɹuɐɯǝ‬ ‮ıɟ‬ ‮ʎon‬ ‮ɐɹǝ‬ ‮sǝʇʇıuƃ‬ ‮Ԁɐssʍoɹp‬ ‮oɹ‬ ‮poɯɐıu‬; ‮oɹ‬ ‮ʅǝɐʌǝ‬ ‮ɐʅʅ‬ ‮ɐnʇɥǝuʇıɔɐʇıou‬ ‮ɟıǝʅps‬ ‮qʅɐuʞ‬ ‮ɟoɹ‬ ‮uo‬ ‮ɐnʇɥǝuʇıɔɐʇıou‬.",
+    "description": "Error message that is shown if the user enters a value for one of 'Password' or 'Domain', but does not provide a 'Username' -- this is not valid, as username is are required. Alternatively, the user can leave all authentication fields blank to use an upstream proxy which doesn't require authentication."
+  },
+  "settings#upstream-proxy#skip-label": {
+    "message": "‮pou‬'‮ʇ‬ ‮nsǝ‬ ‮ndsʇɹǝɐɯ‬ ‮dɹoxʎ‬",
+    "description": "Label for the checkbox that allows the user to override the default 'upstream proxy' usage and totally disable the feature."
+  },
+  "settings#upstream-proxy#username-label": {
+    "message": "‮∩sǝɹuɐɯǝ‬",
+    "description": "Label for the text box where the user can set the username for the 'upstream proxy'."
+  },
+  "settings#vpn-incompatible-label": {
+    "message": "‮˥‬2‮⊥Ԁ‬/‮IԀSǝɔ‬",
+    "description": "If 'L2TP/IPSec mode' is enabled, this text shows up in a label beside the Settings sections which are incompatible with L2TP/IPSec mode. It is intended to draw the user's attention to the fact that some of the other settings have become disabled."
+  },
+  "settings#vpn-incompatible-msg": {
+    "message": "(‮poǝsu‬'‮ʇ‬ ‮ʍoɹʞ‬ ‮ʍıʇɥ‬ ‮˥‬2‮⊥Ԁ‬/‮IԀSǝɔ‬ ‮ɯopǝ‬.)",
+    "description": "If 'L2TP/IPSec mode' is enabled, this text is displayed under or beside settings which are incompatible with L2TP/IPSec mode and have been disabled because of it. It is intended to let the user know why the setting has been disabled."
+  },
+  "ui#alert#url-copied-to-clipboard": {
+    "message": "‮∩ᴚ˥‬ ‮ɔodıǝp‬ ‮ʇo‬ ‮ɔʅıdqoɐɹp‬.<br>‮Iɟ‬ ‮qɹoʍsǝɹ‬ ‮ɟɐıʅs‬ ‮ʇo‬ ‮odǝu‬, ‮dɐsʇǝ‬ ‮ʇɥǝ‬ ‮∩ᴚ˥‬ ‮ıuʇo‬ ‮ʇɥǝ‬ ‮qɹoʍsǝɹ‬ ‮ɐppɹǝss‬ ‮qɐɹ‬.",
+    "description": "Sometimes when the Psiphon UI tries to open an external URL in the browser, it fails to open. This message indicates to the user that URL has been copied to the Windows system clipboard and is available for pasting into a browser. `<br>` may be used to split the message over two lines to ensure the alert doesn't take too much horizontal space."
+  }
+}
