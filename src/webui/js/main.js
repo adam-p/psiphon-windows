@@ -2224,8 +2224,8 @@
       g_PsiCashData = psicashData;
 
       if (psicashData.reconnect_required) {
-        // We'll continue with our UI update, but we need to reconnect deal with a change
-        // of purchase/token state.
+        // We'll continue with our UI update, but we need to reconnect to deal with a
+        // change of purchase/token state.
         HtmlCtrlInterface_Log('PsiCash::RefreshState indicates reconnect required');
         HtmlCtrlInterface_ReconnectTunnel(/*suppressHomePage=*/true);
       }
@@ -2317,6 +2317,17 @@
           }
         }
       }
+    }
+
+    // If we're connected, we weren't already Boosting, but now we are,
+    // we need to trigger a reconnect.
+    // TODO: This might not be the most sensible place to make this determination.
+    // It also should be generically about new, unapplied authorizations, not just Boost.
+    if (g_lastState === 'connected' &&
+        state === PsiCashUIState.ACTIVE_BOOST &&
+        PsiCashStore.data.uiState !== PsiCashUIState.ACTIVE_BOOST) {
+      HtmlCtrlInterface_Log('new active Boost requires tunnel reconnect');
+      HtmlCtrlInterface_ReconnectTunnel(/*suppressHomePage=*/true);
     }
 
     if (PsiCashStore.data.purchaseInProgress) {
