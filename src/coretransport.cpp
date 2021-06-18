@@ -449,7 +449,7 @@ void CoreTransport::HandlePsiphonTunnelCoreNotice(const string& noticeType, cons
         int count = data["count"].asInt();
         if (count == 0)
         {
-            if (m_hasEverConnected && m_reconnectStateReceiver)
+            if (m_hasEverConnected && m_reconnectStateReceiver && !m_stopInfo.stopSignal->CheckSignal(m_stopInfo.stopReasons))
             {
                 m_reconnectStateReceiver->SetReconnecting();
             }

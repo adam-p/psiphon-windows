@@ -1088,6 +1088,12 @@ bool HandlePsiCashCommand(const string& jsonString)
                 jsonResult["error"] = nullptr;
                 jsonResult["status"] = result->status;
                 jsonResult["refresh"] = MakeRefreshPsiCashPayload();
+
+                // If the purchase is successful and there's an authorization to apply to the tunnel, we'll tell the UI to trigger a reconnect
+                if (result->status == psicash::Status::Success && 
+                    result->purchase && result->purchase->authorization) {
+                    jsonResult["refresh"]["reconnect_required"] = true;
+                }
             }
 
             evt.payload = jsonResult;

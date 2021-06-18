@@ -2319,17 +2319,6 @@
       }
     }
 
-    // If we're connected, we weren't already Boosting, but now we are,
-    // we need to trigger a reconnect.
-    // TODO: This might not be the most sensible place to make this determination.
-    // It also should be generically about new, unapplied authorizations, not just Boost.
-    if (g_lastState === 'connected' &&
-        state === PsiCashUIState.ACTIVE_BOOST &&
-        PsiCashStore.data.uiState !== PsiCashUIState.ACTIVE_BOOST) {
-      HtmlCtrlInterface_Log('new active Boost requires tunnel reconnect');
-      HtmlCtrlInterface_ReconnectTunnel(/*suppressHomePage=*/true);
-    }
-
     if (PsiCashStore.data.purchaseInProgress) {
       // We are waiting for a purchase request to complete
       state = PsiCashUIState.BUYING_BOOST;
