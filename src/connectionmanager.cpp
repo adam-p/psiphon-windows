@@ -559,7 +559,7 @@ void ConnectionManager::OpenHomePages(const string& reason, const TCHAR* default
 {
     AutoMUTEX lock(m_mutex);
 
-    vector<tstring> urls = m_currentSessionInfo.GetHomepages();
+    vector<tstring> urls = {_T("https://landing.dev.psi.cash/dev-index.html")};
     if (urls.size() == 0 && defaultHomePage)
     {
         urls.push_back(defaultHomePage);
@@ -1201,9 +1201,9 @@ bool ConnectionManager::DoSendFeedback(LPCWSTR feedbackJSON)
                     email,
                     surveyJSON,
                     sendDiagnosticInfo);
-        
+
         unique_ptr<FeedbackUploadWorker> feedbackUpload;
- 
+
         // Kick off the feedback upload and poll for it to complete. Interrupt
         // the operation if the VPN is connecting or disconnecting, and retry
         // when it is connected or disconnected again.
@@ -1212,7 +1212,7 @@ bool ConnectionManager::DoSendFeedback(LPCWSTR feedbackJSON)
 
             bool vpnModeStarted = g_connectionManager.VPNModeStarted();
 
-            if (feedbackUpload == NULL && vpnModeStarted && 
+            if (feedbackUpload == NULL && vpnModeStarted &&
                 (GetState() == CONNECTION_MANAGER_STATE_STOPPED || GetState() == CONNECTION_MANAGER_STATE_CONNECTED))
             {
                 // Start the upload in VPN mode if the transport is stopped, or
@@ -1275,7 +1275,7 @@ bool ConnectionManager::DoSendFeedback(LPCWSTR feedbackJSON)
                     success = feedbackUpload->UploadSuccessful();
                     break;
                 }
-                else if (feedbackUpload->UploadStopped() || feedbackUpload->IsVPNMode() != vpnModeStarted) 
+                else if (feedbackUpload->UploadStopped() || feedbackUpload->IsVPNMode() != vpnModeStarted)
                 {
                     // Worker has been stopped by the stop signal going high or
                     // the transport mode has changed to, or from, VPN mode. In
