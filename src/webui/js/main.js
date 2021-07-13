@@ -192,15 +192,40 @@
    * @param {boolean} andResizeContent Indicates whether a full resize should occur (default true)
    */
   function updateDpiScaling(dpiScaling, andResizeContent=true) {
-    // NOTE: This may not get processed often enough. If, say, a `.affix`
+    /*
+    This function is called:
+    * From C++: when a change in DPI is detected (e.g., app dragged between monitors).
+      At this point the app window will also be resized by the C++ code.
+    * From JS: When layout changes occur in the UI -- window resize, locale change, etc.
+
+    We don't get any DPI scaling support for free -- we are responsible for scaling the UI
+    elements appropriately, depending on `dpiScaling`.
+
+    Our main tools for scaling are the CSS styles `transform: scale(dpiScaling)` and `transform-origin`.
+    `transform` does what it sounds like -- it scales an element by the given factor.
+    By default, the origin of that scaling is the center of the element. That's basically
+    never what we want -- for example, if the top-left Psiphon logo were scaled by 2.5x
+    from the center, part of it would end up outside the app window. When we're using a
+    LTR locale, we almost always want the scaling origin to be the top-left corner of
+    elements; when using an RTL locale, we want it to be the top-right corner.
+    "Top-left" is `transform-origin-x: 0%` and `transform-origin-y: 0%`.
+    "Top-right" is `transform-origin-x: 100%` and `transform-origin-y: 0%`.
+    (Note that there are no individual styles like that -- only the shorthand-ish
+    `transform-origin`. Also, there's a `transform-origin-z` but it's not used.)
+
+    The big exception to this is for elements that outside of the layout flow -- like
+    `position: fixed` and `position: absolute` elements. In those cases, the transform
+    origin depends on where we intend the element to be positioned: top-left-->`0% 0%`,
+    top-right-->`100% 0%`, bottom-left-->`0% 100%`, bottom-right-->`100% 100%`.
+    */
+
+    // NOTE: This may not get processed often enough. If, say, an `.affix`
     // element is added programmatically to the DOM, it won't get
     // processed until/unless a DPI change occurs.
 
-    if (updateDpiScaling.lastDpiScaling === dpiScaling) {
-      // We only do this processing when the scaling actually changes.
-      return;
-    }
-    updateDpiScaling.lastDpiScaling = dpiScaling;
+    // NOTE: Don't check if the DPI scaling actually changed from the last call. Other
+    // changes may have occurred (such as switching tabs) that may necessitate a full
+    // processing.
 
     DEBUG_LOG('updateDpiScaling: ' + dpiScaling);
     g_initObj.Config.DpiScaling = dpiScaling;
@@ -210,22 +235,17 @@
       return;
     }
 
-    var ltrTransformOrigin = '0 0 0',
-        ltrBottomRightTransformOrigin = '100% 100% 0',
-        rtlTransformOrigin = '0 0 0',
-        rtlBottomRightTransformOrigin = '0 100% 0';
-
+    let msTransformOrigin = '0% 0%';    // 2D --  x and y
+    let transformOrigin = '0% 0% 0px';  // 3D --  x, y, and z
     if (getIEVersion() === false && g_isRTL) {
-      // Non-IE in RTL need the origin on the right.
-      rtlTransformOrigin = '100% 0 0';
+      // Non-IE in RTL needs the origin on the right.
+      msTransformOrigin = '100% 0%';
+      transformOrigin = '100% 0% 0px';
     }
-
-    var transformOrigin = g_isRTL ? rtlTransformOrigin : ltrTransformOrigin,
-        bottomRightTransformOrigin = g_isRTL ? rtlBottomRightTransformOrigin : ltrBottomRightTransformOrigin;
 
     // Set the overall body scaling
     $('html').css({
-      '-ms-transform-origin': transformOrigin,
+      '-ms-transform-origin': msTransformOrigin,
       'transform-origin': transformOrigin,
       '-ms-transform': 'scale(' + dpiScaling + ')',
       'transform': 'scale(' + dpiScaling + ')',
@@ -235,16 +255,18 @@
 
     // For elements (like modals) outside the normal flow, additional changes are needed.
     if (getIEVersion() !== false) {
+      // TODO: Allowing the scaling origin to be the center of the modal might make sense.
+
       // The left margin will vary depending on default value.
       // First reset an overridden left margin
       $('.modal').css('margin-left', '');
       // Get the default left margin
-      var defaultLeftMargin = $('.modal').css('margin-left');
+      const defaultLeftMargin = $('.modal').css('margin-left');
       // Create the left margin we want, based on the default
-      var scaledLeftMargin = 'calc(' + defaultLeftMargin + ' * ' + dpiScaling + ')';
+      const scaledLeftMargin = 'calc(' + defaultLeftMargin + ' * ' + dpiScaling + ')';
       // Now apply the styles.
       $('.modal').css({
-        '-ms-transform-origin': transformOrigin,
+        '-ms-transform-origin': msTransformOrigin,
         'transform-origin': transformOrigin,
         '-ms-transform': 'scale(' + dpiScaling + ')',
         'transform': 'scale(' + dpiScaling + ')',
@@ -252,36 +274,73 @@
       });
     }
 
-    $('.global-alert').css({
-      '-ms-transform-origin': bottomRightTransformOrigin,
-      'transform-origin': bottomRightTransformOrigin,
-      '-ms-transform': 'scale(' + dpiScaling + ')',
-      'transform': 'scale(' + dpiScaling + ')'
-    });
-
-    // Elements with the `affix` class are position:fixed and need to be adjusted separately
+    // Elements with the `affix` class are `position:fixed` and need to be adjusted separately.
     if (getIEVersion() !== false) {
-      // Reset previous position modification.
+      // Note: We're searching by the `affix` class name, so don't use the `position:fixed`
+      // style directly (unless you want it excluded from this logic, which you probably don't).
+      // Also note: The top/left/right/bottom values must be set via class and not directly on the elements.
+
+      const splitDimension = function(dimension) {
+        const split = dimension.match(/^([0-9.]*)(.*)$/);
+        return [(split[1].length ? parseFloat(split[1]) : null), split[2]];
+      };
+
       $('.affix')
-        .css({'top': '', 'left': ''})
+        // Reset previous position modifications
+        .css({'top': '', 'left': '', 'right': '', 'bottom': '',
+              '-ms-transform': '', 'transform': '',
+              '-ms-transform-origin': '', 'transform-origin': ''})
         .each(function() {
-          var basePosition = $(this).position();
-          $(this).css({
-            '-ms-transform-origin': transformOrigin,
-            'transform-origin': transformOrigin,
-            '-ms-transform': 'scale(' + dpiScaling + ')',
-            'transform': 'scale(' + dpiScaling + ')'
-          });
-          if (basePosition.top) {
-            $(this).css({
-              'top': (basePosition.top * dpiScaling) + 'px'
-            });
+          // Each of top, left, right, bottom require different values for the transform origin.
+          // If opposite values -- left and right, or top and bottom -- are set, this will not work.
+          const baseTop = splitDimension(computedStyle(this, 'top'));
+          const baseLeft = splitDimension(computedStyle(this, 'left'));
+          const baseBottom = splitDimension(computedStyle(this, 'bottom'));
+          const baseRight = splitDimension(computedStyle(this, 'right'));
+
+          let css = {};
+
+          if (baseTop[0] !== null) {
+            css.top = `${(baseTop[0] * dpiScaling).toFixed(1)}${baseTop[1]}`;
           }
-          if (basePosition.left) {
-            $(this).css({
-              'left': (basePosition.left * dpiScaling) + 'px'
-            });
+
+          if (baseLeft[0] !== null) {
+            css.left = `${(baseLeft[0] * dpiScaling).toFixed(1)}${baseLeft[1]}`;
           }
+
+          if (baseBottom[0] !== null) {
+            css.bottom = `${(baseBottom[0] * dpiScaling).toFixed(1)}${baseBottom[1]}`;
+          }
+
+          if (baseRight[0] !== null) {
+            css.right = `${(baseRight[0] * dpiScaling).toFixed(1)}${baseRight[1]}`;
+          }
+
+          if (!_.size(css)) {
+            // No explicit top/left/bottom/right, so we're going to scale the natural coordinates of the element
+            const elemPos = $(this).position();
+            const elemWidth = $(this).outerWidth();
+            const winWidth = $(window).width();
+
+            css.top = `${(elemPos.top * dpiScaling).toFixed(1)}px`;
+            if (g_isRTL) {
+              css.right = `${((winWidth - (elemPos.left + elemWidth)) * dpiScaling).toFixed(1)}px`;
+            }
+            else {
+              css.left = `${(elemPos.left * dpiScaling).toFixed(1)}px`;
+            }
+          }
+
+          css['-ms-transform'] = css['transform'] = 'scale(' + dpiScaling + ')';
+
+          let transformOrigin = `${baseRight[0] !== null ? '100%' : '0%'} ${baseBottom[0] !== null ? '100%' : '0%'}`;
+          if (g_isRTL) {
+            transformOrigin = `${baseLeft[0] !== null ? '0%' : '100%'} ${baseBottom[0] !== null ? '100%' : '0%'}`;
+          }
+          css['-ms-transform-origin'] = transformOrigin;      // 2D -- x and y
+          css['transform-origin'] = `${transformOrigin} 0px`; // 3D --  x, y, and z
+
+          $(this).css(css);
         });
     }
 
