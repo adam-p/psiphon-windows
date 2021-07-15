@@ -2915,7 +2915,7 @@
                 // RefreshState. It's unusual (because token expiry is long), but not
                 // unexpected or erroneous.
                 showNoticeModal(
-                  'psicash#transaction-InvalidTokens-title',
+                  'psicash#transaction-InvalidTokens-title-account',
                   'psicash#transaction-InvalidTokens-body-account',
                   'warning',
                   null,  // tech detail preamble
@@ -2926,7 +2926,7 @@
                 // This shouldn't happen for Trackers, barring DB replication lag. It
                 // suggests datastore corruption, or a bad server problem.
                 showNoticeModal(
-                  'psicash#transaction-InvalidTokens-title',
+                  'psicash#transaction-InvalidTokens-title-tracker',
                   'psicash#transaction-InvalidTokens-body-tracker',
                   'error',
                   null,  // tech detail preamble

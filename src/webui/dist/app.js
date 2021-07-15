@@ -2655,13 +2655,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               // This can occur if the account's tokens have expired since the last
               // RefreshState. It's unusual (because token expiry is long), but not
               // unexpected or erroneous.
-              showNoticeModal('psicash#transaction-InvalidTokens-title', 'psicash#transaction-InvalidTokens-body-account', 'warning', null, // tech detail preamble
+              showNoticeModal('psicash#transaction-InvalidTokens-title-account', 'psicash#transaction-InvalidTokens-body-account', 'warning', null, // tech detail preamble
               null, // tech detail body
               null); // callback
             } else {
               // This shouldn't happen for Trackers, barring DB replication lag. It
               // suggests datastore corruption, or a bad server problem.
-              showNoticeModal('psicash#transaction-InvalidTokens-title', 'psicash#transaction-InvalidTokens-body-tracker', 'error', null, // tech detail preamble
+              showNoticeModal('psicash#transaction-InvalidTokens-title-tracker', 'psicash#transaction-InvalidTokens-body-tracker', 'error', null, // tech detail preamble
               null, // tech detail body
               null); // callback
             } // We will refresh in either case. If we're an account, it should put us into
