@@ -3214,6 +3214,8 @@
               break;
 
             case PsiCashServerResponseStatus.Success:
+              addLog({priority: 1, message: 'PsiCash account logged in'});
+
               // Account login succeeded.  hard refresh is required.
               if (result.last_tracker_merge) {
                 showNoticeModal(

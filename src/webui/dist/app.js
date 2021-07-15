@@ -2902,7 +2902,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             break;
 
           case PsiCashServerResponseStatus.Success:
-            // Account login succeeded.  hard refresh is required.
+            addLog({
+              priority: 1,
+              message: 'PsiCash account logged in'
+            }); // Account login succeeded.  hard refresh is required.
+
             if (result.last_tracker_merge) {
               showNoticeModal('psicash#login#success-modal-title', 'psicash#login#last-tracker-merge-body', 'success', null, // tech preamble
               null, // tech detail
