@@ -77,9 +77,9 @@ void CreateHTMLControl(HWND hWndParent, float dpiScaling) {
     initJSON["Cookies"] = Settings::GetCookies();
     initJSON["Config"] = Json::Value();
     initJSON["Config"]["ClientVersion"] = CLIENT_VERSION;
+    initJSON["Config"]["ClientBuild"] = GetBuildTimestamp();
     initJSON["Config"]["Language"] = WStringToUTF8(GetLocaleID());
     initJSON["Config"]["Banner"] = "banner.png";
-    initJSON["Config"]["Version"] = CLIENT_VERSION;
     initJSON["Config"]["InfoURL"] = WStringToUTF8(INFO_LINK_URL);
     initJSON["Config"]["NewVersionEmail"] = GET_NEW_VERSION_EMAIL;
     initJSON["Config"]["NewVersionURL"] = GET_NEW_VERSION_URL;
@@ -1088,6 +1088,12 @@ bool HandlePsiCashCommand(const string& jsonString)
                 jsonResult["error"] = nullptr;
                 jsonResult["status"] = result->status;
                 jsonResult["refresh"] = MakeRefreshPsiCashPayload();
+
+                // If the purchase is successful and there's an authorization to apply to the tunnel, we'll tell the UI to trigger a reconnect
+                if (result->status == psicash::Status::Success &&
+                    result->purchase && result->purchase->authorization) {
+                    jsonResult["refresh"]["reconnect_required"] = true;
+                }
             }
 
             evt.payload = jsonResult;

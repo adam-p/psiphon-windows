@@ -1462,6 +1462,35 @@ Json::Value LoadJSONArray(const char* jsonArrayString)
 }
 
 
+/*
+ * System Utilities
+ */
+
+EXTERN_C IMAGE_DOS_HEADER __ImageBase;
+
+std::int64_t GetBuildTimestamp() {
+    const IMAGE_NT_HEADERS* nt_header = (const IMAGE_NT_HEADERS*)((char*)&__ImageBase + __ImageBase.e_lfanew);
+    return static_cast<std::int64_t>(nt_header->FileHeader.TimeDateStamp);
+}
+
+
+DWORD GetTickCountDiff(DWORD start, DWORD end)
+{
+    if (start == 0)
+    {
+        return 0;
+    }
+
+    // Has tick count wrapped around?
+    if (end < start)
+    {
+        return (MAXDWORD - start) + end;
+    }
+
+    return end - start;
+}
+
+
 wstring GetLocaleID()
 {
     //
@@ -1528,7 +1557,6 @@ wstring GetLocaleID()
     if (!scripts.empty() && !scripts.front().empty()) {
         script = scripts.front();
     }
-    
     //
     // Country
     //
@@ -1893,22 +1921,6 @@ bool GetResourceBytes(LPCTSTR name, LPCTSTR type, BYTE*& o_pBytes, DWORD& o_size
     o_size = SizeofResource(NULL, res);
 
     return true;
-}
-
-DWORD GetTickCountDiff(DWORD start, DWORD end)
-{
-    if (start == 0)
-    {
-        return 0;
-    }
-
-    // Has tick count wrapped around?
-    if (end < start)
-    {
-        return (MAXDWORD - start) + end;
-    }
-
-    return end - start;
 }
 
 /*

@@ -6662,6 +6662,7 @@ body[dir="rtl"] #settings-accordion .accordion-heading .accordion-toggle .accord
 }
 .value-error-alert {
   z-index: 1010;
+  white-space: nowrap;
 }
 .help-block .vpn-incompatible-msg {
   color: #c09853;
@@ -7356,8 +7357,7 @@ body[dir="rtl"] .speed-limit.badge img {
 }
 /* MISCELLANEOUS AND HELPERS */
 .global-alert {
-  position: fixed;
-  bottom: 0;
+  bottom: 0px;
   white-space: nowrap;
   overflow: hidden;
   -webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.75);

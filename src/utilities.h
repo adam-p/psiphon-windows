@@ -150,6 +150,8 @@ Json::Value LoadJSONArray(const char* jsonArrayString);
  * System Utilities
  */
 
+std::int64_t GetBuildTimestamp();
+
 DWORD GetTickCountDiff(DWORD start, DWORD end);
 
 /// Gets the ll-Script-CC BCP 47 locale identifier

@@ -23,7 +23,8 @@
       "base64": false,
       "Datastore": false,
       "objectPathImmutable": false,
-      "Modernizr": false
+      "Modernizr": false,
+      "computedStyle": false
   },
   "rules": {
       "no-console": "off",

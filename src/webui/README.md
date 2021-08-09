@@ -54,6 +54,16 @@ There are lots more UI communications helper functions here. In order to push in
 
 (Copy-pasted from email.)
 
+### Debugging in app
+
+1. Probably put a `debugger;` line where you'd like to break in the JavaScript.
+2. Make a non-minified build -- probably use `grunt serve`.
+3. Make a debug build of the app and run it (but _not_ under the debugger).
+4. In MSVC, in the "Debug" menu, click "Attach to Process...".
+5. In that dialog, change the "Attach to" setting to "Script code".
+6. Do whatever is needed to hit your `debugger` line. Or pause the debugger and set some breakpoints.
+
+
 ## Building
 
 ```

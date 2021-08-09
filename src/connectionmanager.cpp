@@ -246,8 +246,8 @@ void ConnectionManager::Start(bool isReconnect/*=false*/)
 
 void ConnectionManager::Reconnect(bool suppressHomePages)
 {
-    if (g_connectionManager.GetState() != CONNECTION_MANAGER_STATE_CONNECTED
-        && g_connectionManager.GetState() != CONNECTION_MANAGER_STATE_STARTING)
+    if (GetState() != CONNECTION_MANAGER_STATE_CONNECTED
+        && GetState() != CONNECTION_MANAGER_STATE_STARTING)
     {
         // We're not connecting or connected, so there's nothing to do.
         return;
@@ -255,8 +255,10 @@ void ConnectionManager::Reconnect(bool suppressHomePages)
 
     m_suppressHomePages = suppressHomePages;
 
-    g_connectionManager.Stop(STOP_REASON_USER_DISCONNECT);
-    g_connectionManager.Start(true);
+    my_print(NOT_SENSITIVE, false, _T("Reconnecting..."));
+
+    Stop(STOP_REASON_USER_DISCONNECT);
+    Start(true);
 }
 
 DWORD WINAPI ConnectionManager::ConnectionManagerStartThread(void* object)

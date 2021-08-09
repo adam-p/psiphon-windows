@@ -666,6 +666,10 @@ textarea {
 .value-error-alert {
   // For some reason the error alert is not showing over the body text.
   z-index: @zindexPopover;
+
+  // If we let this wrap, it can mess up DPI scaling calculations,
+  // because the width won't be what we expect.
+  white-space: nowrap;
 }
 
 .vpn-incompatible-msg {
@@ -1530,6 +1534,21 @@ img.coin {
       body[dir="rtl"] & {
         padding-right: 0.2em;
       }
+      body[dir="rtl"] & {
+        padding-right: 0.2em;
+      }
+    }
+
+    &.speed-slow {
+      background-color: @speedLimitColor;
+      color: @psiNavBackgroundColor;
+    }
+
+    &.speed-fast {
+      color: @psiBaseText;
+      text-shadow: none;
+      background-color: @psiNavBackgroundColor;
+      border: 1px solid @speedLimitColor;
     }
 
     &.speed-slow {
@@ -1549,8 +1568,7 @@ img.coin {
 /* MISCELLANEOUS AND HELPERS */
 
 .global-alert {
-  position: fixed;
-  bottom: 0;
+  bottom: 0px;
   white-space: nowrap;
   overflow: hidden;
   .box-shadow(0px 0px 10px 0px rgba(50, 50, 50, 0.75));

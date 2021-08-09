@@ -51,6 +51,7 @@
       g_initObj = g_initObj || {};
       g_initObj.Config = g_initObj.Config || {};
       g_initObj.Config.ClientVersion = g_initObj.Config.ClientVersion || '99';
+      g_initObj.Config.ClientBuild = g_initObj.Config.ClientBuild || 12345678;
       g_initObj.Config.Language = g_initObj.Config.Language || 'en';
       g_initObj.Config.Banner = g_initObj.Config.Banner || 'banner.png';
       g_initObj.Config.InfoURL =
@@ -126,6 +127,7 @@
                            .attr('title', g_initObj.Config.NewVersionEmail);
 
       $('.ClientVersion').text(g_initObj.Config.ClientVersion);
+      $('.ClientBuild').text(g_initObj.Config.ClientBuild);
     });
     $window.on(LANGUAGE_CHANGE_EVENT, updateLinks);
     // ...and now.
@@ -192,15 +194,40 @@
    * @param {boolean} andResizeContent Indicates whether a full resize should occur (default true)
    */
   function updateDpiScaling(dpiScaling, andResizeContent=true) {
-    // NOTE: This may not get processed often enough. If, say, a `.affix`
+    /*
+    This function is called:
+    * From C++: when a change in DPI is detected (e.g., app dragged between monitors).
+      At this point the app window will also be resized by the C++ code.
+    * From JS: When layout changes occur in the UI -- window resize, locale change, etc.
+
+    We don't get any DPI scaling support for free -- we are responsible for scaling the UI
+    elements appropriately, depending on `dpiScaling`.
+
+    Our main tools for scaling are the CSS styles `transform: scale(dpiScaling)` and `transform-origin`.
+    `transform` does what it sounds like -- it scales an element by the given factor.
+    By default, the origin of that scaling is the center of the element. That's basically
+    never what we want -- for example, if the top-left Psiphon logo were scaled by 2.5x
+    from the center, part of it would end up outside the app window. When we're using a
+    LTR locale, we almost always want the scaling origin to be the top-left corner of
+    elements; when using an RTL locale, we want it to be the top-right corner.
+    "Top-left" is `transform-origin-x: 0%` and `transform-origin-y: 0%`.
+    "Top-right" is `transform-origin-x: 100%` and `transform-origin-y: 0%`.
+    (Note that there are no individual styles like that -- only the shorthand-ish
+    `transform-origin`. Also, there's a `transform-origin-z` but it's not used.)
+
+    The big exception to this is for elements that outside of the layout flow -- like
+    `position: fixed` and `position: absolute` elements. In those cases, the transform
+    origin depends on where we intend the element to be positioned: top-left-->`0% 0%`,
+    top-right-->`100% 0%`, bottom-left-->`0% 100%`, bottom-right-->`100% 100%`.
+    */
+
+    // NOTE: This may not get processed often enough. If, say, an `.affix`
     // element is added programmatically to the DOM, it won't get
     // processed until/unless a DPI change occurs.
 
-    if (updateDpiScaling.lastDpiScaling === dpiScaling) {
-      // We only do this processing when the scaling actually changes.
-      return;
-    }
-    updateDpiScaling.lastDpiScaling = dpiScaling;
+    // NOTE: Don't check if the DPI scaling actually changed from the last call. Other
+    // changes may have occurred (such as switching tabs) that may necessitate a full
+    // processing.
 
     DEBUG_LOG('updateDpiScaling: ' + dpiScaling);
     g_initObj.Config.DpiScaling = dpiScaling;
@@ -210,22 +237,17 @@
       return;
     }
 
-    var ltrTransformOrigin = '0 0 0',
-        ltrBottomRightTransformOrigin = '100% 100% 0',
-        rtlTransformOrigin = '0 0 0',
-        rtlBottomRightTransformOrigin = '0 100% 0';
-
+    let msTransformOrigin = '0% 0%';    // 2D --  x and y
+    let transformOrigin = '0% 0% 0px';  // 3D --  x, y, and z
     if (getIEVersion() === false && g_isRTL) {
-      // Non-IE in RTL need the origin on the right.
-      rtlTransformOrigin = '100% 0 0';
+      // Non-IE in RTL needs the origin on the right.
+      msTransformOrigin = '100% 0%';
+      transformOrigin = '100% 0% 0px';
     }
-
-    var transformOrigin = g_isRTL ? rtlTransformOrigin : ltrTransformOrigin,
-        bottomRightTransformOrigin = g_isRTL ? rtlBottomRightTransformOrigin : ltrBottomRightTransformOrigin;
 
     // Set the overall body scaling
     $('html').css({
-      '-ms-transform-origin': transformOrigin,
+      '-ms-transform-origin': msTransformOrigin,
       'transform-origin': transformOrigin,
       '-ms-transform': 'scale(' + dpiScaling + ')',
       'transform': 'scale(' + dpiScaling + ')',
@@ -235,16 +257,18 @@
 
     // For elements (like modals) outside the normal flow, additional changes are needed.
     if (getIEVersion() !== false) {
+      // TODO: Allowing the scaling origin to be the center of the modal might make sense.
+
       // The left margin will vary depending on default value.
       // First reset an overridden left margin
       $('.modal').css('margin-left', '');
       // Get the default left margin
-      var defaultLeftMargin = $('.modal').css('margin-left');
+      const defaultLeftMargin = $('.modal').css('margin-left');
       // Create the left margin we want, based on the default
-      var scaledLeftMargin = 'calc(' + defaultLeftMargin + ' * ' + dpiScaling + ')';
+      const scaledLeftMargin = 'calc(' + defaultLeftMargin + ' * ' + dpiScaling + ')';
       // Now apply the styles.
       $('.modal').css({
-        '-ms-transform-origin': transformOrigin,
+        '-ms-transform-origin': msTransformOrigin,
         'transform-origin': transformOrigin,
         '-ms-transform': 'scale(' + dpiScaling + ')',
         'transform': 'scale(' + dpiScaling + ')',
@@ -252,36 +276,73 @@
       });
     }
 
-    $('.global-alert').css({
-      '-ms-transform-origin': bottomRightTransformOrigin,
-      'transform-origin': bottomRightTransformOrigin,
-      '-ms-transform': 'scale(' + dpiScaling + ')',
-      'transform': 'scale(' + dpiScaling + ')'
-    });
-
-    // Elements with the `affix` class are position:fixed and need to be adjusted separately
+    // Elements with the `affix` class are `position:fixed` and need to be adjusted separately.
     if (getIEVersion() !== false) {
-      // Reset previous position modification.
+      // Note: We're searching by the `affix` class name, so don't use the `position:fixed`
+      // style directly (unless you want it excluded from this logic, which you probably don't).
+      // Also note: The top/left/right/bottom values must be set via class and not directly on the elements.
+
+      const splitDimension = function(dimension) {
+        const split = dimension.match(/^([0-9.]*)(.*)$/);
+        return [(split[1].length ? parseFloat(split[1]) : null), split[2]];
+      };
+
       $('.affix')
-        .css({'top': '', 'left': ''})
+        // Reset previous position modifications
+        .css({'top': '', 'left': '', 'right': '', 'bottom': '',
+              '-ms-transform': '', 'transform': '',
+              '-ms-transform-origin': '', 'transform-origin': ''})
         .each(function() {
-          var basePosition = $(this).position();
-          $(this).css({
-            '-ms-transform-origin': transformOrigin,
-            'transform-origin': transformOrigin,
-            '-ms-transform': 'scale(' + dpiScaling + ')',
-            'transform': 'scale(' + dpiScaling + ')'
-          });
-          if (basePosition.top) {
-            $(this).css({
-              'top': (basePosition.top * dpiScaling) + 'px'
-            });
+          // Each of top, left, right, bottom require different values for the transform origin.
+          // If opposite values -- left and right, or top and bottom -- are set, this will not work.
+          const baseTop = splitDimension(computedStyle(this, 'top'));
+          const baseLeft = splitDimension(computedStyle(this, 'left'));
+          const baseBottom = splitDimension(computedStyle(this, 'bottom'));
+          const baseRight = splitDimension(computedStyle(this, 'right'));
+
+          let css = {};
+
+          if (baseTop[0] !== null) {
+            css.top = `${(baseTop[0] * dpiScaling).toFixed(1)}${baseTop[1]}`;
           }
-          if (basePosition.left) {
-            $(this).css({
-              'left': (basePosition.left * dpiScaling) + 'px'
-            });
+
+          if (baseLeft[0] !== null) {
+            css.left = `${(baseLeft[0] * dpiScaling).toFixed(1)}${baseLeft[1]}`;
           }
+
+          if (baseBottom[0] !== null) {
+            css.bottom = `${(baseBottom[0] * dpiScaling).toFixed(1)}${baseBottom[1]}`;
+          }
+
+          if (baseRight[0] !== null) {
+            css.right = `${(baseRight[0] * dpiScaling).toFixed(1)}${baseRight[1]}`;
+          }
+
+          if (!_.size(css)) {
+            // No explicit top/left/bottom/right, so we're going to scale the natural coordinates of the element
+            const elemPos = $(this).position();
+            const elemWidth = $(this).outerWidth();
+            const winWidth = $(window).width();
+
+            css.top = `${(elemPos.top * dpiScaling).toFixed(1)}px`;
+            if (g_isRTL) {
+              css.right = `${((winWidth - (elemPos.left + elemWidth)) * dpiScaling).toFixed(1)}px`;
+            }
+            else {
+              css.left = `${(elemPos.left * dpiScaling).toFixed(1)}px`;
+            }
+          }
+
+          css['-ms-transform'] = css['transform'] = 'scale(' + dpiScaling + ')';
+
+          let transformOrigin = `${baseRight[0] !== null ? '100%' : '0%'} ${baseBottom[0] !== null ? '100%' : '0%'}`;
+          if (g_isRTL) {
+            transformOrigin = `${baseLeft[0] !== null ? '0%' : '100%'} ${baseBottom[0] !== null ? '100%' : '0%'}`;
+          }
+          css['-ms-transform-origin'] = transformOrigin;      // 2D -- x and y
+          css['transform-origin'] = `${transformOrigin} 0px`; // 3D --  x, y, and z
+
+          $(this).css(css);
         });
     }
 
@@ -2224,8 +2285,8 @@
       g_PsiCashData = psicashData;
 
       if (psicashData.reconnect_required) {
-        // We'll continue with our UI update, but we need to reconnect deal with a change
-        // of purchase/token state.
+        // We'll continue with our UI update, but we need to reconnect to deal with a
+        // change of purchase/token state.
         HtmlCtrlInterface_Log('PsiCash::RefreshState indicates reconnect required');
         HtmlCtrlInterface_ReconnectTunnel(/*suppressHomePage=*/true);
       }
@@ -2856,7 +2917,7 @@
                 // RefreshState. It's unusual (because token expiry is long), but not
                 // unexpected or erroneous.
                 showNoticeModal(
-                  'psicash#transaction-InvalidTokens-title',
+                  'psicash#transaction-InvalidTokens-title-account',
                   'psicash#transaction-InvalidTokens-body-account',
                   'warning',
                   null,  // tech detail preamble
@@ -2867,7 +2928,7 @@
                 // This shouldn't happen for Trackers, barring DB replication lag. It
                 // suggests datastore corruption, or a bad server problem.
                 showNoticeModal(
-                  'psicash#transaction-InvalidTokens-title',
+                  'psicash#transaction-InvalidTokens-title-tracker',
                   'psicash#transaction-InvalidTokens-body-tracker',
                   'error',
                   null,  // tech detail preamble
@@ -3041,6 +3102,279 @@
       // We're purposely not clearing the username field. It's less sensitive (if the user
       // logs in successfully it will be stored and displayed) and it will be helpful to
       // the user to not have to type it in again if the login attempt fails.
+    });
+  }
+  $('.js-account-login').on('click', psicashAccountLogin);
+
+  /**
+   * Handler for the login dialog submit event.
+   * @param {Event} event
+   */
+  function psicashAccountLoginSubmitHandler(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (g_lastState !== 'connected') {
+      // We're not connected, so no PsiCash ops are allowed. Close the login modal and
+      // switch to the connection tab.
+      $('#PsiCashAccountLogin').modal('hide').one('hidden', function () {
+        showNoticeModal(
+          'psicash#mustconnect-modal#title',
+          'psicash#mustconnect-modal#body',
+          'info',
+          null, null,
+          function() {
+            switchToTab('#connection-tab');
+          }
+        );
+      });
+      return;
+    }
+
+    const username = $('#AccountUsername').val();
+    const password = $('#AccountPassword').val();
+
+    // Validate input (make sure the fields aren't blank)
+    $('#AccountUsername').parents('.control-group').toggleClass('error', !username);
+    $('#AccountPassword').parents('.control-group').toggleClass('error', !password);
+    if (!username || !password) {
+      $(!username ? '#AccountUsername' : '#AccountPassword').trigger('focus');
+      return;
+    }
+
+    // We're going to dismiss the login modal before attempting login. This is partly
+    // so that we don't complicate the UI state and partly because modals-over-modals
+    // gets crash-y.
+    $('#PsiCashAccountLogin').modal('hide');
+
+    // Show the "login in progress UI overlay"
+    psicashUIWaitState(true, '#psicash-ui-overlay-logging-in');
+
+    HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogin(username, password))
+      .then((result) => {
+
+        // In the success case we want to maintain the wait state until after a refresh.
+        // In all other cases we drop it now.
+        if (result.status !== PsiCashServerResponseStatus.Success) {
+          psicashUIWaitState(false, null);
+        }
+
+        if (result.refresh) {
+          // The reponse supplied refresh data.
+          // Note that this will be incomplete -- no balance or purchases -- we still need
+          // to do a full refresh, below.
+          psiCashUIUpdater(result.refresh);
+        }
+        else {
+          // We need to do a full refresh
+          HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('account-login'));
+        }
+
+        if (result.error) {
+          // Catastrophic failure. Hopefully the error string helps the user diagnose the problem.
+          showNoticeModal(
+            'psicash#login#failure-modal-title',
+            'psicash#login#catastrophic-error-body',
+            'error',
+            'general#notice-modal-tech-preamble',
+            result.error,
+            null); // callback
+        }
+        else {
+          switch (result.status) {
+            case PsiCashServerResponseStatus.InvalidCredentials:
+              showNoticeModal(
+                'psicash#login#failure-modal-title',
+                'psicash#login#invalid-credentials-body',
+                'warning',
+                null,  // tech preamble
+                null,  // tech detail
+                null); // callback
+              break;
+
+            case PsiCashServerResponseStatus.BadRequest:
+              // The request was malformed in some way. This shouldn't happen.
+              showNoticeModal(
+                'psicash#login#failure-modal-title',
+                'psicash#login#badrequest-error-body',
+                'error',
+                null,  // tech preamble
+                null,  // tech detail
+                null); // callback
+              break;
+
+            case PsiCashServerResponseStatus.ServerError:
+              // The server gave a 500-ish error
+              showNoticeModal(
+                'psicash#login#failure-modal-title',
+                'psicash#login#server-error-body',
+                'error',
+                null,  // tech preamble
+                null,  // tech detail
+                null); // callback
+              break;
+
+            case PsiCashServerResponseStatus.Success:
+              addLog({priority: 1, message: 'PsiCash account logged in'});
+
+              // Account login succeeded.  hard refresh is required.
+              if (result.last_tracker_merge) {
+                showNoticeModal(
+                  'psicash#login#success-modal-title',
+                  'psicash#login#last-tracker-merge-body',
+                  'success',
+                  null,  // tech preamble
+                  null,  // tech detail
+                  null); // callback
+              }
+
+              // Don't clear the wait state until the refresh is complete, since we're not
+              // really "ready" until then.
+              HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('new-login')).then(() => {
+                psicashUIWaitState(false, null);
+              });
+              break;
+
+            default:
+              throw new Error('Login: unknown PsiCashServerResponseStatus received: ' + result.status);
+          }
+        }
+      });
+  }
+  $('#PsiCashAccountLogin .js-submit-button').on('click', psicashAccountLoginSubmitHandler);
+  $('#PsiCashAccountLogin input').on('keyup', function (event) {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      psicashAccountLoginSubmitHandler();
+    }
+  });
+
+  /**
+   * Begin the account logout flow. Should not be called if the user is not logged in.
+   * @param {?Event} event
+   * @param {boolean} skipConnectedCheck If true, there will be no check of whether
+   *    the Psiphon tunnel is currently connected. Should only be set to true when this
+   *    is called via the local-only logout prompt.
+   */
+  function psicashAccountLogout(event, skipConnectedCheck=false) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (!skipConnectedCheck && g_lastState !== 'connected') {
+      $('#PsiCashAccountLogoutOffline').modal({ show: true, backdrop: 'static' });
+      return;
+    }
+
+    psicashUIWaitState(true, '#psicash-ui-overlay-logging-out');
+    PsiCashStore.set('logoutExpected', true);
+
+    HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogout())
+      .then((result) => {
+        psicashUIWaitState(false, null);
+
+        if (result.refresh) {
+          // The reponse supplied refresh data
+          psiCashUIUpdater(result.refresh);
+        }
+
+        if (result.reconnect_required) {
+          // An authorization is active on the tunnel and needs to be removed.
+          HtmlCtrlInterface_Log('PsiCash::AccountLogout indicates reconnect required');
+          HtmlCtrlInterface_ReconnectTunnel(/*suppressHomePage=*/true);
+        }
+
+        if (result.error) {
+          // Catastrophic failure. Show a modal error and hope the user can figure it out.
+          showNoticeModal(
+            'psicash#modal-logout-header',
+            'psicash#modal-logout-error-body',
+            'error',
+            'general#notice-modal-tech-preamble',
+            result.error,
+            null); // callback
+        }
+        else {
+          // Note that tunnel reconnection may be necessary to clear any active
+          // authorizations (like Speed Boost), but that will be handled by the
+          // PsiCash data refresh.
+          HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('logout'));
+        }
+      });
+  }
+  $('.js-account-logout').on('click', psicashAccountLogout);
+
+  /*
+  If the user attempts to log out of their PsiCash account while not having a connected
+  tunnel, they are prompted as to whether they wish to proceed with a local-only logout.
+  */
+  $('#PsiCashAccountLogoutOffline .js-connect-button').on('click', (e) => {
+    e.preventDefault();
+    $('#PsiCashAccountLogoutOffline').modal('hide').one('hidden', () => {
+      HtmlCtrlInterface_StartTunnel();
+      switchToTab('#connection-tab');
+    });
+  });
+  $('#PsiCashAccountLogoutOffline .js-logout-button').on('click', (e) => {
+    e.preventDefault();
+    $('#PsiCashAccountLogoutOffline').modal('hide').one('hidden', () => {
+      psicashAccountLogout(null, true);
+    });
+  });
+
+  /**
+   *
+   * @param {boolean} start True if the wait state is starting, false if it should be cleared.
+   * @param {*} messageSelector The selector of the message that should be shown during the wait state. May be null if the wait state is ending.
+   */
+  function psicashUIWaitState(start, messageSelector) {
+    if (messageSelector) {
+      $('.js-psicash-ui-overlay-messages > *').not(messageSelector).addClass('hidden');
+      $(messageSelector).removeClass('hidden');
+    }
+
+    $('.psicash-ui-overlay, .psicash-block-overlay').toggleClass('hidden', !start);
+  }
+
+  function switchToPsiCashTabAndExpandSpeedLimitInfo() {
+    // We're going to switch to the PsiCash tab, and ensure that it is showing
+    // (i.e., not collapsing) the porting limiting info.
+    // Setting the cookie here is a bit of hack. If this is the first visit to the
+    // PsiCash pane, it will help prevent the speed limit from collapsing and then
+    // re-expanding (which looks dumb).
+    setCookie('SpeedLimitCollapsed', false);
+    switchToTab('#psicash-tab', () => {
+      // This timeout is a dirty hack. There seems to be a bug where expanding the collapsed
+      // element too soon after the tab shows results in the element not expanding, but the
+      // state getting messed up so it can't even be done manually. In testing, too short
+      // a wait isn't sufficient, so we're going to give it a long time before we try.
+      // Let's pretend this is a feature for drawing attention to the speed limit info.
+      setTimeout(() => {
+        const $speedLimitCollapser = $('.psicash-pane__speed-limit__collapser');
+        const $speedLimitCollapserTarget = $($speedLimitCollapser.data('target'));
+        if (!$speedLimitCollapserTarget.hasClass('in')) {
+          $speedLimitCollapserTarget.collapse('show');
+        }
+      }, 1000);
+    });
+  }
+
+  /**
+   * Called when tunnel core indicates that there was an attempt to access a
+   * port disallowed by the current traffic rules. We will show an alert to
+   * encourage the user to buy Speed Boost.
+   */
+  function handleDisallowedTrafficNotice() {
+    if (PsiCashStore.data.uiState === PsiCashUIState.ACTIVE_BOOST) {
+      // If we're boosting, then any disallowed traffic is something that won't
+      // be let through by purchasing speed boost, so logging, etc., is pointless.
+      DEBUG_LOG('handleDisallowedTrafficNotice: already boosting');
+      return;
+    }
+
+    addLog({
+      priority: 2, // high
+      message: 'Disallowed traffic detected; please purchase Speed Boost'
     });
   }
   $('.js-account-login').on('click', psicashAccountLogin);

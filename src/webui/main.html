@@ -704,19 +704,13 @@
                 </div>
 
                 <hr class="js-hide-if-vpn-mode">
-              </div>
 
-              <div class="js-hide-if-vpn-mode"><!-- All Speed Boost stuff is disabled in VPN mode -->
-
-                <!-- Speed and port limiting info -->
-                <!-- Not using row/span divs here because they mess up the collapsing (span has min-height) and don't contribute anything. (Maybe shouldn't be used at all on this pane.) -->
-                <div class="speed-limit text-center width-limiter js-hide-if-boosting">
-                  <div class="psicash-pane__speed-limit__collapse collapse in">
+                <!-- This "Speed and Port Limits" block is the same as the one below except that it is not collapsible.
+                     (This is partly to fix a bug where this info not re-expandable while logged out.) -->
+                <div class="speed-limit text-center width-limiter js-hide-if-boosting js-hide-if-vpn-mode">
+                  <div>
                     <h3>
                       <span data-i18n="psicash#pane-speed-port-limits-head">Speed and Port Limits</span>
-                      <button class="psicash-pane__speed-limit__collapser js-hide-if-not-fast btn btn-link icon icon-chevron-up-circle"
-                            data-i18n-ltr-classes="pull-right" data-i18n-rtl-classes="pull-left"
-                            data-toggle="collapse" data-target=".psicash-pane__speed-limit__collapse"></button>
                     </h3>
 
                     <p data-i18n="psicash#pane-speed-port-limits-body">Without active Speed Boost, your speed is limited and some internet traffic is not supported. Activate Speed Boost with PsiCash to unlock full speed and enable all apps.</p>
@@ -728,9 +722,38 @@
                         <td><span><img src="turtle.png"></span></td>
                       </tr>
                     </table>
-                    <button class="psicash-pane__speed-limit__collapser btn btn-link icon icon-chevron-up-circle" data-toggle="collapse" data-target=".psicash-pane__speed-limit__collapse"></button>
                   </span>
                 </div>
+
+              </div> <!-- /.js-show-if-logged-out-account -->
+
+              <div class="js-hide-if-vpn-mode"><!-- All Speed Boost stuff is disabled in VPN mode -->
+
+                <!-- Speed and port limiting info -->
+                <!-- Not using row/span divs here because they mess up the collapsing (span has min-height) and don't contribute anything. (Maybe shouldn't be used at all on this pane.) -->
+                <div class="js-hide-if-logged-out-account">
+                  <div class="speed-limit text-center width-limiter js-hide-if-boosting">
+                    <div class="psicash-pane__speed-limit__collapse collapse in">
+                      <h3>
+                        <span data-i18n="psicash#pane-speed-port-limits-head">Speed and Port Limits</span>
+                        <button class="psicash-pane__speed-limit__collapser js-hide-if-not-fast btn btn-link icon icon-chevron-up-circle"
+                              data-i18n-ltr-classes="pull-right" data-i18n-rtl-classes="pull-left"
+                              data-toggle="collapse" data-target=".psicash-pane__speed-limit__collapse"></button>
+                      </h3>
+
+                      <p data-i18n="psicash#pane-speed-port-limits-body">Without active Speed Boost, your speed is limited and some internet traffic is not supported. Activate Speed Boost with PsiCash to unlock full speed and enable all apps.</p>
+                    </div>
+                    <span class="badge speed-slow js-hide-if-fast">
+                      <table>
+                        <tr>
+                          <td><span data-i18n="psicash#psiphon-speed-nobreak">Psiphon speed</span></td>
+                          <td><span><img src="turtle.png"></span></td>
+                        </tr>
+                      </table>
+                      <button class="psicash-pane__speed-limit__collapser btn btn-link icon icon-chevron-up-circle" data-toggle="collapse" data-target=".psicash-pane__speed-limit__collapse"></button>
+                    </span>
+                  </div>
+                </div><!-- /.js-hide-if-logged-out-account -->
 
                 <!-- Speed Boost -->
                 <!-- SB buttons shown when not boosting -->
@@ -1193,6 +1216,12 @@
                                 Denmark
                               </a>
                             </li>
+                            <li data-region="EE">
+                              <a href="#" tabindex="-1" class="flag ee"
+                                 data-i18n="settings#egress-region#select-ee">
+                                Estonia
+                              </a>
+                            </li>
                             <li data-region="ES">
                               <a href="#" tabindex="-1" class="flag es"
                                  data-i18n="settings#egress-region#select-es">
@@ -1263,6 +1292,12 @@
                               <a href="#" tabindex="-1" class="flag kr"
                                  data-i18n="settings#egress-region#select-kr">
                                 Korea
+                              </a>
+                            </li>
+                            <li data-region="LV">
+                              <a href="#" tabindex="-1" class="flag lv"
+                                 data-i18n="settings#egress-region#select-lv">
+                                Latvia
                               </a>
                             </li>
                             <li data-region="MX">
@@ -1783,7 +1818,8 @@
             <span data-i18n="about#client-version">
               Psiphon for Windows client version:
             </span>
-            <span class="ClientVersion"></span>
+            &nbsp;
+            <span class="ClientVersion"></span>.<span class="ClientBuild"></span>
           </p>
         </div><!-- /about-pane -->
 
@@ -1913,6 +1949,12 @@
             </div>
             <div class="checkbox-container">
               <div class="controls checkbox inline">
+                <input type="checkbox" id="debug-AvailableEgressRegions-EE" value="EE">
+                <label class="checkbox inline" for="debug-AvailableEgressRegions-EE">EE</label>
+              </div>
+            </div>
+            <div class="checkbox-container">
+              <div class="controls checkbox inline">
                 <input type="checkbox" id="debug-AvailableEgressRegions-ES" value="ES">
                 <label class="checkbox inline" for="debug-AvailableEgressRegions-ES">ES</label>
               </div>
@@ -1981,6 +2023,12 @@
               <div class="controls checkbox inline">
                 <input type="checkbox" id="debug-AvailableEgressRegions-KR" value="KR">
                 <label class="checkbox inline" for="debug-AvailableEgressRegions-KR">KR</label>
+              </div>
+            </div>
+            <div class="checkbox-container">
+              <div class="controls checkbox inline">
+                <input type="checkbox" id="debug-AvailableEgressRegions-LV" value="LV">
+                <label class="checkbox inline" for="debug-AvailableEgressRegions-LV">LV</label>
               </div>
             </div>
             <div class="checkbox-container">
@@ -2211,49 +2259,49 @@
   </div><!-- /main-container -->
 
   <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
-  <div id="feedback-success-alert" class="alert alert-success global-alert" style="display:none"
+  <div id="feedback-success-alert" class="affix alert alert-success global-alert" style="display:none"
        data-i18n="[html]feedback#success-message">
     <strong>Thank you!</strong> Your feedback has been sent.
   </div>
 
   <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
-  <div id="language-success-alert" class="alert alert-success global-alert" style="display:none"
+  <div id="language-success-alert" class="affix alert alert-success global-alert" style="display:none"
        data-i18n="[html]language#success-message">
     <strong>Hello!</strong> Welcome to Psiphon.
   </div>
 
   <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
-  <div id="settings-apply-alert" class="alert alert-warning global-alert" style="display:none"
+  <div id="settings-apply-alert" class="affix alert alert-warning global-alert" style="display:none"
        data-i18n="settings#applying-message">
     Reconnecting to apply your settings.
   </div>
 
   <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
-  <div id="settings-save-alert" class="alert alert-success global-alert" style="display:none"
+  <div id="settings-save-alert" class="affix alert alert-success global-alert" style="display:none"
        data-i18n="settings#saved-message">
     Settings saved.
   </div>
 
   <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
-  <div id="psicash-buyspeedboost-purchase-complete" class="alert alert-success global-alert" style="display:none"
+  <div id="psicash-buyspeedboost-purchase-complete" class="affix alert alert-success global-alert" style="display:none"
        data-i18n="psicash#alert#buyspeedboost-purchase-complete">
     Speed Boost started!
   </div>
 
   <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
-  <div id="alert-url-copied-to-clipboard" class="alert alert-warning global-alert" style="display:none"
+  <div id="alert-url-copied-to-clipboard" class="affix alert alert-warning global-alert" style="display:none"
        data-i18n="[html]ui#alert#url-copied-to-clipboard">
     URL copied to clipboard. If browser fails to open, paste the URL into the browser address bar.
   </div>
 
   <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
-  <div id="psicash-account-tokens-expired-alert" class="alert alert-warning global-alert" style="display:none"
+  <div id="psicash-account-tokens-expired-alert" class="affix alert alert-warning global-alert" style="display:none"
        data-i18n="psicash#alert#tokens-expired">
        PsiCash login expired. Please log back in.
   </div>
 
   <!-- Don't use the hidden class for this, otherwise the toggle() won't work. -->
-  <div id="psicash-account-logged-out-alert" class="alert alert-success global-alert" style="display:none"
+  <div id="psicash-account-logged-out-alert" class="affix alert alert-success global-alert" style="display:none"
        data-i18n="psicash#alert#logged-out">
        PsiCash account logout complete.
   </div>
@@ -2363,8 +2411,8 @@
         </fieldset>
       </form>
       <p style="margin-top:-20px;margin-bottom:0;"><!-- negative top margin to offset the form's bottom margin -->
-        <small><a class="js-psicash-forgot-account" href="#" data-i18n="psicash#modal-login-forgot-passwork-link">
-          Forgot your username or password?
+        <small><a class="js-psicash-forgot-account" href="#" data-i18n="psicash#modal-login-forgot-password-link">
+          Forgot your password?
         </a></small>
       </p>
 
@@ -2447,7 +2495,7 @@
   </div><!-- /PsiCashAccountLogoutOffline -->
 
   <!--[if lte IE 8]>
-  <script src="vendor/json2.js?__inline=true"></script>
+  <script src="vendor/json2.min.js?__inline=true"></script>
   <![endif]-->
 
   <script src="node_modules/lodash-compat/index.js?__inline=true"></script>
@@ -2457,6 +2505,7 @@
   <script src="node_modules/object-path-immutable/dist/object-path-immutable.js?__inline=true"></script>
   <script src="vendor/moment-with-locales-2.29.1.js?__inline=true"></script>
   <script src="dist/plugins.js?__inline=true"></script>
+  <script src="js/polyfills.js?__inline=true"></script>
   <script src="js/locales.js?__inline=true"></script>
   <script src="dist/app.js?__inline=true"></script>
 

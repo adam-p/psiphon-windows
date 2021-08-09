@@ -89,6 +89,8 @@ struct HTTPResult {
     HTTPResult() : code(CRITICAL_ERROR) {}
 };
 // This is the signature for the HTTP Requester callback provided by the native consumer.
+// The requester _must_ do HTTPS certificate validation.
+// In the case of a partial response, a `RECOVERABLE_ERROR` should be returned.
 using MakeHTTPRequestFn = std::function<HTTPResult(const HTTPParams&)>;
 
 struct PurchasePrice {
@@ -373,7 +375,9 @@ public:
 
     Result fields:
 
-    • error: If set, the request failed utterly and no other params are valid.
+    • error: If set, the request failed utterly and no other params are valid. An error
+      result should be followed by a RefreshState call, in case the purchase succeeded on
+      the server side but wasn't retrieved; RefreshState will synchronize state.
 
     • status: Request success indicator. See below for possible values.
 
