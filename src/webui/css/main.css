@@ -7366,12 +7366,10 @@ body[dir="rtl"] .speed-limit.badge img {
   z-index: 1010;
 }
 body[dir="ltr"] .global-alert {
-  right: 0;
-  left: auto;
+  right: 0px;
 }
 body[dir="rtl"] .global-alert {
-  left: 0;
-  right: auto;
+  left: 0px;
 }
 .z-behind {
   z-index: -2;
