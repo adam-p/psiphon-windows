@@ -1468,9 +1468,19 @@ Json::Value LoadJSONArray(const char* jsonArrayString)
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
-std::int64_t GetBuildTimestamp() {
+std::string GetBuildTimestamp() {
+    // This info is set at build time
     const IMAGE_NT_HEADERS* nt_header = (const IMAGE_NT_HEADERS*)((char*)&__ImageBase + __ImageBase.e_lfanew);
-    return static_cast<std::int64_t>(nt_header->FileHeader.TimeDateStamp);
+
+    tm gmt;
+    errno_t err;
+    if ((err = gmtime_s(&gmt, reinterpret_cast<const time_t*>(&nt_header->FileHeader.TimeDateStamp))) != 0) {
+        my_print(NOT_SENSITIVE, false, _T("%s: gmtime_s failed: %d"), __TFUNCTION__, err);
+    }
+
+    char buf[100];
+    strftime(buf, sizeof(buf), "%Y%m%d%H%M%S", &gmt);
+    return buf;
 }
 
 

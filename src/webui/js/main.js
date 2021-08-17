@@ -51,7 +51,7 @@
       g_initObj = g_initObj || {};
       g_initObj.Config = g_initObj.Config || {};
       g_initObj.Config.ClientVersion = g_initObj.Config.ClientVersion || '99';
-      g_initObj.Config.ClientBuild = g_initObj.Config.ClientBuild || 12345678;
+      g_initObj.Config.ClientBuild = g_initObj.Config.ClientBuild || '20010101010101';
       g_initObj.Config.Language = g_initObj.Config.Language || 'en';
       g_initObj.Config.Banner = g_initObj.Config.Banner || 'banner.png';
       g_initObj.Config.InfoURL =

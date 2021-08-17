@@ -150,7 +150,7 @@ Json::Value LoadJSONArray(const char* jsonArrayString);
  * System Utilities
  */
 
-std::int64_t GetBuildTimestamp();
+std::string GetBuildTimestamp();
 
 DWORD GetTickCountDiff(DWORD start, DWORD end);
 
