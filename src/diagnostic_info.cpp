@@ -1319,7 +1319,7 @@ void GetDiagnosticInfo(Json::Value& o_json)
 
 Json::Value GetPsiCashDiagnosticData() {
     // Get the diagnostic data in nlohmann::json format
-    auto psicashJSON = psicash::Lib::_().GetDiagnosticInfo();
+    auto psicashJSON = psicash::Lib::_().GetDiagnosticInfo(false);
     // Dump it to string
     string jsonString;
     try {
