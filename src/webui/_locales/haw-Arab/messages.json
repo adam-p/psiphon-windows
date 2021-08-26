@@ -11,6 +11,10 @@
     "message": "<strong>‮Iɟ‬ ‮ʇɥǝ‬ ‮ʍǝqsıʇǝ‬ ‮ıs‬ ‮ıuɐɔɔǝssıqʅǝ‬</strong>, ‮ʎon‬ ‮ɔɐu‬ ‮ƃǝʇ‬ ‮ɐ‬ ‮uǝʍ‬ ‮ʌǝɹsıou‬ ‮oɟ‬ ‮Ԁsıdɥou‬ ‮qʎ‬ ‮sǝupıuƃ‬ ‮ɐu‬ ‮ǝɯɐıʅ‬ ‮ʇo‬:",
     "description": "Paragraph on the 'About' page telling users that they can also get a new version of Psiphon via email. The text in this resource is then followed by an email address. The word 'Psiphon' must not be translated or transliterated."
   },
+  "about#license-agree": {
+    "message": "‮Ԑʎ‬ ‮nsıuƃ‬ ‮Ԁsıdɥou‬ ‮ʎon‬ ‮sıƃuɐʅ‬ ‮ʇɥɐʇ‬ ‮ʎon‬ ‮ɐƃɹǝǝ‬ ‮ʇo‬ ‮ʇɥǝ‬ ‮ʇǝɹɯs‬ ‮oɟ‬ ‮ʇɥǝ‬ <a href=\"http://127.0.0.1:9778/license.html\">‮Ǝup‬-‮∩sǝɹ‬ ‮˥ıɔǝusǝ‬</a> ‮ɐup‬ <a href=\"http://127.0.0.1:9778/privacy.html\">‮Ԁɹıʌɐɔʎ‬ ‮Ԁoʅıɔʎ‬</a>.",
+    "description": "Paragraph on the 'About' page telling users that they agreeing to Psiphon's End-User License Agreement and Privacy Policy. The link URLs must not be modified. The word 'Psiphon' must not be translated or transliterated."
+  },
   "about#visit-download-site": {
     "message": "‮Ԁʅǝɐsǝ‬ ‮ʌısıʇ‬ ‮ʇɥǝ‬ ‮ʍǝqsıʇǝ‬ ‮ʇo‬ <strong><a class=\"NewVersionURL\" href=\"#\">‮poʍuʅoɐp‬ ‮ɐ‬ ‮uǝʍ‬ ‮ʌǝɹsıou‬</a></strong> ‮oɹ‬ ‮ʇo‬ <strong><a class=\"InfoURL\" href=\"#\">‮ƃǝʇ‬ ‮ɥǝʅd‬ ‮ɐup‬ ‮ıuɟoɹɯɐʇıou‬</a></strong>. ‮Ԁsıdɥou‬ ‮ıs‬ ‮ɐʌɐıʅɐqʅǝ‬ ‮ɟoɹ‬ ‮∀upɹoıp‬ ‮ɐup‬ ‮Ｍıupoʍs‬.",
     "description": "Paragraph on the 'About' page telling users what web page to go to get a new version of Psiphon or more info about it. The word 'Psiphon' must not be translated or transliterated."
