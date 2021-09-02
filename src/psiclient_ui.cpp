@@ -94,8 +94,9 @@ void CreateHTMLControl(HWND hWndParent, float dpiScaling) {
 
     Json::FastWriter jsonWriter;
     tstring initJsonString = UTF8ToWString(jsonWriter.write(initJSON).c_str());
+    tstring encodedJson = PercentEncode(initJsonString);
 
-    tstring url = ResourceToUrl(_T("main.html"), NULL, initJsonString.c_str());
+    tstring url = ResourceToUrl(_T("main.html"), NULL, encodedJson.c_str());
 
     g_hHtmlCtrl = CreateWindow(
         MC_WC_HTML,
