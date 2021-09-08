@@ -1635,3 +1635,19 @@ hr.dotted {
     margin: 5px 0 10px 10px;
   }
 }
+
+.password-input-reveal {
+  body[dir="ltr"] & {
+    margin-left: -25px;
+  }
+  body[dir="rtl"] & {
+    margin-right: -25px;
+  }
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+
+  // These are to defeat the Bootstrap .btn styling
+  padding: 0;
+  color: @textColor;
+}

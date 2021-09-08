@@ -7426,3 +7426,16 @@ body[dir="rtl"] .paragraph-icon {
   float: right;
   margin: 5px 0 10px 10px;
 }
+.password-input-reveal {
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+  padding: 0;
+  color: #222;
+}
+body[dir="ltr"] .password-input-reveal {
+  margin-left: -25px;
+}
+body[dir="rtl"] .password-input-reveal {
+  margin-right: -25px;
+}
