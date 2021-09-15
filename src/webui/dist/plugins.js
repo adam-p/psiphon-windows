@@ -322,8 +322,10 @@ $.revealablePassword can be called on `<input type="password">` elements to add 
           $passwordInput.trigger('change');
         }); // For accessibility reasons, we want the clickable eye to be in the tab order, so
         // we're using a real control rather than a `<i>` element.
+        // `type="button"` is necessary to prevent the button from being the default for
+        // the form (that is, activated by pressing Enter).
 
-        var $revealEye = $('<button class="password-input-reveal icon-eye1 btn btn-link"></button>');
+        var $revealEye = $('<button type="button" class="password-input-reveal icon-eye1 btn btn-link"></button>');
         $passwordInput.after($revealedText, $revealEye);
 
         var reveal = function reveal() {
