@@ -11,7 +11,7 @@ using namespace std;
 
 namespace psicash {
 
-static constexpr bool TESTING = true;
+static constexpr bool TESTING = false;
 static constexpr auto USER_AGENT = "Psiphon-PsiCash-Windows";
 
 psicash::MakeHTTPRequestFn GetHTTPReqFn(const StopInfo& stopInfo);
@@ -65,6 +65,9 @@ error::Error Lib::Init(bool forceReset) {
         return WrapError(err, "SetRequestMetadataItem failed");
     }
 
+    try { my_print(NOT_SENSITIVE, true, _T("%s: PsiCash state: %S"), __TFUNCTION__, PsiCash::GetDiagnosticInfo(true).dump(-1, ' ', true).c_str()); }
+    catch (...) {}
+
     return error::nullerr;
 }
 
@@ -91,6 +94,8 @@ void Lib::RefreshState(
     // Don't queue this if there is already an outstanding RefreshState
     auto queued = m_requestQueue.dispatch((int)RequestType::RefreshState, { (int)RequestType::RefreshState }, [=] {
         callback(PsiCash::RefreshState(local_only, { "speed-boost" }));
+        try { my_print(NOT_SENSITIVE, true, _T("%s: PsiCash state: %S"), __TFUNCTION__, PsiCash::GetDiagnosticInfo(true).dump(-1, ' ', true).c_str()); }
+        catch (...) {}
     });
 
     if (!queued) {
@@ -106,6 +111,8 @@ void Lib::NewExpiringPurchase(
 {
     (void)m_requestQueue.dispatch((int)RequestType::NewExpiringPurchase, {}, [=] {
         callback(PsiCash::NewExpiringPurchase(transactionClass, distinguisher, expectedPrice));
+        try { my_print(NOT_SENSITIVE, true, _T("%s: PsiCash state: %S"), __TFUNCTION__, PsiCash::GetDiagnosticInfo(true).dump(-1, ' ', true).c_str()); }
+        catch (...) {}
     });
 }
 
@@ -120,6 +127,8 @@ void Lib::AccountLogin(
         {(int)RequestType::AccountLogin},
         [=] {
             callback(PsiCash::AccountLogin(utf8_username, utf8_password));
+            try { my_print(NOT_SENSITIVE, true, _T("%s: PsiCash state: %S"), __TFUNCTION__, PsiCash::GetDiagnosticInfo(true).dump(-1, ' ', true).c_str()); }
+            catch (...) {}
         });
 }
 
@@ -132,6 +141,8 @@ void Lib::AccountLogout(
         {(int)RequestType::AccountLogout},
         [=] {
             callback(PsiCash::AccountLogout());
+            try { my_print(NOT_SENSITIVE, true, _T("%s: PsiCash state: %S"), __TFUNCTION__, PsiCash::GetDiagnosticInfo(true).dump(-1, ' ', true).c_str()); }
+            catch (...) {}
         });
 }
 

@@ -142,6 +142,7 @@ string Base64Encode(const unsigned char* input, size_t length);
 string Base64Decode(const string& input);
 
 tstring UrlEncode(const tstring& input);
+tstring PercentEncode(const tstring& input);
 tstring UrlDecode(const tstring& input);
 
 Json::Value LoadJSONArray(const char* jsonArrayString);
@@ -150,7 +151,7 @@ Json::Value LoadJSONArray(const char* jsonArrayString);
  * System Utilities
  */
 
-std::int64_t GetBuildTimestamp();
+std::string GetBuildTimestamp();
 
 DWORD GetTickCountDiff(DWORD start, DWORD end);
 

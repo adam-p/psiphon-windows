@@ -51,7 +51,7 @@
       g_initObj = g_initObj || {};
       g_initObj.Config = g_initObj.Config || {};
       g_initObj.Config.ClientVersion = g_initObj.Config.ClientVersion || '99';
-      g_initObj.Config.ClientBuild = g_initObj.Config.ClientBuild || 12345678;
+      g_initObj.Config.ClientBuild = g_initObj.Config.ClientBuild || '20010101010101';
       g_initObj.Config.Language = g_initObj.Config.Language || 'en';
       g_initObj.Config.Banner = g_initObj.Config.Banner || 'banner.png';
       g_initObj.Config.InfoURL =
@@ -103,6 +103,9 @@
       const target = $(this).data('tab-switch');
       switchToTab(target, null);
     });
+
+    // Add reveal-the-password eye buttons to password fields
+    $('input[type="password"').revealablePassword();
 
     // Links to the download site and email address are parameterized and need to
     // be updated when the language changes.
@@ -647,7 +650,7 @@
         LocalHttpProxyPort: 7771,
         LocalSocksProxyPort: 7770,
         ExposeLocalProxiesToLAN: 1,
-        SkipUpstreamProxy: 1,
+        SkipUpstreamProxy: 0,
         UpstreamProxyHostname: 'upstreamhost',
         UpstreamProxyPort: 234,
         UpstreamProxyUsername: 'user',
@@ -899,7 +902,7 @@
   // newSettings can be a partial settings object (like, just {egressRegion: "US"} or whatever).
   // If forceCurrent is true, the new settings will be become canonical (rather than just displayed).
   function refreshSettings(newSettings, forceCurrent) {
-    var fullNewSettings = $.extend(g_initObj.Settings, newSettings || {});
+    const fullNewSettings = $.extend(true, {}, g_initObj.Settings, newSettings || {});
 
     if (forceCurrent) {
       g_initObj.Settings = fullNewSettings;
@@ -959,7 +962,7 @@
     }
 
     if (!_.isUndefined(obj.UpstreamProxyPassword)) {
-      $('#UpstreamProxyPassword').val(obj.UpstreamProxyPassword);
+      $('#UpstreamProxyPassword').revealablePassword('set', obj.UpstreamProxyPassword);
     }
 
     if (!_.isUndefined(obj.UpstreamProxyDomain)) {
@@ -1204,7 +1207,7 @@
   function localProxySetup() {
     // Handle change events
     $('#LocalHttpProxyPort, #LocalSocksProxyPort').on(
-        'keyup keydown keypress change blur',
+        'propertychange input change keydown keyup keypress blur',
         function(event) {
           // We need to delay this processing so that the change to the text has
           // had a chance to take effect. Otherwise this.val() will return the old
@@ -1310,7 +1313,7 @@
   function upstreamProxySetup() {
     // Handle change events
     $('#UpstreamProxyHostname, #UpstreamProxyPort, #UpstreamProxyUsername, #UpstreamProxyPassword, #UpstreamProxyDomain').on(
-        'keyup keydown keypress change blur',
+        'propertychange input change keydown keyup keypress blur',
         function(event) {
           // We need to delay this processing so that the change to the text has
           // had a chance to take effect. Otherwise this.val() will return the old
@@ -3097,7 +3100,7 @@
       $('#AccountUsername').trigger('focus');
     }).one('hidden', function () {
       // The modal has closed; clear the password field
-      $('#PsiCashAccountLogin #AccountPassword').val('');
+      $('#PsiCashAccountLogin #AccountPassword').revealablePassword('clear');
 
       // We're purposely not clearing the username field. It's less sensitive (if the user
       // logs in successfully it will be stored and displayed) and it will be helpful to

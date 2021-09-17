@@ -284,6 +284,91 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   };
 })(jQuery, 'smartresize');
 /*
+$.revealablePassword can be called on `<input type="password">` elements to add a reveal button.
+`command` can be one of three values:
+  - `init`: Initializes the reveal button for the given elements.
+  - 'set': Sets the pasword field to the given `value`. Also resets the revealed state to hidden.
+  - 'clear': Clears the password field. (Equivalent to `set('')`.)
+*/
+
+
+(function ($) {
+  var dataKey = '$.revealablePassword';
+
+  $.fn.revealablePassword = function () {
+    var command = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'init';
+    var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+    if (command === 'init') {
+      this.each(function () {
+        var $passwordInput = $(this); // We can't use $.clone here because the `type` attribute change won't get picked up by IE8.
+        // The original password input will the canonical source of the value.
+        // On IE8, e.outerHTML doesn't include quotes around all attributes.
+        // Known issue: On IE8, when pasting via mouse, no event will fire on the first
+        // change. This means that, for example, the "Apply Settings" button won't be enabled.
+        // This seems to be unavoidable. The workaround is to change focus after the mouse-paste.
+
+        var $revealedText = $($passwordInput.prop('outerHTML').replace(/type="?password"?/, 'type="text"')).prop('id', $passwordInput.prop('id') + '-plaintext').addClass('hidden').on('propertychange input change keydown keyup keypress blur', function (e) {
+          if (e.type === 'propertychange' && e.originalEvent.propertyName !== 'value') {
+            return;
+          } // For some reason that I cannot fathom, on IE8 this handler fires for $passwordInput as well as $revealedText
+
+
+          if (e.currentTarget.id !== $revealedText.prop('id')) {
+            return;
+          }
+
+          $passwordInput.val($(this).val());
+          $passwordInput.trigger('change');
+        }); // For accessibility reasons, we want the clickable eye to be in the tab order, so
+        // we're using a real control rather than a `<i>` element.
+        // `type="button"` is necessary to prevent the button from being the default for
+        // the form (that is, activated by pressing Enter).
+
+        var $revealEye = $('<button type="button" class="password-input-reveal icon-eye1 btn btn-link"></button>');
+        $passwordInput.after($revealedText, $revealEye);
+
+        var reveal = function reveal() {
+          $revealedText.val($passwordInput.val()).removeClass('hidden');
+          $passwordInput.addClass('hidden');
+          $revealEye.removeClass('icon-eye1').addClass('icon-eye-blocked');
+        };
+
+        var unreveal = function unreveal() {
+          $revealedText.addClass('hidden');
+          $passwordInput.val($revealedText.val()).removeClass('hidden');
+          $revealEye.removeClass('icon-eye-blocked').addClass('icon-eye1');
+        };
+
+        $revealEye.on('click', function (e) {
+          e.preventDefault();
+
+          if ($revealedText.hasClass('hidden')) {
+            reveal();
+          } else {
+            unreveal();
+          }
+        });
+        $passwordInput.data(dataKey, {
+          unreveal: unreveal
+        });
+      });
+    } else if (command === 'set') {
+      this.each(function () {
+        var $passwordInput = $(this);
+        var data = $passwordInput.data(dataKey);
+        data.unreveal();
+        $passwordInput.val(value);
+        $passwordInput.trigger('change');
+      });
+    } else if (command === 'clear') {
+      this.revealablePassword('set', '');
+    }
+
+    return this;
+  };
+})(jQuery);
+/*
 Datastore example:
 
 const store = new Datastore({

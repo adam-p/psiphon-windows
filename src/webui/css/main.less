@@ -1575,12 +1575,10 @@ img.coin {
   z-index: @zindexPopover;
 
   body[dir="ltr"] & {
-    right: 0;
-    left: auto;  // IE doesn't support "initial"
+    right: 0px;
   }
   body[dir="rtl"] & {
-    left: 0;
-    right: auto; // IE doesn't support "initial"
+    left: 0px;
   }
 }
 
@@ -1651,4 +1649,20 @@ hr.dotted {
     .pull-right();
     margin: 5px 0 10px 10px;
   }
+}
+
+.password-input-reveal {
+  body[dir="ltr"] & {
+    margin-left: -25px;
+  }
+  body[dir="rtl"] & {
+    margin-right: -25px;
+  }
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+
+  // These are to defeat the Bootstrap .btn styling
+  padding: 0;
+  color: @textColor;
 }

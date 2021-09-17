@@ -1425,6 +1425,27 @@ tstring UrlEncode(const tstring& input)
     return escapedURL.str();
 }
 
+// Only URL-encodes `%` characters. 
+// Note that this is _only_ enough to encode a hash fragment in isolation.
+tstring PercentEncode(const tstring& input)
+{
+    constexpr auto escapedPercent = _T("%25");
+    tstringstream escapedURL;
+
+    for (tstring::const_iterator i = input.begin(), n = input.end(); i != n; ++i) {
+        tstring::value_type c = (*i);
+
+        if (c == '%') {
+            escapedURL << escapedPercent;
+            continue;
+        }
+
+        escapedURL << c;
+    }
+
+    return escapedURL.str();
+}
+
 tstring UrlDecode(const tstring& input)
 {
     return UrlCodec(input, false);
@@ -1468,9 +1489,19 @@ Json::Value LoadJSONArray(const char* jsonArrayString)
 
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 
-std::int64_t GetBuildTimestamp() {
+std::string GetBuildTimestamp() {
+    // This info is set at build time
     const IMAGE_NT_HEADERS* nt_header = (const IMAGE_NT_HEADERS*)((char*)&__ImageBase + __ImageBase.e_lfanew);
-    return static_cast<std::int64_t>(nt_header->FileHeader.TimeDateStamp);
+
+    tm gmt;
+    errno_t err;
+    if ((err = gmtime_s(&gmt, reinterpret_cast<const time_t*>(&nt_header->FileHeader.TimeDateStamp))) != 0) {
+        my_print(NOT_SENSITIVE, false, _T("%s: gmtime_s failed: %d"), __TFUNCTION__, err);
+    }
+
+    char buf[100];
+    strftime(buf, sizeof(buf), "%Y%m%d%H%M%S", &gmt);
+    return buf;
 }
 
 
