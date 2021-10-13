@@ -560,7 +560,7 @@
     "description": "Paragraph on the 'About' page telling users that they can also get a new version of Psiphon via email. The text in this resource is then followed by an email address. The word 'Psiphon' must not be translated or transliterated."
   },
   "about#license-agree": {
-    "message": "By using Psiphon you signal that you agree to the terms of the <a href=\"http://127.0.0.1:9778/license.html\">End-User License</a> and <a href=\"http://127.0.0.1:9778/privacy.html\">Privacy Policy</a>.",
+    "message": "By using Psiphon you signal that you agree to the terms of the <a href=\"https://psiphon.ca/license.html\">End-User License</a> and <a href=\"https://psiphon.ca/privacy.html\">Privacy Policy</a>.",
     "description": "Paragraph on the 'About' page telling users that they agreeing to Psiphon's End-User License Agreement and Privacy Policy. The link URLs must not be modified. The word 'Psiphon' must not be translated or transliterated."
   },
   "about#client-version": {
@@ -685,10 +685,6 @@
   },
   "psicash#transaction-InvalidTokens-body-account": {
     "message": "Your PsiCash login has expired. Log into your account and try again.",
-    "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
-  },
-  "psicash#transaction-InvalidTokens-body-account": {
-    "message": "Your PsiCash tokens have expired. Log into your account and try again.",
     "description": "Body text of a modal dialog shown when a PsiCash transaction (like Speed Boost purchase) fails. The word 'PsiCash' must not be translated or transliterated."
   },
   "psicash#transaction-ServerError-title": {

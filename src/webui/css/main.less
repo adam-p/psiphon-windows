@@ -1440,6 +1440,7 @@ img.coin {
     }
   }
 
+  // This applies to the PsiCash pane, but not the corner
   .speed-limit {
     .badge {
       font-size: 20px;
@@ -1526,6 +1527,7 @@ img.coin {
 
     img {
       height: 3em;
+      max-width: none;
       vertical-align: baseline;
 
       body[dir="ltr"] & {
@@ -1534,21 +1536,6 @@ img.coin {
       body[dir="rtl"] & {
         padding-right: 0.2em;
       }
-      body[dir="rtl"] & {
-        padding-right: 0.2em;
-      }
-    }
-
-    &.speed-slow {
-      background-color: @speedLimitColor;
-      color: @psiNavBackgroundColor;
-    }
-
-    &.speed-fast {
-      color: @psiBaseText;
-      text-shadow: none;
-      background-color: @psiNavBackgroundColor;
-      border: 1px solid @speedLimitColor;
     }
 
     &.speed-slow {

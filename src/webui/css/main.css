@@ -7333,6 +7333,7 @@ body[dir="rtl"] #psicash-pane .badge .psicash-pane__speed-limit__collapser {
 .speed-limit .badge img,
 .speed-limit.badge img {
   height: 3em;
+  max-width: none;
   vertical-align: baseline;
 }
 body[dir="ltr"] .speed-limit .badge img,

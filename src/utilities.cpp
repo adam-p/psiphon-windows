@@ -1425,7 +1425,7 @@ tstring UrlEncode(const tstring& input)
     return escapedURL.str();
 }
 
-// Only URL-encodes `%` characters. 
+// Only URL-encodes `%` characters.
 // Note that this is _only_ enough to encode a hash fragment in isolation.
 tstring PercentEncode(const tstring& input)
 {

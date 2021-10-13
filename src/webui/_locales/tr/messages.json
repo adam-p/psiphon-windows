@@ -555,6 +555,10 @@
         "message": "<strong>Web sitesine erişilemiyorsa</strong>, son Psiphon sürümünü almak için şu adrese e-posta gönderebilirsiniz:",
         "description": "Paragraph on the 'About' page telling users that they can also get a new version of Psiphon via email. The text in this resource is then followed by an email address. The word 'Psiphon' must not be translated or transliterated."
     },
+    "about#license-agree": {
+        "message": "Psiphon uygulamasını kullanarak <a href=\"http://127.0.0.1:9778/license.html\">son kullanıcı lisansı</a> ve <a href=\"http://127.0.0.1:9778/privacy.html\">gizlilik ilkesi</a> metinlerini kabul etmiş olursunuz.",
+        "description": "Paragraph on the 'About' page telling users that they agreeing to Psiphon's End-User License Agreement and Privacy Policy. The link URLs must not be modified. The word 'Psiphon' must not be translated or transliterated."
+    },
     "about#client-version": {
         "message": "Windows için Psiphon uygulaması sürümü:",
         "description": "Footer on the 'About' page indicating the client version number. This text is the prefix to the actual number. Like: 'Psiphon for Windows client version: 88'. The word 'Psiphon' must not be translated or transliterated."

@@ -555,6 +555,10 @@
         "message": "<strong>若網站無法訪問</strong>，您可以發送郵件至如下地址以獲取新版本的賽風：",
         "description": "Paragraph on the 'About' page telling users that they can also get a new version of Psiphon via email. The text in this resource is then followed by an email address. The word 'Psiphon' must not be translated or transliterated."
     },
+    "about#license-agree": {
+        "message": "By using Psiphon you signal that you agree to the terms of the <a href=\"http://127.0.0.1:9778/license.html\">End-User License</a> and <a href=\"http://127.0.0.1:9778/privacy.html\">Privacy Policy</a>.",
+        "description": "Paragraph on the 'About' page telling users that they agreeing to Psiphon's End-User License Agreement and Privacy Policy. The link URLs must not be modified. The word 'Psiphon' must not be translated or transliterated."
+    },
     "about#client-version": {
         "message": "賽風 Windows 客戶端版本：",
         "description": "Footer on the 'About' page indicating the client version number. This text is the prefix to the actual number. Like: 'Psiphon for Windows client version: 88'. The word 'Psiphon' must not be translated or transliterated."
