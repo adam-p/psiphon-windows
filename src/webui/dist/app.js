@@ -585,6 +585,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     if (!g_initObj.Settings) {
       g_initObj.Settings = {
         SplitTunnel: 0,
+        SplitTunnelChineseSites: 0,
         DisableTimeouts: 0,
         VPN: 0,
         LocalHttpProxyPort: 7771,
@@ -601,6 +602,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         DisableDisallowedTrafficAlert: 0,
         defaults: {
           SplitTunnel: 0,
+          SplitTunnelChineseSites: 0,
           DisableTimeouts: 0,
           VPN: 0,
           LocalHttpProxyPort: '',
@@ -841,6 +843,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       $('#SplitTunnel').prop('checked', !!obj.SplitTunnel);
     }
 
+    if (!_.isUndefined(obj.SplitTunnelChineseSites)) {
+      $('#SplitTunnelChineseSites').prop('checked', !!obj.SplitTunnelChineseSites);
+    }
+
     if (!_.isUndefined(obj.DisableTimeouts)) {
       $('#DisableTimeouts').prop('checked', !!obj.DisableTimeouts);
     }
@@ -928,6 +934,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var returnValue = {
       VPN: $('#VPN').prop('checked') ? 1 : 0,
       SplitTunnel: $('#SplitTunnel').prop('checked') ? 1 : 0,
+      SplitTunnelChineseSites: $('#SplitTunnelChineseSites').prop('checked') ? 1 : 0,
       DisableTimeouts: $('#DisableTimeouts').prop('checked') ? 1 : 0,
       LocalHttpProxyPort: validatePort($('#LocalHttpProxyPort').val()),
       LocalSocksProxyPort: validatePort($('#LocalSocksProxyPort').val()),
@@ -983,6 +990,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   function splitTunnelSetup() {
     $('#SplitTunnel').change(function () {
+      // Tell the settings pane a change was made.
+      $('#settings-pane').trigger(SETTING_CHANGED_EVENT, this.id);
+    });
+    $('#SplitTunnelChineseSites').change(function () {
       // Tell the settings pane a change was made.
       $('#settings-pane').trigger(SETTING_CHANGED_EVENT, this.id);
     });
@@ -1581,6 +1592,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         displayCornerAlert($('#language-success-alert'));
       } // Remember the user's choice
 
+      if (!initial && !g_languageSuccessAlertShown) {
+        // Show (and hide) the success alert
+        g_languageSuccessAlertShown = true;
+        displayCornerAlert($('#language-success-alert'));
+      } // Remember the user's choice
 
       setCookie('language', locale); // PsiCash may need to update numbers or moment.js
 
@@ -2802,6 +2818,275 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       showNoticeModal('psicash#mustconnect-modal#title', 'psicash#mustconnect-modal#body', 'info', null, null, function () {
         switchToTab('#connection-tab');
       });
+      return;
+    } // Clear any input error state
+
+
+    $('#PsiCashAccountLogin .control-group').removeClass('error'); // Show the login modal
+
+    $('#PsiCashAccountLogin').modal({
+      show: true,
+      backdrop: 'static'
+    }).one('shown', function () {
+      $('#AccountUsername').trigger('focus');
+    }).one('hidden', function () {
+      // The modal has closed; clear the password field
+      $('#PsiCashAccountLogin #AccountPassword').revealablePassword('clear'); // We're purposely not clearing the username field. It's less sensitive (if the user
+      // logs in successfully it will be stored and displayed) and it will be helpful to
+      // the user to not have to type it in again if the login attempt fails.
+    });
+  }
+
+  $('.js-account-login').on('click', psicashAccountLogin);
+  /**
+   * Handler for the login dialog submit event.
+   * @param {Event} event
+   */
+
+  function psicashAccountLoginSubmitHandler(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (g_lastState !== 'connected') {
+      // We're not connected, so no PsiCash ops are allowed. Close the login modal and
+      // switch to the connection tab.
+      $('#PsiCashAccountLogin').modal('hide').one('hidden', function () {
+        showNoticeModal('psicash#mustconnect-modal#title', 'psicash#mustconnect-modal#body', 'info', null, null, function () {
+          switchToTab('#connection-tab');
+        });
+      });
+      return;
+    }
+
+    var username = $('#AccountUsername').val();
+    var password = $('#AccountPassword').val(); // Validate input (make sure the fields aren't blank)
+
+    $('#AccountUsername').parents('.control-group').toggleClass('error', !username);
+    $('#AccountPassword').parents('.control-group').toggleClass('error', !password);
+
+    if (!username || !password) {
+      $(!username ? '#AccountUsername' : '#AccountPassword').trigger('focus');
+      return;
+    } // We're going to dismiss the login modal before attempting login. This is partly
+    // so that we don't complicate the UI state and partly because modals-over-modals
+    // gets crash-y.
+
+
+    $('#PsiCashAccountLogin').modal('hide'); // Show the "login in progress UI overlay"
+
+    psicashUIWaitState(true, '#psicash-ui-overlay-logging-in');
+    HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogin(username, password)).then(function (result) {
+      // In the success case we want to maintain the wait state until after a refresh.
+      // In all other cases we drop it now.
+      if (result.status !== PsiCashServerResponseStatus.Success) {
+        psicashUIWaitState(false, null);
+      }
+
+      if (result.refresh) {
+        // The reponse supplied refresh data.
+        // Note that this will be incomplete -- no balance or purchases -- we still need
+        // to do a full refresh, below.
+        psiCashUIUpdater(result.refresh);
+      } else {
+        // We need to do a full refresh
+        HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('account-login'));
+      }
+
+      if (result.error) {
+        // Catastrophic failure. Hopefully the error string helps the user diagnose the problem.
+        showNoticeModal('psicash#login#failure-modal-title', 'psicash#login#catastrophic-error-body', 'error', 'general#notice-modal-tech-preamble', result.error, null); // callback
+      } else {
+        switch (result.status) {
+          case PsiCashServerResponseStatus.InvalidCredentials:
+            showNoticeModal('psicash#login#failure-modal-title', 'psicash#login#invalid-credentials-body', 'warning', null, // tech preamble
+            null, // tech detail
+            null); // callback
+
+            break;
+
+          case PsiCashServerResponseStatus.BadRequest:
+            // The request was malformed in some way. This shouldn't happen.
+            showNoticeModal('psicash#login#failure-modal-title', 'psicash#login#badrequest-error-body', 'error', null, // tech preamble
+            null, // tech detail
+            null); // callback
+
+            break;
+
+          case PsiCashServerResponseStatus.ServerError:
+            // The server gave a 500-ish error
+            showNoticeModal('psicash#login#failure-modal-title', 'psicash#login#server-error-body', 'error', null, // tech preamble
+            null, // tech detail
+            null); // callback
+
+            break;
+
+          case PsiCashServerResponseStatus.Success:
+            addLog({
+              priority: 1,
+              message: 'PsiCash account logged in'
+            }); // Account login succeeded.  hard refresh is required.
+
+            if (result.last_tracker_merge) {
+              showNoticeModal('psicash#login#success-modal-title', 'psicash#login#last-tracker-merge-body', 'success', null, // tech preamble
+              null, // tech detail
+              null); // callback
+            } // Don't clear the wait state until the refresh is complete, since we're not
+            // really "ready" until then.
+
+
+            HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('new-login')).then(function () {
+              psicashUIWaitState(false, null);
+            });
+            break;
+
+          default:
+            throw new Error('Login: unknown PsiCashServerResponseStatus received: ' + result.status);
+        }
+      }
+    });
+  }
+
+  $('#PsiCashAccountLogin .js-submit-button').on('click', psicashAccountLoginSubmitHandler);
+  $('#PsiCashAccountLogin input').on('keyup', function (event) {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      psicashAccountLoginSubmitHandler();
+    }
+  });
+  /**
+   * Begin the account logout flow. Should not be called if the user is not logged in.
+   * @param {?Event} event
+   * @param {boolean} skipConnectedCheck If true, there will be no check of whether
+   *    the Psiphon tunnel is currently connected. Should only be set to true when this
+   *    is called via the local-only logout prompt.
+   */
+
+  function psicashAccountLogout(event) {
+    var skipConnectedCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    if (event) {
+      event.preventDefault();
+    }
+
+    if (!skipConnectedCheck && g_lastState !== 'connected') {
+      $('#PsiCashAccountLogoutOffline').modal({
+        show: true,
+        backdrop: 'static'
+      });
+      return;
+    }
+
+    psicashUIWaitState(true, '#psicash-ui-overlay-logging-out');
+    PsiCashStore.set('logoutExpected', true);
+    HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandLogout()).then(function (result) {
+      psicashUIWaitState(false, null);
+
+      if (result.refresh) {
+        // The reponse supplied refresh data
+        psiCashUIUpdater(result.refresh);
+      }
+
+      if (result.reconnect_required) {
+        // An authorization is active on the tunnel and needs to be removed.
+        HtmlCtrlInterface_Log('PsiCash::AccountLogout indicates reconnect required');
+        HtmlCtrlInterface_ReconnectTunnel(
+        /*suppressHomePage=*/
+        true);
+      }
+
+      if (result.error) {
+        // Catastrophic failure. Show a modal error and hope the user can figure it out.
+        showNoticeModal('psicash#modal-logout-header', 'psicash#modal-logout-error-body', 'error', 'general#notice-modal-tech-preamble', result.error, null); // callback
+      } else {
+        // Note that tunnel reconnection may be necessary to clear any active
+        // authorizations (like Speed Boost), but that will be handled by the
+        // PsiCash data refresh.
+        HtmlCtrlInterface_PsiCashCommand(new PsiCashCommandRefresh('logout'));
+      }
+    });
+  }
+
+  $('.js-account-logout').on('click', psicashAccountLogout);
+  /*
+  If the user attempts to log out of their PsiCash account while not having a connected
+  tunnel, they are prompted as to whether they wish to proceed with a local-only logout.
+  */
+
+  $('#PsiCashAccountLogoutOffline .js-connect-button').on('click', function (e) {
+    e.preventDefault();
+    $('#PsiCashAccountLogoutOffline').modal('hide').one('hidden', function () {
+      HtmlCtrlInterface_StartTunnel();
+      switchToTab('#connection-tab');
+    });
+  });
+  $('#PsiCashAccountLogoutOffline .js-logout-button').on('click', function (e) {
+    e.preventDefault();
+    $('#PsiCashAccountLogoutOffline').modal('hide').one('hidden', function () {
+      psicashAccountLogout(null, true);
+    });
+  });
+  /**
+   *
+   * @param {boolean} start True if the wait state is starting, false if it should be cleared.
+   * @param {*} messageSelector The selector of the message that should be shown during the wait state. May be null if the wait state is ending.
+   */
+
+  function psicashUIWaitState(start, messageSelector) {
+    if (messageSelector) {
+      $('.js-psicash-ui-overlay-messages > *').not(messageSelector).addClass('hidden');
+      $(messageSelector).removeClass('hidden');
+    }
+
+    $('.psicash-ui-overlay, .psicash-block-overlay').toggleClass('hidden', !start);
+  }
+
+  function switchToPsiCashTabAndExpandSpeedLimitInfo() {
+    // We're going to switch to the PsiCash tab, and ensure that it is showing
+    // (i.e., not collapsing) the porting limiting info.
+    // Setting the cookie here is a bit of hack. If this is the first visit to the
+    // PsiCash pane, it will help prevent the speed limit from collapsing and then
+    // re-expanding (which looks dumb).
+    setCookie('SpeedLimitCollapsed', false);
+    switchToTab('#psicash-tab', function () {
+      // This timeout is a dirty hack. There seems to be a bug where expanding the collapsed
+      // element too soon after the tab shows results in the element not expanding, but the
+      // state getting messed up so it can't even be done manually. In testing, too short
+      // a wait isn't sufficient, so we're going to give it a long time before we try.
+      // Let's pretend this is a feature for drawing attention to the speed limit info.
+      setTimeout(function () {
+        var $speedLimitCollapser = $('.psicash-pane__speed-limit__collapser');
+        var $speedLimitCollapserTarget = $($speedLimitCollapser.data('target'));
+
+        if (!$speedLimitCollapserTarget.hasClass('in')) {
+          $speedLimitCollapserTarget.collapse('show');
+        }
+      }, 1000);
+    });
+  }
+  /**
+   * Called when tunnel core indicates that there was an attempt to access a
+   * port disallowed by the current traffic rules. We will show an alert to
+   * encourage the user to buy Speed Boost.
+   */
+
+
+  function handleDisallowedTrafficNotice() {
+    if (PsiCashStore.data.uiState === PsiCashUIState.ACTIVE_BOOST) {
+      // If we're boosting, then any disallowed traffic is something that won't
+      // be let through by purchasing speed boost, so logging, etc., is pointless.
+      DEBUG_LOG('handleDisallowedTrafficNotice: already boosting');
+      return;
+    }
+
+    addLog({
+      priority: 2,
+      // high
+      message: 'Disallowed traffic detected; please purchase Speed Boost'
+    });
+
+    if (g_initObj.Settings.DisableDisallowedTrafficAlert) {
+      // User has disabled this alert in the settings
+      DEBUG_LOG('handleDisallowedTrafficNotice: DisableDisallowedTrafficAlert is true');
       return;
     } // Clear any input error state
 
